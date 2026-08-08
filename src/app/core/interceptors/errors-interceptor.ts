@@ -20,7 +20,13 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
           summary: 'Session expired',
           detail: 'Please sign in again to continue.',
         });
-        router.navigateByUrl('/login');
+
+        const currentUrl = router.url;
+        if (currentUrl && currentUrl !== '/login') {
+          router.navigate(['/login'], { queryParams: { returnUrl: currentUrl } });
+        } else {
+          router.navigateByUrl('/login');
+        }
       } else if (error.status === 403) {
         messageService.add({
           severity: 'error',

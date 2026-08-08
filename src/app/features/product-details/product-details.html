@@ -278,6 +278,12 @@
             </div>
           </div>
         </div>
+
+        <app-reviews
+          [productId]="product._id"
+          [ratingsAverage]="product.ratingsAverage"
+          [ratingsQuantity]="product.ratingsQuantity"
+        />
       </div>
     }
   }

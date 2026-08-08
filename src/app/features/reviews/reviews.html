@@ -1,1 +1,217 @@
-<p>reviews works!</p>
+<!-- reviews.html -->
+<section class="mx-auto max-w-4xl border-t border-neutral-200 pt-16 dark:border-neutral-800/80">
+  <!-- Header -->
+  <header class="mb-10">
+    <p class="font-cinzel text-xs tracking-[0.3em] uppercase text-gold-600 dark:text-gold-400">
+      Customer Voices
+    </p>
+    <h2 class="mt-3 font-serif text-3xl text-royal-950 dark:text-gold-200">Reviews</h2>
+    <div class="mt-6 h-px w-16 bg-gold-500/50 dark:bg-gold-400/60"></div>
+  </header>
+
+  <!-- Rating summary -->
+  <div
+    class="gold-glow-border mb-8 flex flex-wrap items-center gap-6 rounded-2xl bg-white/50 p-8 backdrop-blur-sm dark:bg-royal-900/20"
+  >
+    <p class="text-gold-gradient font-serif text-5xl">{{ ratingsAverage() | number: '1.1-1' }}</p>
+    <div>
+      <div class="flex items-center gap-1">
+        @for (star of starValues; track star) {
+          <i
+            class="pi text-sm"
+            [class.pi-star-fill]="star <= roundedAverage()"
+            [class.pi-star]="star > roundedAverage()"
+            [class.text-gold-400]="star <= roundedAverage()"
+            [class.text-neutral-300]="star > roundedAverage()"
+            [class.dark:text-neutral-700]="star > roundedAverage()"
+            aria-hidden="true"
+          ></i>
+        }
+      </div>
+      <p class="mt-1 text-xs opacity-55">
+        Based on {{ ratingsQuantity() }} review{{ ratingsQuantity() === 1 ? '' : 's' }}
+      </p>
+    </div>
+  </div>
+
+  <!-- Loading state -->
+  @if (reviewsResource.isLoading()) {
+    <div class="flex flex-col items-center gap-4 py-16">
+      <p-progress-spinner styleClass="w-9 h-9" strokeWidth="2.5" />
+      <p class="font-cinzel text-xs tracking-[0.25em] uppercase opacity-50">Loading Reviews</p>
+    </div>
+  } @else {
+    <!-- Your review -->
+    @if (myReview(); as own) {
+      @if (!isEditing()) {
+        <div
+          class="gold-glow-border mb-8 rounded-2xl bg-white/50 p-6 backdrop-blur-sm dark:bg-royal-900/20"
+        >
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <p
+                class="font-cinzel text-[0.65rem] tracking-[0.15em] uppercase text-gold-600 dark:text-gold-400"
+              >
+                Your Review
+              </p>
+              <div class="mt-2 flex items-center gap-1">
+                @for (star of starValues; track star) {
+                  <i
+                    class="pi text-sm"
+                    [class.pi-star-fill]="star <= own.rating"
+                    [class.pi-star]="star > own.rating"
+                    [class.text-gold-400]="star <= own.rating"
+                    [class.text-neutral-300]="star > own.rating"
+                    [class.dark:text-neutral-700]="star > own.rating"
+                    aria-hidden="true"
+                  ></i>
+                }
+              </div>
+              <p class="mt-3 text-sm opacity-80">{{ own.review }}</p>
+              <p class="mt-2 text-xs opacity-50">{{ own.createdAt | date: 'mediumDate' }}</p>
+            </div>
+
+            <div class="flex shrink-0 flex-col items-end gap-2">
+              <button
+                type="button"
+                (click)="startEdit()"
+                class="font-cinzel text-[0.65rem] tracking-[0.15em] uppercase opacity-50 underline underline-offset-4 transition-colors hover:text-gold-600 hover:opacity-100 dark:hover:text-gold-400"
+              >
+                Edit
+              </button>
+              <button
+                type="button"
+                (click)="deleteOwnReview()"
+                [disabled]="deletingOwn()"
+                class="font-cinzel text-[0.65rem] tracking-[0.15em] uppercase opacity-40 underline underline-offset-4 transition-colors hover:text-red-600 hover:opacity-100 disabled:pointer-events-none"
+              >
+                {{ deletingOwn() ? 'Removing…' : 'Delete' }}
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+    }
+
+    <!-- Sign-in prompt -->
+    @if (!isLoggedIn()) {
+      <div
+        class="gold-glow-border mb-8 flex flex-col items-center gap-3 rounded-2xl bg-white/50 py-10 text-center backdrop-blur-sm dark:bg-royal-900/20"
+      >
+        <p class="font-serif text-base italic opacity-70">
+          Sign in to share your thoughts on this product.
+        </p>
+        <a
+          routerLink="/login"
+          [queryParams]="{ returnUrl: router.url }"
+          class="font-cinzel text-xs tracking-[0.2em] uppercase text-gold-600 underline underline-offset-4 transition-colors hover:text-gold-500 dark:text-gold-400 dark:hover:text-gold-300"
+        >
+          Sign In
+        </a>
+      </div>
+    }
+
+    <!-- Create / edit form -->
+    @if (isLoggedIn() && (!myReview() || isEditing())) {
+      <div
+        class="gold-glow-border mb-8 rounded-2xl bg-white/50 p-6 backdrop-blur-sm dark:bg-royal-900/20"
+      >
+        <p
+          class="font-cinzel text-[0.65rem] tracking-[0.15em] uppercase text-gold-600 dark:text-gold-400"
+        >
+          {{ isEditing() ? 'Edit Your Review' : 'Write a Review' }}
+        </p>
+
+        <div class="mt-4 flex items-center gap-1">
+          @for (star of starValues; track star) {
+            <button
+              type="button"
+              (click)="setRating(star)"
+              [attr.aria-label]="'Rate ' + star + ' star' + (star === 1 ? '' : 's')"
+              class="p-0.5 text-lg text-gold-400 transition-transform hover:scale-110"
+            >
+              <i
+                class="pi"
+                [class.pi-star-fill]="star <= formRating()"
+                [class.pi-star]="star > formRating()"
+                aria-hidden="true"
+              ></i>
+            </button>
+          }
+        </div>
+
+        <textarea
+          rows="3"
+          [(ngModel)]="formText"
+          placeholder="Share your experience with this product…"
+          class="mt-4 w-full rounded-xl border border-gold-400/30 bg-transparent p-3 text-sm placeholder:opacity-40 focus:border-gold-500 focus:outline-none dark:border-gold-500/25"
+        ></textarea>
+
+        @if (formError(); as message) {
+          <p class="mt-2 text-xs text-red-500">{{ message }}</p>
+        }
+
+        <div class="mt-4 flex items-center gap-4">
+          <button
+            type="button"
+            (click)="submitReview()"
+            [disabled]="submitting()"
+            class="bg-gold-gradient font-cinzel rounded-full px-8 py-2.5 text-xs tracking-[0.2em] text-royal-950 uppercase disabled:cursor-wait disabled:opacity-70"
+          >
+            {{ submitting() ? 'Saving…' : isEditing() ? 'Update Review' : 'Submit Review' }}
+          </button>
+          @if (isEditing()) {
+            <button
+              type="button"
+              (click)="cancelEdit()"
+              class="font-cinzel text-xs tracking-[0.15em] uppercase opacity-50 underline underline-offset-4 hover:opacity-100"
+            >
+              Cancel
+            </button>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Other reviews -->
+    @if (otherReviews().length === 0 && !myReview()) {
+      <div
+        class="gold-glow-border flex flex-col items-center gap-3 rounded-2xl bg-white/50 py-16 text-center backdrop-blur-sm dark:bg-royal-900/20"
+      >
+        <i class="pi pi-comments text-3xl text-gold-500/70 dark:text-gold-400/60" aria-hidden="true"></i>
+        <p class="font-serif text-base italic opacity-70">
+          No reviews yet — be the first to share your thoughts.
+        </p>
+      </div>
+    } @else if (otherReviews().length > 0) {
+      <div
+        class="gold-glow-border divide-y divide-gold-400/15 rounded-2xl bg-white/50 backdrop-blur-sm dark:divide-gold-500/10 dark:bg-royal-900/20"
+      >
+        @for (review of otherReviews(); track trackByReviewId($index, review)) {
+          <div class="p-6">
+            <div class="flex items-center justify-between gap-4">
+              <p class="font-serif text-base text-royal-950 dark:text-gold-200">
+                {{ review.user.name }}
+              </p>
+              <div class="flex items-center gap-1">
+                @for (star of starValues; track star) {
+                  <i
+                    class="pi text-xs"
+                    [class.pi-star-fill]="star <= review.rating"
+                    [class.pi-star]="star > review.rating"
+                    [class.text-gold-400]="star <= review.rating"
+                    [class.text-neutral-300]="star > review.rating"
+                    [class.dark:text-neutral-700]="star > review.rating"
+                    aria-hidden="true"
+                  ></i>
+                }
+              </div>
+            </div>
+            <p class="mt-2 text-sm opacity-75">{{ review.review }}</p>
+            <p class="mt-2 text-xs opacity-45">{{ review.createdAt | date: 'mediumDate' }}</p>
+          </div>
+        }
+      </div>
+    }
+  }
+</section>

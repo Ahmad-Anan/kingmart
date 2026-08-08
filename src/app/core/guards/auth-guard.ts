@@ -8,7 +8,7 @@ import { AuthService } from '../services/auth/auth';
  * Blocks any route that requires a logged-in user, redirecting anonymous
  * visitors to /login. Logged-in users pass through normally.
  */
-export const authGuard: CanActivateFn = () => {
+export const authGuard: CanActivateFn = (route, state) => {
   // الـ SSR معندوش وصول لـ localStorage، فأي قرار هنا هيبقى مبني على معلومة غلط
   // (currentUser بيبقى null دايمًا في السيرفر بغض النظر عن الحالة الحقيقية) —
   // القرار الحقيقي بيتساب للكلاينت بس، اللي بيعيد تقييم الـ guard تلقائيًا أول ما
@@ -24,5 +24,5 @@ export const authGuard: CanActivateFn = () => {
     return true;
   }
 
-  return router.createUrlTree(['/login']);
+  return router.createUrlTree(['/login'], { queryParams: { returnUrl: state.url } });
 };

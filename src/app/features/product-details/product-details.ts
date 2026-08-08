@@ -7,12 +7,13 @@ import { map, of, switchMap } from 'rxjs';
 import { ProductsService } from '../../core/services/products/product';
 import { Cart as CartService } from '../../core/services/cart/cart';
 import { WishlistService } from '../../core/services/wishlist/wishlist';
+import { Reviews } from '../reviews/reviews';
 import { Breadcrumb } from '../../shared/breadcrumb/breadcrumb';
 
 @Component({
   selector: 'app-product-details',
   standalone: true,
-  imports: [DecimalPipe, RouterLink, Breadcrumb],
+  imports: [DecimalPipe, RouterLink, Breadcrumb, Reviews],
   templateUrl: './product-details.html',
   styleUrl: './product-details.css',
 })

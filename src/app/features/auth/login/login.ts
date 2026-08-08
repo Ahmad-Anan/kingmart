@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { email, form, FormField, FormRoot, required } from '@angular/forms/signals';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 
 import { ButtonModule } from 'primeng/button';
@@ -37,6 +37,7 @@ import { AUTH_TRUST_BADGES } from '../auth-interface/auth-showcase.data';
 export class Login {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
   protected readonly serverError = signal<string | null>(null);
   protected readonly rememberMeControl = new FormControl(false, { nonNullable: true });
@@ -64,7 +65,7 @@ export class Login {
 
           try {
             await firstValueFrom(this.authService.signin(this.model()));
-            await this.router.navigateByUrl('/home');
+            await this.router.navigateByUrl(this.resolveRedirectUrl());
           } catch (err) {
             this.serverError.set(this.resolveErrorMessage(err));
           }
@@ -72,6 +73,16 @@ export class Login {
       },
     },
   );
+
+  private resolveRedirectUrl(): string {
+    const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+    // لازم يكون مسار داخلي نسبي بس — بنرفض أي حاجة ممكن تودي لموقع خارجي
+    // (زي "//evil.com" أو "https://evil.com") عشان نمنع open-redirect
+    if (returnUrl && returnUrl.startsWith('/') && !returnUrl.startsWith('//') && !returnUrl.includes('://')) {
+      return returnUrl;
+    }
+    return '/home';
+  }
 
   private resolveErrorMessage(err: unknown): string {
     if (err instanceof HttpErrorResponse && typeof err.error?.message === 'string') {
