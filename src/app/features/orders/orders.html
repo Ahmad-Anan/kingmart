@@ -1,0 +1,135 @@
+<!-- orders.html -->
+<section class="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
+  <!-- Header -->
+  <header class="mb-12">
+    <p class="font-cinzel text-xs tracking-[0.3em] uppercase text-gold-600 dark:text-gold-400">
+      Order History
+    </p>
+    <h1 class="mt-3 font-serif text-4xl text-royal-950 dark:text-gold-200">My Orders</h1>
+    <div class="mt-6 h-px w-16 bg-gold-500/50 dark:bg-gold-400/60"></div>
+  </header>
+
+  <!-- Loading state -->
+  @if (isLoading()) {
+    <div class="flex flex-col items-center gap-4 py-28">
+      <p-progress-spinner styleClass="w-9 h-9" strokeWidth="2.5" />
+      <p class="font-cinzel text-xs tracking-[0.25em] uppercase opacity-50">Loading Your Orders</p>
+    </div>
+  }
+
+  <!-- Empty state -->
+  @else if (orders().length === 0) {
+    <div
+      class="gold-glow-border flex flex-col items-center gap-5 rounded-2xl bg-white/50 py-28 text-center backdrop-blur-sm dark:bg-royal-900/20"
+    >
+      <i class="pi pi-inbox text-4xl text-gold-500/70 dark:text-gold-400/60" aria-hidden="true"></i>
+      <p class="font-serif text-lg italic opacity-70">You haven't placed any orders yet.</p>
+      <a
+        routerLink="/shop"
+        class="font-cinzel text-xs tracking-[0.2em] uppercase text-gold-600 underline underline-offset-4 transition-colors hover:text-gold-500 dark:text-gold-400 dark:hover:text-gold-300"
+      >
+        Browse the Collection
+      </a>
+    </div>
+  }
+
+  <!-- Orders list -->
+  @else {
+    <div class="space-y-6">
+      @for (order of orders(); track trackByOrderId($index, order)) {
+        <div
+          class="gold-glow-border overflow-hidden rounded-2xl bg-white/50 backdrop-blur-sm dark:bg-royal-900/20"
+        >
+          <!-- Order header -->
+          <div
+            class="flex flex-wrap items-center justify-between gap-4 border-b border-gold-400/15 p-6 dark:border-gold-500/10"
+          >
+            <div>
+              <p class="font-cinzel text-[0.65rem] tracking-[0.15em] uppercase opacity-50">
+                Order Reference
+              </p>
+              <p class="mt-1 font-mono text-sm opacity-80" [title]="order._id">
+                {{ shortOrderRef(order._id) }}
+              </p>
+              <p class="mt-1 text-xs opacity-55">{{ order.createdAt | date: 'medium' }}</p>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2">
+              @if (order.paymentMethodType === 'card') {
+                <span
+                  class="font-cinzel flex items-center gap-1.5 rounded-full bg-gold-gradient px-3 py-1 text-[0.6rem] tracking-[0.15em] text-royal-950 uppercase"
+                >
+                  <i class="pi pi-credit-card text-[0.65rem]" aria-hidden="true"></i>
+                  Paid Online
+                </span>
+              } @else {
+                <span
+                  class="font-cinzel flex items-center gap-1.5 rounded-full bg-neutral-500/10 px-3 py-1 text-[0.6rem] tracking-[0.15em] text-neutral-500 uppercase dark:bg-white/10 dark:text-neutral-400"
+                >
+                  <i class="pi pi-wallet text-[0.65rem]" aria-hidden="true"></i>
+                  Cash on Delivery
+                </span>
+              }
+
+              <span
+                class="font-cinzel rounded-full px-3 py-1 text-[0.6rem] tracking-[0.15em] uppercase"
+                [class.bg-emerald-500/10]="order.isPaid"
+                [class.text-emerald-600]="order.isPaid"
+                [class.dark:text-emerald-400]="order.isPaid"
+                [class.bg-gold-400/10]="!order.isPaid"
+                [class.text-gold-600]="!order.isPaid"
+                [class.dark:text-gold-400]="!order.isPaid"
+              >
+                {{ order.isPaid ? 'Paid' : 'Payment Pending' }}
+              </span>
+
+              <span
+                class="font-cinzel rounded-full px-3 py-1 text-[0.6rem] tracking-[0.15em] uppercase"
+                [class.bg-emerald-500/10]="order.isDelivered"
+                [class.text-emerald-600]="order.isDelivered"
+                [class.dark:text-emerald-400]="order.isDelivered"
+                [class.bg-neutral-500/10]="!order.isDelivered"
+                [class.text-neutral-500]="!order.isDelivered"
+              >
+                {{ order.isDelivered ? 'Delivered' : 'Processing' }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Order items -->
+          <div class="divide-y divide-gold-400/10 dark:divide-gold-500/10">
+            @for (item of order.cartItems; track item._id) {
+              <div class="flex items-center gap-4 p-4">
+                <img
+                  [src]="item.product.imageCover"
+                  [alt]="item.product.title"
+                  class="h-14 w-14 shrink-0 rounded-lg object-cover ring-1 ring-gold-400/20 dark:ring-gold-500/15"
+                />
+                <div class="min-w-0 flex-1">
+                  <p class="truncate text-sm text-royal-950 dark:text-gold-200">
+                    {{ item.product.title }}
+                  </p>
+                  <p
+                    class="font-cinzel mt-1 text-[0.6rem] tracking-[0.1em] text-gold-600 uppercase dark:text-gold-400"
+                  >
+                    {{ item.product.category.name }}
+                  </p>
+                  <p class="mt-0.5 text-xs opacity-55">Qty {{ item.count }}</p>
+                </div>
+                <p class="shrink-0 font-serif text-sm text-royal-950 dark:text-gold-200">
+                  {{ item.price * item.count }} EGP
+                </p>
+              </div>
+            }
+          </div>
+
+          <!-- Order total -->
+          <div class="flex items-center justify-between p-6 pt-4">
+            <p class="font-cinzel text-xs tracking-[0.2em] uppercase opacity-50">Total</p>
+            <p class="text-gold-gradient font-serif text-2xl">{{ order.totalOrderPrice }} EGP</p>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</section>

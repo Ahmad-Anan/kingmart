@@ -1,0 +1,184 @@
+<div class="min-h-screen bg-surface-light px-4 py-10 dark:bg-royal-950 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-7xl">
+    <!-- Header -->
+    <section class="mb-12 text-center">
+      <span
+        class="inline-flex items-center gap-2 rounded-full border border-gold-500/30 bg-gold-300/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-gold-600 dark:bg-royal-900/40 dark:text-gold-400"
+      >
+        <i class="pi pi-box" aria-hidden="true"></i>
+        {{ subCategoryName() }}
+      </span>
+
+      <h1
+        class="mt-5 font-serif text-4xl font-light tracking-wide text-royal-950 dark:text-white sm:text-5xl"
+      >
+        Explore
+        <span class="italic text-gold-600 dark:text-gold-400"> Products </span>
+      </h1>
+
+      <p class="mt-4 text-sm text-royal-900/60 dark:text-white/50" aria-live="polite">
+        {{ totalProducts() }} {{ totalProducts() === 1 ? 'Product' : 'Products' }} Found
+      </p>
+    </section>
+
+    <!-- Loading -->
+    @if (isLoading()) {
+      <ul class="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 xl:grid-cols-4" aria-hidden="true">
+        @for (item of [1, 2, 3, 4, 5, 6, 7, 8]; track item) {
+          <li
+            class="overflow-hidden rounded-3xl border border-gold-500/10 bg-white shadow-sm dark:bg-royal-900/40"
+          >
+            <div class="aspect-square animate-pulse bg-gold-300/10 dark:bg-royal-800"></div>
+
+            <div class="space-y-3 p-5">
+              <div class="h-3 w-1/3 animate-pulse rounded bg-gold-300/10"></div>
+              <div class="h-5 animate-pulse rounded bg-gold-300/10"></div>
+              <div class="h-6 w-24 animate-pulse rounded bg-gold-300/10"></div>
+            </div>
+          </li>
+        }
+      </ul>
+    }
+
+    <!-- Error -->
+    @else if (hasError()) {
+      <section
+        role="status"
+        aria-live="polite"
+        class="mx-auto flex max-w-md flex-col items-center gap-3 rounded-3xl border border-red-500/20 bg-red-500/5 py-20 text-center"
+      >
+        <i class="pi pi-exclamation-triangle text-5xl text-red-500" aria-hidden="true"></i>
+
+        <p class="font-serif text-lg text-royal-950 dark:text-white">Something went astray</p>
+
+        <p class="text-sm leading-relaxed text-red-500">
+          We couldn't load these products. Please check your connection and try again.
+        </p>
+      </section>
+    }
+
+    <!-- Empty -->
+    @else if (products().length === 0) {
+      <section
+        role="status"
+        aria-live="polite"
+        class="mx-auto flex max-w-md flex-col items-center gap-3 rounded-3xl border border-gold-500/20 bg-gold-300/5 py-20 text-center dark:bg-royal-900/40"
+      >
+        <i class="pi pi-inbox text-5xl text-gold-500" aria-hidden="true"></i>
+
+        <p class="font-serif text-lg text-royal-950 dark:text-white">No products here yet</p>
+
+        <p class="text-sm leading-relaxed text-royal-900/60 dark:text-white/60">
+          This collection is still being stocked. Please check back soon.
+        </p>
+
+        <button
+          type="button"
+          (click)="backToSubCategories()"
+          class="mt-4 rounded-full border border-gold-500/40 px-5 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-gold-600 transition-colors hover:bg-gold-500 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 dark:text-gold-400 dark:focus-visible:ring-offset-royal-950"
+        >
+          Back to collections
+        </button>
+      </section>
+    }
+
+    <!-- Products -->
+    @else {
+      <ul
+        class="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 xl:grid-cols-4"
+        aria-label="Products in {{ subCategoryName() }}"
+      >
+        @for (product of products(); track product._id) {
+          <li>
+            <button
+              type="button"
+              (click)="goToProduct(product)"
+              class="group flex h-full w-full flex-col overflow-hidden rounded-3xl border border-gold-500/15 bg-white text-start shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 motion-reduce:transition-none motion-reduce:hover:translate-y-0 dark:bg-royal-900/50 dark:focus-visible:ring-offset-royal-950"
+            >
+              <!-- Image -->
+              <div class="relative overflow-hidden">
+                <img
+                  [src]="product.imageCover"
+                  [alt]="product.title"
+                  loading="lazy"
+                  decoding="async"
+                  (error)="onImageError($event)"
+                  class="aspect-square w-full object-cover transition duration-500 group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+                />
+
+                @if (hasDiscount(product)) {
+                  <span
+                    class="absolute inset-s-3 top-3 rounded-full bg-red-500 px-3 py-1 text-xs font-bold text-white"
+                  >
+                    -{{ calculateDiscountPercent(product.price, product.priceAfterDiscount) }}%
+                  </span>
+                }
+              </div>
+
+              <!-- Content -->
+              <div class="flex flex-1 flex-col gap-3 p-4 sm:p-5">
+                <p
+                  class="truncate text-xs uppercase tracking-[0.2em] text-gold-600 dark:text-gold-400"
+                >
+                  {{ product.brand.name }}
+                </p>
+
+                <h2
+                  class="line-clamp-2 min-h-10 font-serif text-sm font-semibold text-royal-950 transition-colors group-hover:text-gold-600 sm:text-base dark:text-white dark:group-hover:text-gold-400"
+                >
+                  {{ product.title }}
+                </h2>
+
+                <!-- Rating -->
+                <div class="flex items-center gap-2">
+                  <i class="pi pi-star-fill text-sm text-yellow-500" aria-hidden="true"></i>
+
+                  <span class="text-sm text-royal-950 dark:text-white">
+                    {{ getRating(product) }}
+                  </span>
+
+                  <span class="text-xs text-royal-900/50 dark:text-white/40">
+                    ({{ product.ratingsQuantity }})
+                  </span>
+                </div>
+
+                <!-- Price -->
+                <div class="mt-auto flex flex-wrap items-center gap-2">
+                  @if (product.priceAfterDiscount) {
+                    <span class="text-lg font-bold text-gold-600 sm:text-xl dark:text-gold-400">
+                      {{ product.priceAfterDiscount }} EGP
+                    </span>
+
+                    <span class="text-sm text-royal-900/40 line-through dark:text-white/40">
+                      {{ product.price }} EGP
+                    </span>
+                  } @else {
+                    <span class="text-lg font-bold text-gold-600 sm:text-xl dark:text-gold-400">
+                      {{ product.price }} EGP
+                    </span>
+                  }
+                </div>
+
+                <!-- Footer -->
+                <div class="flex items-center justify-between border-t border-gold-500/10 pt-4">
+                  <span
+                    class="text-xs font-semibold uppercase tracking-[0.2em] text-gold-600 dark:text-gold-400"
+                  >
+                    View
+                  </span>
+
+                  <span
+                    aria-hidden="true"
+                    class="flex h-9 w-9 items-center justify-center rounded-full border border-gold-500/30 transition-all duration-300 group-hover:bg-gold-500 group-hover:text-white motion-reduce:transition-none"
+                  >
+                    <i class="pi pi-arrow-right text-xs"></i>
+                  </span>
+                </div>
+              </div>
+            </button>
+          </li>
+        }
+      </ul>
+    }
+  </div>
+</div>

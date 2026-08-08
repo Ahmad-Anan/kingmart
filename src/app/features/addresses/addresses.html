@@ -1,0 +1,190 @@
+<!-- addresses.html -->
+<section class="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
+  <!-- Header -->
+  <header class="mb-12 flex items-center justify-between gap-4">
+    <div>
+      <p class="font-cinzel text-xs tracking-[0.3em] uppercase text-gold-600 dark:text-gold-400">
+        Shipping
+      </p>
+      <h1 class="mt-3 font-serif text-4xl text-royal-950 dark:text-gold-200">Your Addresses</h1>
+      <div class="mt-6 h-px w-16 bg-gold-500/50 dark:bg-gold-400/60"></div>
+    </div>
+
+    <button
+      pButton
+      type="button"
+      (click)="toggleAddForm()"
+      class="font-cinzel shrink-0 rounded-full bg-gold-gradient px-6 py-2.5 text-xs tracking-[0.2em] text-royal-950 uppercase"
+    >
+      @if (showAddForm()) {
+        Cancel
+      } @else {
+        <i class="pi pi-plus text-xs" aria-hidden="true"></i>
+        Add Address
+      }
+    </button>
+  </header>
+
+  <!-- Add address form -->
+  @if (showAddForm()) {
+    <div
+      class="gold-glow-border mb-10 rounded-2xl bg-white/50 p-8 backdrop-blur-sm dark:bg-royal-900/20"
+    >
+      @if (serverError(); as errorMessage) {
+        <p-message severity="error" styleClass="mb-6 w-full">{{ errorMessage }}</p-message>
+      }
+
+      <form [formRoot]="addressForm" class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <div>
+          <label
+            for="address-name"
+            class="mb-1.5 block text-sm font-medium text-royal-950/80 dark:text-white/80"
+            >Label</label
+          >
+          <input
+            id="address-name"
+            pInputText
+            placeholder="Home, Work..."
+            class="w-full"
+            [formField]="addressForm.name"
+          />
+          @if (addressForm.name().touched() && addressForm.name().invalid()) {
+            <small class="mt-1 block text-red-500">{{
+              addressForm.name().errors()[0]?.message
+            }}</small>
+          }
+        </div>
+
+        <div>
+          <label
+            for="address-city"
+            class="mb-1.5 block text-sm font-medium text-royal-950/80 dark:text-white/80"
+            >City</label
+          >
+          <input
+            id="address-city"
+            pInputText
+            placeholder="Cairo"
+            class="w-full"
+            [formField]="addressForm.city"
+          />
+          @if (addressForm.city().touched() && addressForm.city().invalid()) {
+            <small class="mt-1 block text-red-500">{{
+              addressForm.city().errors()[0]?.message
+            }}</small>
+          }
+        </div>
+
+        <div>
+          <label
+            for="address-phone"
+            class="mb-1.5 block text-sm font-medium text-royal-950/80 dark:text-white/80"
+            >Phone</label
+          >
+          <input
+            id="address-phone"
+            pInputText
+            placeholder="01xxxxxxxxx"
+            class="w-full"
+            [formField]="addressForm.phone"
+          />
+          @if (addressForm.phone().touched() && addressForm.phone().invalid()) {
+            <small class="mt-1 block text-red-500">{{
+              addressForm.phone().errors()[0]?.message
+            }}</small>
+          }
+        </div>
+
+        <div>
+          <label
+            for="address-details"
+            class="mb-1.5 block text-sm font-medium text-royal-950/80 dark:text-white/80"
+            >Details</label
+          >
+          <input
+            id="address-details"
+            pInputText
+            placeholder="Street, building, floor..."
+            class="w-full"
+            [formField]="addressForm.details"
+          />
+          @if (addressForm.details().touched() && addressForm.details().invalid()) {
+            <small class="mt-1 block text-red-500">{{
+              addressForm.details().errors()[0]?.message
+            }}</small>
+          }
+        </div>
+
+        <button
+          pButton
+          type="submit"
+          [fluid]="true"
+          [disabled]="addressForm().submitting()"
+          class="font-cinzel sm:col-span-2 rounded-lg bg-royal-950 py-3 text-xs tracking-[0.2em] text-gold-300 uppercase transition-colors hover:bg-royal-900 dark:bg-gold-500 dark:text-royal-950 dark:hover:bg-gold-400"
+        >
+          @if (addressForm().submitting()) {
+            <i class="pi pi-spinner pi-spin" aria-hidden="true"></i>
+            Saving…
+          } @else {
+            Save Address
+          }
+        </button>
+      </form>
+    </div>
+  }
+
+  <!-- Loading state -->
+  @if (isLoading()) {
+    <div class="flex flex-col items-center gap-4 py-28">
+      <p-progress-spinner styleClass="w-9 h-9" strokeWidth="2.5" />
+      <p class="font-cinzel text-xs tracking-[0.25em] uppercase opacity-50">
+        Loading Your Addresses
+      </p>
+    </div>
+  }
+
+  <!-- Empty state -->
+  @else if (addresses().length === 0) {
+    <div
+      class="gold-glow-border flex flex-col items-center gap-5 rounded-2xl bg-white/50 py-28 text-center backdrop-blur-sm dark:bg-royal-900/20"
+    >
+      <i class="pi pi-map-marker text-4xl text-gold-500/70 dark:text-gold-400/60" aria-hidden="true"></i>
+      <p class="font-serif text-lg italic opacity-70">No addresses saved yet.</p>
+    </div>
+  }
+
+  <!-- Addresses list -->
+  @else {
+    <div
+      class="gold-glow-border divide-y divide-gold-400/15 rounded-2xl bg-white/50 backdrop-blur-sm dark:divide-gold-500/10 dark:bg-royal-900/20"
+    >
+      @for (address of addresses(); track address._id) {
+        <div
+          class="flex items-center gap-6 p-6 transition-opacity"
+          [class.opacity-60]="removingAddressId() === address._id"
+        >
+          <div
+            class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-gold-400/30 text-gold-600 dark:text-gold-400"
+          >
+            <i class="pi pi-map-marker" aria-hidden="true"></i>
+          </div>
+
+          <div class="min-w-0 flex-1">
+            <h3 class="font-serif text-lg text-royal-950 dark:text-gold-200">{{ address.name }}</h3>
+            <p class="mt-1 text-sm opacity-70">{{ address.details }}, {{ address.city }}</p>
+            <p class="mt-1 text-sm opacity-55">{{ address.phone }}</p>
+          </div>
+
+          <button
+            type="button"
+            (click)="removeAddress(address._id)"
+            [disabled]="removingAddressId() === address._id"
+            class="font-cinzel shrink-0 text-[0.65rem] tracking-[0.15em] uppercase opacity-40 underline underline-offset-4 transition-colors hover:text-red-600 hover:opacity-100 disabled:pointer-events-none"
+          >
+            Remove
+          </button>
+        </div>
+      }
+    </div>
+  }
+</section>

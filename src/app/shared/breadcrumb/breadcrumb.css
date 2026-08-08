@@ -1,0 +1,14 @@
+/* إزالة الخلفية من المكون جذرياً عبر استهداف الـ Host وجميع العناصر الداخلية */
+:host ::ng-deep .kingmart-breadcrumb-refined {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+:host ::ng-deep .kingmart-breadcrumb-refined .p-breadcrumb,
+:host ::ng-deep .kingmart-breadcrumb-refined .p-breadcrumb-list,
+:host ::ng-deep .kingmart-breadcrumb-refined .p-breadcrumb-item {
+  background: transparent !important;
+  background-color: transparent !important;
+}

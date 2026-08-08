@@ -1,0 +1,194 @@
+<main class="relative flex flex-1 w-full items-stretch bg-surface-light dark:bg-royal-950">
+  <div class="mx-auto grid w-full max-w-7xl grid-cols-1 lg:grid-cols-2">
+    <!-- Brand / trust panel -->
+    <section
+      class="relative hidden flex-col justify-between overflow-hidden border-e border-royal-950/10 bg-surface-light p-12 text-royal-950 lg:flex dark:border-white/10 dark:bg-linear-to-br dark:from-royal-900 dark:via-royal-950 dark:to-black dark:text-white"
+    >
+      <div
+        class="pointer-events-none absolute inset-0 dark:opacity-0"
+        style="background-image: radial-gradient(circle at 15% 0%, rgba(197, 160, 40, 0.12), transparent 55%);"
+      ></div>
+
+      <div class="relative flex items-center gap-3">
+        <div
+          class="flex h-12 w-12 items-center justify-center rounded-xl border border-gold-600/40 bg-gold-300/20 text-gold-700 dark:border-gold-500/40 dark:bg-gold-300/10 dark:text-gold-400"
+        >
+          <i class="pi pi-crown text-2xl" aria-hidden="true"></i>
+        </div>
+        <span class="font-serif text-2xl font-extrabold tracking-tight">
+          King<span class="ms-0.5 italic text-gold-700 dark:text-gold-400">Mart</span>
+        </span>
+      </div>
+
+      <div class="relative my-10 max-w-md">
+        <h1 class="text-gold-gradient font-serif text-4xl leading-tight font-bold">
+          Welcome back to a royal shopping experience
+        </h1>
+        <p class="mt-4 text-royal-950/70 dark:text-white/70">
+          Sign in to track your orders, manage your wishlist, and unlock member-only offers curated
+          just for you.
+        </p>
+      </div>
+
+      <ul class="relative space-y-5">
+        @for (badge of trustBadges; track badge.title) {
+          <li class="flex items-start gap-4">
+            <span
+              class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-gold-600/30 bg-royal-950/5 text-gold-700 dark:border-gold-500/30 dark:bg-white/5 dark:text-gold-400"
+            >
+              <i [class]="badge.icon" aria-hidden="true"></i>
+            </span>
+            <div>
+              <p class="font-semibold text-royal-950 dark:text-white">{{ badge.title }}</p>
+              <p class="text-sm text-royal-950/60 dark:text-white/60">{{ badge.description }}</p>
+            </div>
+          </li>
+        }
+      </ul>
+    </section>
+
+    <!-- Form panel -->
+    <section class="flex items-center justify-center px-6 py-12 sm:px-10 lg:px-16">
+      <div class="w-full max-w-md">
+        <div class="mb-8 flex items-center gap-3 lg:hidden">
+          <div
+            class="flex h-10 w-10 items-center justify-center rounded-xl border border-gold-500/40 bg-gold-300/10 text-gold-600 dark:text-gold-400"
+          >
+            <i class="pi pi-crown text-xl" aria-hidden="true"></i>
+          </div>
+          <span class="font-serif text-xl font-extrabold tracking-tight text-royal-950 dark:text-white">
+            King<span class="ms-0.5 italic text-gold-600 dark:text-gold-400">Mart</span>
+          </span>
+        </div>
+
+        <div class="mb-8 text-center lg:text-start">
+          <h2 class="font-serif text-3xl font-bold text-royal-950 dark:text-white">Sign In</h2>
+          <p class="mt-2 text-sm text-royal-950/60 dark:text-white/60">
+            New to KingMart?
+            <a
+              routerLink="/register"
+              class="font-semibold text-gold-600 hover:underline dark:text-gold-400"
+              >Create an account</a
+            >
+          </p>
+        </div>
+
+        @if (serverError(); as errorMessage) {
+          <p-message severity="error" styleClass="mb-6 w-full">{{ errorMessage }}</p-message>
+        }
+
+        <form [formRoot]="loginForm" class="space-y-5">
+          <!-- Email -->
+          <div>
+            <label
+              for="login-email"
+              class="mb-1.5 block text-sm font-medium text-royal-950/80 dark:text-white/80"
+              >Email Address</label
+            >
+            <div class="relative">
+              <i
+                class="pi pi-envelope pointer-events-none absolute inset-s-3 top-1/2 -translate-y-1/2 text-royal-950/40 dark:text-white/40"
+                aria-hidden="true"
+              ></i>
+              <input
+                id="login-email"
+                pInputText
+                type="email"
+                autocomplete="email"
+                placeholder="you@example.com"
+                class="w-full ps-10"
+                [formField]="loginForm.email"
+              />
+            </div>
+            @if (loginForm.email().touched() && loginForm.email().invalid()) {
+              <small class="mt-1 block text-red-500">{{
+                loginForm.email().errors()[0]?.message
+              }}</small>
+            }
+          </div>
+
+          <!-- Password -->
+          <div>
+            <div class="mb-1.5 flex items-center justify-between">
+              <label
+                for="login-password"
+                class="text-sm font-medium text-royal-950/80 dark:text-white/80"
+                >Password</label
+              >
+              <a
+                routerLink="/forget-password"
+                class="text-sm font-medium text-gold-600 hover:underline dark:text-gold-400"
+                >Forgot password?</a
+              >
+            </div>
+            <div class="relative">
+              <i
+                class="pi pi-lock pointer-events-none absolute inset-s-3 top-1/2 -translate-y-1/2 text-royal-950/40 dark:text-white/40"
+                aria-hidden="true"
+              ></i>
+              <input
+                id="login-password"
+                pInputPassword
+                [(mask)]="hidePassword"
+                autocomplete="current-password"
+                placeholder="••••••••"
+                class="w-full ps-10 pe-10"
+                [formField]="loginForm.password"
+              />
+              <button
+                type="button"
+                class="absolute inset-e-3 top-1/2 -translate-y-1/2 text-royal-950/40 hover:text-gold-600 dark:text-white/40 dark:hover:text-gold-400"
+                (click)="hidePassword.set(!hidePassword())"
+                [attr.aria-label]="hidePassword() ? 'Show password' : 'Hide password'"
+              >
+                <i
+                  [class]="hidePassword() ? 'pi pi-eye' : 'pi pi-eye-slash'"
+                  aria-hidden="true"
+                ></i>
+              </button>
+            </div>
+            @if (loginForm.password().touched() && loginForm.password().invalid()) {
+              <small class="mt-1 block text-red-500">{{
+                loginForm.password().errors()[0]?.message
+              }}</small>
+            }
+          </div>
+
+          <!-- Remember me -->
+          <div class="flex items-center gap-2">
+            <p-checkbox [formControl]="rememberMeControl" [binary]="true" inputId="login-remember-me" />
+            <label for="login-remember-me" class="text-sm text-royal-950/70 dark:text-white/70"
+              >Remember me</label
+            >
+          </div>
+
+          <button
+            pButton
+            type="submit"
+            [fluid]="true"
+            [disabled]="loginForm().submitting()"
+            class="rounded-lg bg-royal-950 py-3 text-base font-semibold text-gold-300 transition-colors hover:bg-royal-900 dark:bg-gold-500 dark:text-royal-950 dark:hover:bg-gold-400"
+          >
+            @if (loginForm().submitting()) {
+              <i class="pi pi-spinner pi-spin" aria-hidden="true"></i>
+              Signing in…
+            } @else {
+              <i class="pi pi-sign-in" aria-hidden="true"></i>
+              Sign In
+            }
+          </button>
+        </form>
+
+        <p-divider align="center"
+          ><span class="text-xs text-royal-950/40 dark:text-white/40">OR</span></p-divider
+        >
+
+        <a
+          routerLink="/home"
+          class="block w-full rounded-lg border border-gold-500/30 py-2.5 text-center text-sm font-medium text-royal-950/70 transition-colors hover:border-gold-500/60 hover:text-gold-600 dark:text-white/70 dark:hover:text-gold-400"
+          >Continue browsing as a guest</a
+        >
+      </div>
+    </section>
+  </div>
+</main>

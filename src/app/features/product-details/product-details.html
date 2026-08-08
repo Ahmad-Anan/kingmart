@@ -1,0 +1,284 @@
+<main class="min-h-screen py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+  <div
+    class="absolute top-0 right-1/4 w-96 h-96 bg-gold-500/5 rounded-full blur-3xl pointer-events-none"
+  ></div>
+  <div
+    class="absolute bottom-1/3 left-10 w-125 h-125 bg-royal-700/10 rounded-full blur-3xl pointer-events-none"
+  ></div>
+
+  @if (productResource.isLoading()) {
+    <div class="flex flex-col items-center justify-center min-h-[60vh]">
+      <div
+        class="w-16 h-16 rounded-full border-2 border-neutral-300 dark:border-neutral-800 border-t-gold-500 animate-spin mb-6"
+      ></div>
+      <p class="text-xs font-cinzel tracking-[0.3em] text-gold-400 uppercase">
+        Summoning the masterpiece...
+      </p>
+    </div>
+  } @else if (productResource.error()) {
+    <div
+      class="max-w-md mx-auto my-32 rounded-3xl royal-card-glow p-10 text-center gold-glow-border shadow-2xl backdrop-blur-xl"
+    >
+      <div
+        class="w-12 h-12 mx-auto mb-4 rounded-full bg-red-500/10 flex items-center justify-center text-red-400"
+      >
+        <i class="pi pi-exclamation-triangle text-lg"></i>
+      </div>
+      <p
+        class="font-serif text-lg font-normal tracking-wide text-neutral-800 dark:text-neutral-200"
+      >
+        Unable to display product details at this time.
+      </p>
+
+      <a
+        routerLink="/shop"
+        class="mt-8 inline-block text-xs uppercase tracking-[0.25em] text-gold-400 hover:text-gold-300 underline underline-offset-8 transition-colors"
+      >
+        Return to the Royal Gallery
+      </a>
+    </div>
+  } @else {
+    @let res = productResource.value();
+    @let product = res?.data;
+
+    @if (product) {
+      <div class="max-w-7xl mx-auto space-y-16">
+        <!-- استبدال المسار اليدوي بمكون الـ Breadcrumb الموحد الاحترافي -->
+        <app-breadcrumb [items]="breadcrumbItems()" />
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          <!-- Image column -->
+          <div class="lg:col-span-5 flex flex-col-reverse lg:flex-row gap-5 sticky top-24">
+            @if (product.images && product.images.length > 1) {
+              <div
+                class="flex lg:flex-col gap-3 overflow-x-auto lg:overflow-y-auto max-h-140 shrink-0 p-1"
+              >
+                @for (img of product.images; track $index) {
+                  <button
+                    type="button"
+                    (click)="setMainImage(img)"
+                    class="relative w-16 h-20 rounded-xl overflow-hidden bg-neutral-100 dark:bg-neutral-900 transition-all duration-500 cursor-pointer group"
+                    [class.ring-2]="(selectedImage() || product.imageCover) === img"
+                    [class.ring-gold-500]="(selectedImage() || product.imageCover) === img"
+                    [class.opacity-60]="(selectedImage() || product.imageCover) !== img"
+                  >
+                    <img
+                      [src]="img"
+                      [alt]="product.title"
+                      class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500"
+                    />
+                  </button>
+                }
+              </div>
+            }
+
+            <div
+              class="relative flex-1 max-w-md mx-auto lg:mx-0 aspect-3/4 w-full overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-900 shadow-2xl gold-glow-border group"
+            >
+              <img
+                [src]="selectedImage() || product.imageCover"
+                [alt]="product.title"
+                class="w-full h-full object-cover object-center transition-transform duration-1000 ease-out group-hover:scale-105"
+              />
+
+              @if (product.priceAfterDiscount) {
+                <div class="absolute top-5 inset-s-5 z-10">
+                  <span
+                    class="bg-neutral-950/80 text-gold-300 backdrop-blur-xl px-4 py-1.5 text-[10px] font-cinzel font-semibold tracking-[0.3em] rounded-full shadow-lg border border-gold-500/30"
+                  >
+                    -{{ (1 - product.priceAfterDiscount / product.price) * 100 | number: '1.0-0' }}%
+                    OFF
+                  </span>
+                </div>
+              }
+
+              <button
+                type="button"
+                [attr.aria-label]="
+                  isWishlisted(product._id) ? 'Remove from wishlist' : 'Add to wishlist'
+                "
+                [disabled]="isTogglingWishlist()"
+                (click)="toggleWishlist()"
+                class="absolute top-5 inset-e-5 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-neutral-950/80 backdrop-blur-xl border border-gold-500/30 shadow-lg transition-all hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 disabled:cursor-wait disabled:opacity-70"
+                [class.text-gold-300]="!isWishlisted(product._id)"
+                [class.text-red-400]="isWishlisted(product._id)"
+              >
+                <i
+                  class="pi text-sm"
+                  [class.pi-heart]="!isWishlisted(product._id)"
+                  [class.pi-heart-fill]="isWishlisted(product._id)"
+                  aria-hidden="true"
+                ></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Details column -->
+          <div class="lg:col-span-7 flex flex-col pt-2 space-y-8">
+            <div
+              class="flex items-center justify-between border-b border-neutral-200 dark:border-neutral-800/80 pb-6"
+            >
+              <span class="text-xs font-cinzel font-bold uppercase tracking-[0.4em] text-gold-500">
+                {{ product.brand?.name }}
+              </span>
+
+              <div
+                class="flex items-center gap-2 text-xs text-neutral-700 dark:text-neutral-300 font-mono bg-neutral-100 dark:bg-neutral-900/80 px-3 py-1.5 rounded-full border border-neutral-200 dark:border-neutral-800"
+              >
+                <i class="pi pi-star-fill text-[11px] text-gold-400" aria-hidden="true"></i>
+                <span class="font-bold text-neutral-900 dark:text-white">{{
+                  product.ratingsAverage
+                }}</span>
+                <span class="text-neutral-400">({{ product.ratingsQuantity }} reviews)</span>
+              </div>
+            </div>
+
+            <h1
+              class="font-serif text-3xl sm:text-4xl lg:text-5xl font-light tracking-tight text-neutral-900 dark:text-white leading-[1.2]"
+            >
+              {{ product.title }}
+            </h1>
+
+            <div class="flex items-baseline gap-5">
+              @if (product.priceAfterDiscount) {
+                <span class="font-serif text-3xl font-medium text-gold-gradient">
+                  ${{ product.priceAfterDiscount }}
+                </span>
+                <span class="text-base text-neutral-400 line-through font-mono">
+                  ${{ product.price }}
+                </span>
+              } @else {
+                <span class="font-serif text-3xl font-medium text-gold-gradient">
+                  ${{ product.price }}
+                </span>
+              }
+            </div>
+
+            <div class="space-y-3 pt-2">
+              <h3
+                class="text-xs font-cinzel uppercase tracking-[0.25em] font-medium text-neutral-400 dark:text-neutral-500"
+              >
+                Details & Story
+              </h3>
+              <p
+                class="text-sm font-light text-neutral-600 dark:text-neutral-300 leading-relaxed tracking-wide"
+              >
+                {{ product.description }}
+              </p>
+            </div>
+
+            @if (product.availableColors && product.availableColors.length > 0) {
+              <div class="space-y-3">
+                <h3
+                  class="text-xs font-cinzel uppercase tracking-[0.25em] font-medium text-neutral-400 dark:text-neutral-500"
+                >
+                  Select Color
+                </h3>
+                <div class="flex items-center gap-4">
+                  @for (color of product.availableColors; track color) {
+                    <button
+                      type="button"
+                      (click)="selectColor(color)"
+                      class="w-8 h-8 rounded-full transition-all duration-300 relative cursor-pointer shadow-md"
+                      [style.background-color]="color"
+                      [class.ring-2]="selectedColor() === color"
+                      [class.ring-offset-2]="selectedColor() === color"
+                      [class.ring-gold-500]="selectedColor() === color"
+                      aria-label="Select color"
+                    ></button>
+                  }
+                </div>
+              </div>
+            }
+
+            @if (product.subcategory && product.subcategory.length > 0) {
+              <div class="flex flex-wrap gap-2 pt-1">
+                @for (sub of product.subcategory; track sub._id) {
+                  <span
+                    class="text-[10px] font-mono tracking-widest bg-neutral-100 dark:bg-neutral-900/60 text-neutral-600 dark:text-neutral-400 px-3.5 py-1.5 rounded-full border border-neutral-200 dark:border-neutral-800"
+                  >
+                    #{{ sub.name }}
+                  </span>
+                }
+              </div>
+            }
+
+            <div class="space-y-4 pt-6 border-t border-neutral-200 dark:border-neutral-800/80">
+              @if (product.quantity > 0) {
+                <div class="flex items-center gap-4">
+                  <div
+                    class="flex items-center border border-gold-500/40 dark:border-gold-400/40 rounded-full px-5 py-3 bg-white dark:bg-neutral-900 shadow-sm"
+                  >
+                    <button
+                      type="button"
+                      (click)="decrement()"
+                      [disabled]="isUpdatingQuantity() || displayedQuantity() <= 1"
+                      class="text-gold-600 dark:text-gold-400 hover:text-gold-700 dark:hover:text-gold-300 px-2 text-base transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:text-gold-600 dark:disabled:hover:text-gold-400"
+                    >
+                      -
+                    </button>
+                    <span
+                      class="font-serif text-base font-semibold px-6 text-neutral-900 dark:text-white tabular-nums"
+                    >
+                      @if (isUpdatingQuantity()) {
+                        <i class="pi pi-spin pi-spinner text-sm" aria-hidden="true"></i>
+                      } @else {
+                        {{ displayedQuantity() }}
+                      }
+                    </span>
+                    <button
+                      type="button"
+                      (click)="increment(product.quantity)"
+                      [disabled]="isUpdatingQuantity() || displayedQuantity() >= product.quantity"
+                      class="text-gold-600 dark:text-gold-400 hover:text-gold-700 dark:hover:text-gold-300 px-2 text-base transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:text-gold-600 dark:disabled:hover:text-gold-400"
+                    >
+                      +
+                    </button>
+                  </div>
+
+                  @if (isInCart()) {
+                    <a
+                      routerLink="/cart"
+                      class="flex-1 flex items-center justify-center gap-3 rounded-full bg-gold-gradient py-4 px-8 text-xs font-cinzel font-bold tracking-[0.25em] uppercase text-neutral-950 shadow-xl transition-all duration-300 hover:scale-[1.02] active:scale-95 cursor-pointer"
+                    >
+                      <i class="pi pi-shopping-cart text-sm" aria-hidden="true"></i>
+                      <span>Go to Cart</span>
+                    </a>
+                  } @else {
+                    <button
+                      type="button"
+                      [disabled]="isAddingToCart()"
+                      (click)="addToCart()"
+                      class="flex-1 flex items-center justify-center gap-3 rounded-full bg-gold-gradient py-4 px-8 text-xs font-cinzel font-bold tracking-[0.25em] uppercase text-neutral-950 shadow-xl transition-all duration-300 hover:scale-[1.02] active:scale-95 cursor-pointer disabled:cursor-wait disabled:opacity-70 disabled:hover:scale-100"
+                    >
+                      <i
+                        class="pi text-sm"
+                        [class.pi-shopping-bag]="!isAddingToCart()"
+                        [class.pi-spin]="isAddingToCart()"
+                        [class.pi-spinner]="isAddingToCart()"
+                        aria-hidden="true"
+                      ></i>
+                      <span>{{ isAddingToCart() ? 'Adding…' : 'Add to Royal Bag' }}</span>
+                    </button>
+                  }
+                </div>
+
+                <p class="text-[11px] font-mono text-neutral-400 text-center">
+                  Limited luxury pieces available in stock ({{ product.quantity }} remaining)
+                </p>
+              } @else {
+                <button
+                  type="button"
+                  disabled
+                  class="w-full flex items-center justify-center gap-2 rounded-full bg-neutral-200 dark:bg-neutral-900 py-4 text-xs font-cinzel tracking-[0.25em] uppercase text-neutral-400 dark:text-neutral-600 cursor-not-allowed border border-neutral-300 dark:border-neutral-800"
+                >
+                  <span>Temporarily Out of Stock</span>
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  }
+</main>

@@ -1,0 +1,81 @@
+<section
+  class="relative overflow-hidden border-y border-gold-500/15 dark:border-gold-400/15 bg-surface-light dark:bg-royal-950 py-16"
+>
+  <!-- توهج خلفي — يفرق في الشدة بين الليل والنهار -->
+  <div
+    class="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-40 rounded-full blur-[120px] bg-gold-500/8 dark:bg-gold-500/15 transition-colors duration-700"
+  ></div>
+
+  <div class="relative z-10 mb-10 flex items-center justify-center gap-4 text-center">
+    <span class="h-px w-10 bg-gold-600/50 dark:bg-gold-400/40"></span>
+    <p
+      class="font-cinzel text-[11px] font-semibold uppercase tracking-[0.4em] text-gold-600 dark:text-gold-400"
+    >
+      Trusted Maisons
+    </p>
+    <span class="h-px w-10 bg-gold-600/50 dark:bg-gold-400/40"></span>
+  </div>
+
+  @if (brandsResource.isLoading()) {
+    <div class="flex justify-center gap-6 px-6">
+      @for (placeholder of [1, 2, 3, 4, 5]; track placeholder) {
+        <div
+          class="h-20 w-32 shrink-0 rounded-2xl bg-neutral-200/60 dark:bg-royal-900/50 animate-pulse"
+        ></div>
+      }
+    </div>
+  } @else if (brandsResource.error()) {
+    <p class="text-center text-sm text-neutral-500 dark:text-neutral-400">
+      Unable to load brands right now.
+    </p>
+  } @else if (filteredBrands().length) {
+    <div class="brands-marquee relative z-10">
+      <div class="brands-marquee-track">
+        @for (brand of filteredBrands(); track brand._id) {
+          <a
+            [routerLink]="['/shop']"
+            [queryParams]="{ brand: brand._id }"
+            [attr.aria-label]="'Browse products from ' + brand.name"
+            class="group mx-2 flex h-20 w-32 shrink-0 flex-col items-center justify-center gap-2 rounded-2xl border border-gold-500/15 dark:border-gold-400/15 bg-white/70 dark:bg-linear-to-br dark:from-royal-800/40 dark:to-royal-950/80 backdrop-blur-md transition-all duration-500 hover:border-gold-500/50 dark:hover:border-gold-400/50 hover:shadow-lg hover:shadow-gold-500/10 dark:hover:shadow-gold-500/20 hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400"
+          >
+            <img
+              [src]="brand.image"
+              [alt]="brand.name"
+              class="h-8 w-auto object-contain grayscale opacity-70 transition-all duration-500 group-hover:grayscale-0 group-hover:opacity-100"
+              loading="lazy"
+            />
+            <span
+              class="font-cinzel text-[9px] uppercase tracking-wider text-neutral-500 dark:text-neutral-400 group-hover:text-gold-600 dark:group-hover:text-gold-400 transition-colors duration-300 line-clamp-1"
+            >
+              {{ brand.name }}
+            </span>
+          </a>
+        }
+
+        @for (brand of filteredBrands(); track brand._id) {
+          <div
+            class="mx-2 flex h-20 w-32 shrink-0 flex-col items-center justify-center gap-2 rounded-2xl border border-gold-500/15 dark:border-gold-400/15 bg-white/70 dark:bg-linear-to-br dark:from-royal-800/40 dark:to-royal-950/80 backdrop-blur-md"
+            aria-hidden="true"
+            inert
+          >
+            <img
+              [src]="brand.image"
+              [alt]="''"
+              class="h-8 w-auto object-contain grayscale opacity-70"
+              loading="lazy"
+            />
+            <span
+              class="font-cinzel text-[9px] uppercase tracking-wider text-neutral-500 dark:text-neutral-400 line-clamp-1"
+            >
+              {{ brand.name }}
+            </span>
+          </div>
+        }
+      </div>
+    </div>
+  } @else {
+    <p class="text-center text-sm text-neutral-500 dark:text-neutral-400">
+      No brands available at the moment.
+    </p>
+  }
+</section>

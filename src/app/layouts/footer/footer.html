@@ -1,0 +1,199 @@
+<footer
+  class="w-full border-t border-gold-500/20 bg-surface-light text-royal-950 transition-colors duration-300 dark:bg-royal-950 dark:text-white/70 font-sans"
+>
+  <div class="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-16">
+    <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-5">
+      <!-- Brand & Info -->
+      <div class="space-y-4 lg:col-span-2">
+        <a routerLink="/home" class="inline-flex items-center gap-3 group">
+          <div
+            class="flex h-11 w-11 items-center justify-center rounded-xl border border-gold-500/30 bg-gold-300/20 text-gold-600 shadow-md shadow-gold-500/10 dark:bg-royal-900 dark:text-gold-400"
+          >
+            <i class="pi pi-crown text-xl" aria-hidden="true"></i>
+          </div>
+          <span class="font-serif text-2xl font-bold tracking-tight text-royal-950 dark:text-white">
+            King<span class="italic text-gold-600 dark:text-gold-400 ms-0.5">Mart</span>
+          </span>
+        </a>
+        <p class="max-w-sm text-sm leading-relaxed text-royal-900/80 dark:text-white/60">
+          KingMart is your premier destination for daily luxury essentials and top quality brands.
+          Experience seamless shopping with ultra-fast delivery.
+        </p>
+
+        <!-- Social Icons -->
+        <div class="flex items-center gap-3 pt-2">
+          <button
+            type="button"
+            aria-label="Facebook"
+            class="flex h-9 w-9 items-center justify-center rounded-lg border border-gold-500/30 bg-gold-300/10 text-gold-600 transition-all hover:border-gold-600 hover:bg-gold-500 hover:text-royal-950 dark:bg-royal-900/50 dark:text-gold-400 dark:hover:border-gold-500 dark:hover:bg-gold-500 dark:hover:text-royal-950"
+          >
+            <i class="pi pi-facebook" aria-hidden="true"></i>
+          </button>
+          <button
+            type="button"
+            aria-label="Twitter"
+            class="flex h-9 w-9 items-center justify-center rounded-lg border border-gold-500/30 bg-gold-300/10 text-gold-600 transition-all hover:border-gold-600 hover:bg-gold-500 hover:text-royal-950 dark:bg-royal-900/50 dark:text-gold-400 dark:hover:border-gold-500 dark:hover:bg-gold-500 dark:hover:text-royal-950"
+          >
+            <i class="pi pi-twitter" aria-hidden="true"></i>
+          </button>
+          <button
+            type="button"
+            aria-label="Instagram"
+            class="flex h-9 w-9 items-center justify-center rounded-lg border border-gold-500/30 bg-gold-300/10 text-gold-600 transition-all hover:border-gold-600 hover:bg-gold-500 hover:text-royal-950 dark:bg-royal-900/50 dark:text-gold-400 dark:hover:border-gold-500 dark:hover:bg-gold-500 dark:hover:text-royal-950"
+          >
+            <i class="pi pi-instagram" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Shop Column -->
+      <div class="border-b border-gold-500/10 pb-4 dark:border-royal-800/50 lg:border-none lg:pb-0">
+        <button
+          type="button"
+          (click)="toggleSection('shop')"
+          class="flex w-full items-center justify-between py-1 text-left lg:pointer-events-none lg:p-0"
+        >
+          <h3 class="text-xs font-bold uppercase tracking-widest text-gold-600 dark:text-gold-400">
+            Shop
+          </h3>
+          <span class="inline-flex lg:hidden">
+            <i
+              class="pi text-xs text-gold-600 dark:text-gold-500 duration-300"
+              [class.pi-plus]="!isShopOpen()"
+              [class.pi-minus]="isShopOpen()"
+              aria-hidden="true"
+            ></i>
+          </span>
+        </button>
+
+        <ul class="mt-4 space-y-2.5 text-sm lg:block" [class.hidden]="!isShopOpen()">
+          <li>
+            <a
+              routerLink="/shop"
+              class="transition-colors hover:text-gold-600 dark:hover:text-gold-400"
+              >All Products</a
+            >
+          </li>
+          <li>
+            <a
+              routerLink="/categories"
+              class="transition-colors hover:text-gold-600 dark:hover:text-gold-400"
+              >Categories</a
+            >
+          </li>
+          <li>
+            <a
+              routerLink="/brands"
+              class="transition-colors hover:text-gold-600 dark:hover:text-gold-400"
+              >Brands</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <!-- Account Column -->
+      <div class="border-b border-gold-500/10 pb-4 dark:border-royal-800/50 lg:border-none lg:pb-0">
+        <button
+          type="button"
+          (click)="toggleSection('account')"
+          class="flex w-full items-center justify-between py-1 text-left lg:pointer-events-none lg:p-0"
+        >
+          <h3 class="text-xs font-bold uppercase tracking-widest text-gold-600 dark:text-gold-400">
+            Account
+          </h3>
+          <span class="inline-flex lg:hidden">
+            <i
+              class="pi text-xs text-gold-600 dark:text-gold-500 duration-300"
+              [class.pi-plus]="!isAccountOpen()"
+              [class.pi-minus]="isAccountOpen()"
+              aria-hidden="true"
+            ></i>
+          </span>
+        </button>
+
+        <ul class="mt-4 space-y-2.5 text-sm lg:block" [class.hidden]="!isAccountOpen()">
+          <li>
+            <a
+              routerLink="/account"
+              class="transition-colors hover:text-gold-600 dark:hover:text-gold-400"
+              >My Account</a
+            >
+          </li>
+          <li>
+            <a
+              routerLink="/orders"
+              class="transition-colors hover:text-gold-600 dark:hover:text-gold-400"
+              >Order History</a
+            >
+          </li>
+          <li>
+            <a
+              routerLink="/wishlist"
+              class="transition-colors hover:text-gold-600 dark:hover:text-gold-400"
+              >Wishlist</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <!-- Support Column -->
+      <div class="border-b border-gold-500/10 pb-4 dark:border-royal-800/50 lg:border-none lg:pb-0">
+        <button
+          type="button"
+          (click)="toggleSection('support')"
+          class="flex w-full items-center justify-between py-1 text-left lg:pointer-events-none lg:p-0"
+        >
+          <h3 class="text-xs font-bold uppercase tracking-widest text-gold-600 dark:text-gold-400">
+            Support
+          </h3>
+          <span class="inline-flex lg:hidden">
+            <i
+              class="pi text-xs text-gold-600 dark:text-gold-500 duration-300"
+              [class.pi-plus]="!isSupportOpen()"
+              [class.pi-minus]="isSupportOpen()"
+              aria-hidden="true"
+            ></i>
+          </span>
+        </button>
+
+        <ul class="mt-4 space-y-2.5 text-sm lg:block" [class.hidden]="!isSupportOpen()">
+          <li>
+            <a
+              routerLink="/contact"
+              class="transition-colors hover:text-gold-600 dark:hover:text-gold-400"
+              >Contact Us</a
+            >
+          </li>
+          <li>
+            <a
+              routerLink="/privacy-policy"
+              class="transition-colors hover:text-gold-600 dark:hover:text-gold-400"
+              >Privacy Policy</a
+            >
+          </li>
+          <li>
+            <a
+              routerLink="/terms-of-service"
+              class="transition-colors hover:text-gold-600 dark:hover:text-gold-400"
+              >Terms of Service</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Bar -->
+  <div class="border-t border-gold-500/10 bg-gold-300/10 py-6 dark:bg-royal-950/80">
+    <div
+      class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 text-xs text-royal-900 dark:text-white/50 sm:flex-row sm:px-6 lg:px-8"
+    >
+      <p>&#169; 2026 KingMart Inc. All rights reserved.</p>
+      <div class="flex items-center gap-6 text-gold-600 dark:text-gold-400/80">
+        <span class="flex items-center gap-1.5"><i class="pi pi-credit-card"></i> Visa</span>
+        <span class="flex items-center gap-1.5"><i class="pi pi-paypal"></i> PayPal</span>
+        <span class="flex items-center gap-1.5"><i class="pi pi-wallet"></i> Apple Pay</span>
+      </div>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,135 @@
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative overflow-hidden">
+  <!-- Ambient Royal Backlight Glow -->
+  <div
+    class="absolute top-10 left-1/2 -translate-x-1/2 w-150 h-75 bg-linear-to-r from-gold-500/10 via-royal-700/10 to-gold-500/10 rounded-full blur-[140px] pointer-events-none"
+  ></div>
+
+  <!-- Header Section -->
+  <div class="text-center max-w-3xl mx-auto mb-20 relative z-10">
+    <div
+      class="inline-flex items-center gap-3 text-xs font-cinzel uppercase tracking-[0.4em] text-gold-400 bg-royal-900/40 px-6 py-2.5 rounded-full gold-glow-border shadow-xl backdrop-blur-md mb-6"
+    >
+      <span class="w-2 h-2 rounded-full bg-gold-400 animate-ping"></span>
+      Exclusive Maison Vault
+    </div>
+
+    <h1
+      class="text-4xl font-extrabold tracking-tight text-royal-950 dark:text-white sm:text-5xl font-cinzel leading-tight"
+    >
+      Signatures by <span class="text-gold-gradient drop-shadow-sm">{{ selectedBrandName() }}</span>
+    </h1>
+
+    <p
+      class="mt-4 text-base text-neutral-600 dark:text-neutral-300 font-light leading-relaxed font-sans max-w-xl mx-auto"
+    >
+      Explore the peerless craftsmanship and curated masterpieces belonging exclusively to this
+      esteemed house.
+    </p>
+  </div>
+
+  <!-- Products Section (Driven by Route ID) -->
+  <div class="relative z-10">
+    <!-- Products Loading Skeleton -->
+    @if (brandProductsResource.isLoading()) {
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        @for (item of [1, 2, 3, 4]; track item) {
+          <div
+            class="bg-white/40 dark:bg-royal-900/40 animate-pulse rounded-3xl h-110 gold-glow-border backdrop-blur-sm"
+          ></div>
+        }
+      </div>
+    } @else if (brandProducts().length > 0) {
+      <!-- Products Grid (Royal Luxury Cards) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        @for (product of brandProducts(); track product._id) {
+          <div
+            role="button"
+            tabindex="0"
+            (click)="onProductClick(product)"
+            (keydown.enter)="onProductClick(product)"
+            (keydown.space)="onProductClick(product)"
+            class="group bg-white/80 dark:bg-royal-900/80 backdrop-blur-2xl border border-gold-500/20 rounded-3xl overflow-hidden shadow-2xl shadow-royal-950/20 hover:shadow-gold-500/15 transition-all duration-500 flex flex-col hover:-translate-y-2.5 hover:border-gold-400/50 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400"
+          >
+            <!-- Product Image Container -->
+            <div
+              class="relative w-full h-72 bg-neutral-100 dark:bg-royal-950/80 overflow-hidden aspect-fashion"
+            >
+              <img
+                [src]="product.imageCover"
+                [alt]="product.title"
+                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                loading="lazy"
+              />
+
+              <div
+                class="absolute inset-0 bg-linear-to-t from-royal-950/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+              ></div>
+
+              @if (product.priceAfterDiscount) {
+                <span
+                  class="absolute top-4 left-4 bg-gold-gradient text-royal-950 text-[10px] font-black uppercase tracking-widest px-3.5 py-1.5 rounded-xl shadow-xl font-cinzel"
+                >
+                  Privilege Offering
+                </span>
+              }
+            </div>
+
+            <!-- Product Info -->
+            <div class="p-6 flex flex-col grow justify-between bg-white/90 dark:bg-royal-900/90">
+              <div>
+                <span
+                  class="text-[10px] font-cinzel tracking-[0.25em] uppercase text-gold-400 font-bold block mb-2"
+                >
+                  {{ product.category?.name }}
+                </span>
+                <h3
+                  class="font-bold text-royal-950 dark:text-white text-base line-clamp-1 mb-3 group-hover:text-gold-400 transition-colors font-serif"
+                >
+                  {{ product.title }}
+                </h3>
+              </div>
+
+              <!-- Price and Rating -->
+              <div class="flex items-center justify-between mt-4 pt-4 border-t border-gold-500/15">
+                <div class="flex flex-col">
+                  @if (product.priceAfterDiscount) {
+                    <span class="text-xs text-neutral-400 line-through font-mono"
+                      >${{ product.price }}</span
+                    >
+                    <span
+                      class="text-lg font-black text-royal-950 dark:text-white font-mono tracking-tight"
+                      >${{ product.priceAfterDiscount }}</span
+                    >
+                  } @else {
+                    <span
+                      class="text-lg font-black text-royal-950 dark:`white font-mono tracking-tight"
+                      >${{ product.price }}</span
+                    >
+                  }
+                </div>
+
+                <div
+                  class="flex items-center gap-1.5 bg-gold-500/10 px-3 py-1.5 rounded-xl border border-gold-500/20"
+                >
+                  <i class="pi pi-star-fill text-gold-400 text-xs" aria-hidden="true"></i>
+                  <span class="text-xs font-black text-gold-400 font-mono">{{
+                    product.ratingsAverage
+                  }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+      <!-- Empty Products State -->
+      <div
+        class="text-center py-24 bg-white/40 dark:bg-royal-900/30 border border-dashed border-gold-500/30 rounded-3xl backdrop-blur-md max-w-2xl mx-auto"
+      >
+        <p class="text-neutral-500 dark:text-neutral-400 text-base font-cinzel tracking-wider">
+          No masterpieces currently unveiled for this maison.
+        </p>
+      </div>
+    }
+  </div>
+</section>

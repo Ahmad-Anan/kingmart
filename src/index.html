@@ -1,13 +1,29 @@
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>ECommerce22</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-</head>
-<body>
-  <app-root></app-root>
-</body>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>ECommerce22</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- 🟢 Inline Blocking Anti-Flicker Script -->
+    <script>
+      (function () {
+        try {
+          var savedTheme = localStorage.getItem('app-theme');
+          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            document.documentElement.classList.add('my-app-dark');
+          } else {
+            document.documentElement.classList.remove('my-app-dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
+
+    <link rel="icon" type="image/x-icon" href="/Logo.jpg" />
+  </head>
+  <body>
+    <app-root></app-root>
+  </body>
 </html>

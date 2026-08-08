@@ -1,0 +1,26 @@
+<p-breadcrumb [model]="items()" styleClass="kingmart-breadcrumb-refined">
+  <ng-template #item let-item>
+    @if (item.routerLink) {
+      <a
+        [routerLink]="item.routerLink"
+        class="group relative inline-flex items-center text-[12px] font-medium tracking-wide text-slate-500 transition-all duration-300 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+      >
+        <span>{{ item.label }}</span>
+        <span
+          aria-hidden="true"
+          class="absolute -bottom-1 left-0 h-px w-0 bg-slate-300 transition-all duration-400 group-hover:w-full dark:bg-slate-600"
+        ></span>
+      </a>
+    } @else {
+      <span aria-current="page" class="text-[12px] font-semibold text-slate-950 dark:text-white">
+        {{ item.label }}
+      </span>
+    }
+  </ng-template>
+
+  <ng-template #separator>
+    <span aria-hidden="true" class="select-none text-slate-300 dark:text-slate-600 mx-2 font-light">
+      /
+    </span>
+  </ng-template>
+</p-breadcrumb>

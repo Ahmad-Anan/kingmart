@@ -1,0 +1,443 @@
+<!-- Top Announcement Bar (Ultra Luxury Header) -->
+<div
+  class="w-full border-b border-gold-500/30 bg-gold-300/10 px-4 py-2 text-xs text-royal-950 backdrop-blur-md transition-colors duration-300 dark:border-gold-500/20 dark:bg-royal-950 dark:text-gold-300 sm:px-6 lg:px-8"
+>
+  <div class="mx-auto flex max-w-7xl items-center justify-between">
+    <div class="flex items-center gap-4">
+      <a
+        href="tel:+966500000000"
+        class="flex items-center gap-1.5 transition-colors hover:text-gold-600 dark:hover:text-gold-400"
+      >
+        <i class="pi pi-phone text-gold-600 dark:text-gold-500" aria-hidden="true"></i>
+        <span>
+          Concierge:
+          <strong class="font-semibold text-royal-950 dark:text-white">+966 50 000 0000</strong>
+        </span>
+      </a>
+      <span class="hidden h-3 w-px bg-gold-500/30 md:inline-block"></span>
+      <span class="hidden items-center gap-1.5 tracking-wide md:flex">
+        <i class="pi pi-clock text-gold-600 dark:text-gold-500" aria-hidden="true"></i>
+        24/7 VIP Global Assistance
+      </span>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <span
+        class="hidden items-center gap-1.5 font-medium tracking-wide text-royal-900 dark:text-gold-300 sm:flex"
+      >
+        <i class="pi pi-sparkles text-gold-600 dark:text-gold-400" aria-hidden="true"></i>
+        Complimentary White-Glove Express Delivery
+      </span>
+      <span
+        class="rounded-full border border-gold-600/40 bg-gold-500/10 px-3 py-0.5 text-[10px] font-extrabold uppercase tracking-widest text-royal-950 shadow-sm dark:border-gold-500/50 dark:bg-gold-500/15 dark:text-gold-400"
+      >
+        Royal Edition
+      </span>
+      <div
+        class="flex items-center gap-3 border-s border-gold-500/30 ps-3 text-[11px] font-medium tracking-wide"
+      >
+        @if (isLoggedIn()) {
+          <span class="text-royal-900 dark:text-gold-300">Welcome, {{ currentUser()?.name }}</span>
+          <span class="h-3 w-px bg-gold-500/30"></span>
+          <button
+            type="button"
+            (click)="signOut()"
+            class="transition-colors hover:text-gold-600 dark:hover:text-gold-400"
+          >
+            Sign Out
+          </button>
+        } @else {
+          <a
+            routerLink="/login"
+            class="transition-colors hover:text-gold-600 dark:hover:text-gold-400"
+          >
+            Sign In
+          </a>
+          <span class="h-3 w-px bg-gold-500/30"></span>
+          <a
+            routerLink="/register"
+            class="transition-colors hover:text-gold-600 dark:hover:text-gold-400"
+          >
+            Sign Up
+          </a>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main Navigation Bar -->
+<nav
+  class="sticky top-0 z-50 w-full border-b border-gold-500/20 bg-surface-light/90 text-royal-950 shadow-2xl backdrop-blur-2xl transition-colors duration-300 dark:border-gold-500/20 dark:bg-royal-950/90 dark:text-white"
+>
+  <div class="mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+    <!-- Brand Logo -->
+    <a
+      routerLink="/home"
+      class="group flex shrink-0 items-center gap-3 transition-all duration-300 hover:scale-105"
+    >
+      <div
+        class="relative flex h-11 w-11 items-center justify-center rounded-xl border border-gold-500/40 bg-gold-300/20 text-gold-600 shadow-lg shadow-gold-500/10 dark:border-gold-500/50 dark:bg-royal-900 dark:text-gold-400 dark:shadow-gold-500/10"
+      >
+        <i
+          class="pi pi-crown text-xl group-hover:rotate-12 transition-transform duration-300"
+          aria-hidden="true"
+        ></i>
+        <span
+          class="absolute -inset-0.5 rounded-xl border border-gold-500/20 blur-[1px] dark:border-gold-400/20"
+        ></span>
+      </div>
+      <span
+        class="font-serif text-2xl font-extrabold tracking-tight text-royal-950 dark:text-white"
+      >
+        King<span class="italic text-gold-600 drop-shadow-sm dark:text-gold-400 ms-0.5">Mart</span>
+      </span>
+    </a>
+
+    <!-- Search Bar (Desktop) -->
+    <div class="hidden max-w-md flex-1 lg:block">
+      <div
+        class="relative flex w-full items-center rounded-xl border border-gold-500/30 bg-gold-300/10 px-3.5 py-2 shadow-inner transition-all duration-300 focus-within:border-gold-600 focus-within:ring-2 focus-within:ring-gold-500/20 dark:bg-royal-900/50 dark:focus-within:border-gold-400 dark:focus-within:ring-gold-500/20"
+      >
+        <i
+          class="pi pi-search me-2.5 text-sm text-gold-600 dark:text-gold-400"
+          aria-hidden="true"
+        ></i>
+        <input
+          type="text"
+          placeholder="Search luxury collections, fine timepieces..."
+          class="w-full bg-transparent text-sm font-medium text-royal-950 placeholder-royal-950/50 outline-none dark:text-white dark:placeholder-gold-300/40"
+        />
+      </div>
+    </div>
+
+    <!-- Desktop Navigation Links -->
+    <div class="hidden shrink-0 items-center gap-1 lg:flex">
+      <a
+        routerLink="/home"
+        routerLinkActive="bg-gold-300/20 dark:bg-royal-900/90 text-gold-600 dark:text-gold-400 font-semibold border-b-2 border-gold-600 dark:border-gold-400 shadow-sm"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="flex items-center gap-2 rounded-lg px-3.5 py-2 text-sm font-medium tracking-wide text-royal-950 transition-all hover:bg-gold-300/20 hover:text-gold-600 dark:text-white/90 dark:hover:bg-royal-900/60 dark:hover:text-gold-400"
+      >
+        <i class="pi pi-home text-gold-600 dark:text-gold-400" aria-hidden="true"></i>
+        <span>Home</span>
+      </a>
+
+      <a
+        routerLink="/shop"
+        routerLinkActive="bg-gold-300/20 dark:bg-royal-900/90 text-gold-600 dark:text-gold-400 font-semibold border-b-2 border-gold-600 dark:border-gold-400 shadow-sm"
+        class="flex items-center gap-2 rounded-lg px-3.5 py-2 text-sm font-medium tracking-wide text-royal-950 transition-all hover:bg-gold-300/20 hover:text-gold-600 dark:text-white/90 dark:hover:bg-royal-900/60 dark:hover:text-gold-400"
+      >
+        <i class="pi pi-shopping-bag text-gold-600 dark:text-gold-400" aria-hidden="true"></i>
+        <span>Shop</span>
+      </a>
+
+      <a
+        routerLink="/brands"
+        routerLinkActive="bg-gold-300/20 dark:bg-royal-900/90 text-gold-600 dark:text-gold-400 font-semibold border-b-2 border-gold-600 dark:border-gold-400 shadow-sm"
+        class="flex items-center gap-2 rounded-lg px-3.5 py-2 text-sm font-medium tracking-wide text-royal-950 transition-all hover:bg-gold-300/20 hover:text-gold-600 dark:text-white/90 dark:hover:bg-royal-900/60 dark:hover:text-gold-400"
+      >
+        <i class="pi pi-tag text-gold-600 dark:text-gold-400" aria-hidden="true"></i>
+        <span>Brands</span>
+      </a>
+
+      <!-- Categories Direct Link (Desktop) -->
+      <a
+        routerLink="/categories"
+        routerLinkActive="bg-gold-300/20 dark:bg-royal-900/90 text-gold-600 dark:text-gold-400 font-semibold border-b-2 border-gold-600 dark:border-gold-400 shadow-sm"
+        class="flex items-center gap-2 rounded-lg px-3.5 py-2 text-sm font-medium tracking-wide text-royal-950 transition-all hover:bg-gold-300/20 hover:text-gold-600 dark:text-white/90 dark:hover:bg-royal-900/60 dark:hover:text-gold-400"
+      >
+        <i class="pi pi-th-large text-gold-600 dark:text-gold-400" aria-hidden="true"></i>
+        <span>Categories</span>
+      </a>
+    </div>
+
+    <!-- Desktop Actions -->
+    <div class="hidden shrink-0 items-center gap-3 lg:flex">
+      <button
+        routerLink="/wishlist"
+        type="button"
+        aria-label="Wishlist"
+        class="relative flex h-10 w-10 items-center justify-center rounded-xl border border-gold-500/30 bg-gold-300/10 text-gold-600 transition-all hover:border-gold-600 hover:bg-gold-300/30 dark:bg-royal-900/50 dark:text-gold-400 dark:hover:border-gold-400 dark:hover:bg-royal-900"
+      >
+        <i class="pi pi-heart" aria-hidden="true"></i>
+        @if (wishlistCount() > 0) {
+          <span
+            class="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-gold-600 text-[10px] font-bold text-white shadow-md dark:bg-gold-500 dark:text-royal-950"
+          >
+            {{ wishlistCount() }}
+          </span>
+        }
+      </button>
+
+      <button
+        routerLink="/cart"
+        type="button"
+        aria-label="Cart"
+        class="relative flex h-10 w-10 items-center justify-center rounded-xl border border-gold-500/30 bg-gold-300/10 text-gold-600 transition-all hover:border-gold-600 hover:bg-gold-300/30 dark:bg-royal-900/50 dark:text-gold-400 dark:hover:border-gold-400 dark:hover:bg-royal-900"
+      >
+        <i class="pi pi-shopping-cart" aria-hidden="true"></i>
+        @if (cartCount() > 0) {
+          <span
+            class="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-gold-600 text-[10px] font-bold text-white shadow-md dark:bg-gold-500 dark:text-royal-950"
+          >
+            {{ cartCount() }}
+          </span>
+        }
+      </button>
+
+      <!-- Toggle Theme Button -->
+      <button
+        type="button"
+        (click)="toggleTheme()"
+        aria-label="Toggle theme"
+        class="flex h-10 w-10 items-center justify-center rounded-xl border border-gold-500/30 bg-gold-300/10 text-gold-600 transition-all hover:border-gold-600 hover:bg-gold-300/30 dark:bg-royal-900/50 dark:text-gold-400 dark:hover:border-gold-400 dark:hover:bg-royal-900"
+      >
+        <i
+          class="pi"
+          [class.pi-sun]="isDarkMode()"
+          [class.pi-moon]="!isDarkMode()"
+          aria-hidden="true"
+        ></i>
+      </button>
+
+      <span class="h-6 w-px bg-gold-500/30"></span>
+
+      <!-- Account Menu (Desktop) -->
+      @if (isLoggedIn()) {
+        <button
+          type="button"
+          (click)="userMenu()?.toggle($event)"
+          class="flex items-center gap-2 rounded-xl border border-gold-500/30 bg-gold-300/10 py-1.5 ps-1.5 pe-3 text-sm font-medium text-royal-950 transition-all hover:border-gold-600 hover:bg-gold-300/30 dark:bg-royal-900/50 dark:text-white dark:hover:border-gold-400 dark:hover:bg-royal-900"
+        >
+          <span
+            class="flex h-7 w-7 items-center justify-center rounded-lg bg-gold-500 text-xs font-bold text-royal-950"
+          >
+            {{ currentUser()?.name?.charAt(0) }}
+          </span>
+          <span>{{ currentUser()?.name }}</span>
+          <i
+            class="pi pi-chevron-down text-xs text-gold-600 dark:text-gold-400"
+            aria-hidden="true"
+          ></i>
+        </button>
+
+        <p-popover #userMenuPopover>
+          <div class="flex w-56 flex-col gap-1">
+            <div class="border-b border-gold-500/20 px-3 py-2">
+              <p class="text-sm font-semibold text-royal-950 dark:text-white">
+                {{ currentUser()?.name }}
+              </p>
+              <p class="text-xs text-royal-950/50 dark:text-white/50">{{ currentUser()?.email }}</p>
+            </div>
+            <a
+              routerLink="/orders"
+              (click)="userMenu()?.hide()"
+              class="flex items-center gap-2 rounded-lg px-3 py-2 text-start text-sm text-royal-950 transition-colors hover:bg-gold-300/20 dark:text-white dark:hover:bg-royal-900/60"
+            >
+              <i class="pi pi-receipt" aria-hidden="true"></i>
+              My Orders
+            </a>
+            <button
+              type="button"
+              (click)="signOut()"
+              class="flex items-center gap-2 rounded-lg px-3 py-2 text-start text-sm text-red-600 transition-colors hover:bg-red-50 dark:hover:bg-red-500/10"
+            >
+              <i class="pi pi-sign-out" aria-hidden="true"></i>
+              Sign Out
+            </button>
+          </div>
+        </p-popover>
+      } @else {
+        <a
+          routerLink="/register"
+          class="flex items-center gap-2 rounded-xl border border-gold-600/40 bg-gold-500 px-4 py-2 text-sm font-bold text-royal-950 shadow-lg shadow-gold-500/20 transition-all duration-300 hover:brightness-110 dark:border-gold-400/50"
+        >
+          <i class="pi pi-user" aria-hidden="true"></i>
+          <span>Sign Up</span>
+        </a>
+      }
+    </div>
+
+    <!-- Mobile Actions -->
+    <div class="flex shrink-0 items-center gap-2.5 lg:hidden">
+      <button
+        type="button"
+        (click)="toggleTheme()"
+        aria-label="Toggle theme mobile"
+        class="flex h-11 w-11 items-center justify-center rounded-xl border border-gold-500/40 bg-gold-300/20 text-gold-600 shadow-md transition-all active:scale-95 dark:bg-royal-900/70 dark:text-gold-400"
+      >
+        <i
+          class="pi text-lg"
+          [class.pi-sun]="isDarkMode()"
+          [class.pi-moon]="!isDarkMode()"
+          aria-hidden="true"
+        ></i>
+      </button>
+
+      <button
+        type="button"
+        (click)="toggleMobileMenu()"
+        aria-label="Toggle menu"
+        class="flex h-11 w-11 items-center justify-center rounded-xl border border-gold-500/40 bg-gold-300/20 text-gold-600 shadow-md transition-all active:scale-95 dark:bg-royal-900/70 dark:text-gold-400"
+      >
+        <i
+          class="pi text-xl"
+          [class.pi-bars]="!isMobileMenuOpen()"
+          [class.pi-times]="isMobileMenuOpen()"
+          aria-hidden="true"
+        ></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- PrimeNG Drawer for Mobile Navigation Menu -->
+<p-drawer
+  [visible]="isMobileMenuOpen()"
+  (visibleChange)="closeMobileMenu()"
+  position="right"
+  [modal]="true"
+  [dismissible]="true"
+  class="lg:hidden"
+>
+  <div
+    class="flex h-full flex-col justify-between bg-surface-light p-6 text-royal-950 dark:bg-royal-950 dark:text-white"
+  >
+    <div class="space-y-6">
+      <div class="flex items-center justify-between border-b border-gold-500/20 pb-4">
+        <a routerLink="/home" (click)="closeMobileMenu()" class="flex items-center gap-3">
+          <div
+            class="flex h-10 w-10 items-center justify-center rounded-xl border border-gold-500/30 bg-gold-300/20 text-gold-600 dark:bg-royal-900 dark:text-gold-400"
+          >
+            <i class="pi pi-shopping-cart text-lg" aria-hidden="true"></i>
+          </div>
+          <span class="font-serif text-xl font-bold text-royal-950 dark:text-white">
+            King<span class="text-gold-600 dark:text-gold-400">Mart</span>
+          </span>
+        </a>
+        <button
+          type="button"
+          (click)="closeMobileMenu()"
+          aria-label="Close menu"
+          class="flex h-8 w-8 items-center justify-center rounded-lg bg-gold-300/20 text-gold-600 dark:bg-royal-900 dark:text-gold-400"
+        >
+          <i class="pi pi-times" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <!-- Account (Mobile) -->
+      @if (isLoggedIn()) {
+        <div class="flex items-center gap-3 rounded-xl border border-gold-500/20 px-4 py-3">
+          <span
+            class="flex h-10 w-10 items-center justify-center rounded-lg bg-gold-500 text-sm font-bold text-royal-950"
+          >
+            {{ currentUser()?.name?.charAt(0) }}
+          </span>
+          <div class="min-w-0 flex-1">
+            <p class="truncate text-sm font-semibold text-royal-950 dark:text-white">
+              {{ currentUser()?.name }}
+            </p>
+            <p class="truncate text-xs text-royal-950/50 dark:text-white/50">
+              {{ currentUser()?.email }}
+            </p>
+          </div>
+        </div>
+      }
+
+      <!-- Search Bar Mobile -->
+      <div
+        class="relative flex w-full items-center rounded-xl border border-gold-500/30 bg-gold-300/10 px-3.5 py-2.5 dark:bg-royal-900/60"
+      >
+        <i
+          class="pi pi-search me-2.5 text-sm text-gold-600 dark:text-gold-400"
+          aria-hidden="true"
+        ></i>
+        <input
+          type="text"
+          placeholder="Search luxury products..."
+          class="w-full bg-transparent text-sm text-royal-950 placeholder-royal-950/50 outline-none dark:text-white dark:placeholder-gold-300/40"
+        />
+      </div>
+
+      <!-- Links Stack Mobile -->
+      <div class="flex flex-col gap-2">
+        <a
+          routerLink="/home"
+          (click)="closeMobileMenu()"
+          class="flex items-center gap-3 rounded-xl px-4 py-3 font-medium transition-all hover:bg-gold-300/20 hover:text-gold-600 dark:hover:bg-royal-900/80 dark:hover:text-gold-400"
+        >
+          <i class="pi pi-home text-gold-600 dark:text-gold-400" aria-hidden="true"></i>
+          <span>Home</span>
+        </a>
+
+        <a
+          routerLink="/shop"
+          (click)="closeMobileMenu()"
+          class="flex items-center gap-3 rounded-xl px-4 py-3 font-medium transition-all hover:bg-gold-300/20 hover:text-gold-600 dark:hover:bg-royal-900/80 dark:hover:text-gold-400"
+        >
+          <i class="pi pi-shopping-bag text-gold-600 dark:text-gold-400" aria-hidden="true"></i>
+          <span>Shop</span>
+        </a>
+
+        <a
+          routerLink="/brands"
+          (click)="closeMobileMenu()"
+          class="flex items-center gap-3 rounded-xl px-4 py-3 font-medium transition-all hover:bg-gold-300/20 hover:text-gold-600 dark:hover:bg-royal-900/80 dark:hover:text-gold-400"
+        >
+          <i class="pi pi-tag text-gold-600 dark:text-gold-400" aria-hidden="true"></i>
+          <span>Brands</span>
+        </a>
+
+        <!-- Categories Direct Link (Mobile) -->
+        <a
+          routerLink="/categories"
+          (click)="closeMobileMenu()"
+          class="flex items-center gap-3 rounded-xl px-4 py-3 font-medium transition-all hover:bg-gold-300/20 hover:text-gold-600 dark:hover:bg-royal-900/80 dark:hover:text-gold-400"
+        >
+          <i class="pi pi-th-large text-gold-600 dark:text-gold-400" aria-hidden="true"></i>
+          <span>Categories</span>
+        </a>
+
+        <!-- Auth Links Mobile -->
+        <div class="mt-2 border-t border-gold-500/20 pt-4">
+          @if (isLoggedIn()) {
+            <a
+              routerLink="/orders"
+              (click)="closeMobileMenu()"
+              class="mb-2 flex items-center gap-3 rounded-xl px-4 py-3 font-medium transition-all hover:bg-gold-300/20 hover:text-gold-600 dark:hover:bg-royal-900/80 dark:hover:text-gold-400"
+            >
+              <i class="pi pi-receipt text-gold-600 dark:text-gold-400" aria-hidden="true"></i>
+              <span>My Orders</span>
+            </a>
+            <button
+              type="button"
+              (click)="signOut()"
+              class="flex w-full items-center justify-center gap-2 rounded-xl border border-red-500/30 px-4 py-2.5 text-sm font-medium text-red-600 transition-all hover:bg-red-50 dark:hover:bg-red-500/10"
+            >
+              <i class="pi pi-sign-out" aria-hidden="true"></i>
+              Sign Out
+            </button>
+          } @else {
+            <div class="flex items-center gap-2">
+              <a
+                routerLink="/login"
+                (click)="closeMobileMenu()"
+                class="flex flex-1 items-center justify-center rounded-xl border border-gold-500/30 px-4 py-2.5 text-sm font-medium transition-all hover:bg-gold-300/20 hover:text-gold-600 dark:hover:bg-royal-900/80 dark:hover:text-gold-400"
+              >
+                Sign In
+              </a>
+              <a
+                routerLink="/register"
+                (click)="closeMobileMenu()"
+                class="flex flex-1 items-center justify-center rounded-xl border border-gold-500/30 px-4 py-2.5 text-sm font-medium transition-all hover:bg-gold-300/20 hover:text-gold-600 dark:hover:bg-royal-900/80 dark:hover:text-gold-400"
+              >
+                Sign Up
+              </a>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</p-drawer>

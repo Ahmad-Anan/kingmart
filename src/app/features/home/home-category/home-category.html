@@ -1,0 +1,72 @@
+<section class="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+  <!-- توهج خلفي هادئ — نفس المنطق المستخدم في Slider و Brands -->
+  <div
+    class="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-150 h-40 rounded-full blur-[120px] bg-gold-500/8 dark:bg-gold-500/15 transition-colors duration-700"
+  ></div>
+
+  <div class="relative z-10 mb-14 text-center max-w-2xl mx-auto">
+    <div class="mb-4 flex items-center justify-center gap-3">
+      <span class="h-px w-8 bg-gold-600/50 dark:bg-gold-400/40"></span>
+      <span
+        class="font-cinzel text-[11px] font-semibold uppercase tracking-[0.35em] text-gold-600 dark:text-gold-400"
+      >
+        Browse By
+      </span>
+      <span class="h-px w-8 bg-gold-600/50 dark:bg-gold-400/40"></span>
+    </div>
+    <h2
+      class="font-serif text-3xl sm:text-4xl font-light tracking-tight text-royal-950 dark:text-white"
+    >
+      Featured <span class="italic font-normal">Collections</span>
+    </h2>
+  </div>
+
+  @if (categoriesResource.isLoading()) {
+    <div class="relative z-10 flex gap-6 overflow-x-auto pb-2">
+      @for (placeholder of skeletonPlaceholders; track $index) {
+        <div class="flex flex-col items-center gap-3 shrink-0">
+          <div
+            class="h-24 w-24 rounded-full bg-neutral-200 dark:bg-royal-900/50 animate-pulse"
+          ></div>
+          <div class="h-3 w-16 rounded bg-neutral-200 dark:bg-royal-900/50 animate-pulse"></div>
+        </div>
+      }
+    </div>
+  } @else if (categoriesResource.error()) {
+    <p class="relative z-10 text-center text-sm text-neutral-500 dark:text-neutral-400">
+      Unable to load categories right now.
+    </p>
+  } @else {
+    <div
+      class="relative z-10 flex gap-8 overflow-x-auto pb-2 snap-x snap-mandatory sm:flex-wrap sm:justify-center sm:overflow-visible"
+    >
+      @for (category of categoriesResource.value()?.data; track category._id) {
+        <a
+          [routerLink]="['/shop']"
+          [queryParams]="{ category: category._id }"
+          class="group flex flex-col items-center gap-3 shrink-0 snap-start focus:outline-none"
+        >
+          <div
+            class="h-24 w-24 overflow-hidden rounded-full ring-1 ring-gold-500/20 dark:ring-gold-400/20 shadow-sm transition-all duration-500 group-hover:ring-gold-500/60 dark:group-hover:ring-gold-400/60 group-hover:shadow-lg group-hover:shadow-gold-500/10 dark:group-hover:shadow-gold-500/20 group-focus-visible:ring-2 group-focus-visible:ring-gold-400"
+          >
+            <img
+              [src]="category.image"
+              [alt]="category.name"
+              class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+              loading="lazy"
+            />
+          </div>
+          <span
+            class="font-cinzel text-xs font-medium uppercase tracking-wider text-neutral-600 dark:text-neutral-300 transition-colors duration-300 group-hover:text-gold-600 dark:group-hover:text-gold-400"
+          >
+            {{ category.name }}
+          </span>
+        </a>
+      } @empty {
+        <p class="w-full text-center text-sm text-neutral-500 dark:text-neutral-400 py-8">
+          No categories available at the moment.
+        </p>
+      }
+    </div>
+  }
+</section>

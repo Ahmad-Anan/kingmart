@@ -1,0 +1,30 @@
+.brands-marquee {
+  width: 100%;
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.brands-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: brands-scroll 28s linear infinite;
+}
+
+.brands-marquee:hover .brands-marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes brands-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brands-marquee-track {
+    animation: none;
+  }
+}

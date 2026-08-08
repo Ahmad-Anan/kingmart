@@ -1,0 +1,77 @@
+<section
+  class="relative w-full overflow-hidden bg-royal-950"
+  dir="ltr"
+  aria-label="Featured collections"
+>
+  <!-- توهج ملكي محيط بالإطار — واضح في الليل، شبه غائب في النهار -->
+  <div
+    class="pointer-events-none absolute -inset-x-10 -top-10 -bottom-10 opacity-0 dark:opacity-60 bg-linear-to-r from-gold-500/10 via-royal-700/20 to-gold-500/10 blur-[100px] transition-opacity duration-700"
+  ></div>
+
+  <swiper-container #heroSwiper init="false" class="hero-frame relative z-10 block w-full">
+    @for (slide of slides; track slide.id; let isFirst = $first) {
+      <swiper-slide class="h-full">
+        <div class="relative h-full w-full overflow-hidden bg-royal-950">
+          <img
+            [src]="slide.image"
+            [alt]="slide.imageAlt"
+            [style.object-position]="slide.focalPosition"
+            class="absolute inset-0 h-full w-full object-cover"
+            [attr.loading]="isFirst ? 'eager' : 'lazy'"
+            [attr.fetchpriority]="isFirst ? 'high' : 'auto'"
+            decoding="async"
+          />
+
+          @if (slide.title) {
+            <div
+              class="absolute inset-0 bg-linear-to-r from-black/75 via-black/25 to-transparent"
+            ></div>
+
+            <div class="absolute inset-y-0 left-0 flex items-center px-6 sm:px-16">
+              <div class="max-w-sm text-left">
+                <div class="mb-5 flex items-center gap-3">
+                  <span class="h-px w-8 bg-gold-600 dark:bg-gold-400"></span>
+                  <span
+                    class="font-cinzel text-[10px] font-medium uppercase tracking-[0.35em] text-gold-600 dark:text-gold-400"
+                  >
+                    {{ slide.eyebrow }}
+                  </span>
+                </div>
+                <h2
+                  class="font-serif text-xl sm:text-2xl font-light text-neutral-100 leading-snug tracking-wide mb-3"
+                >
+                  {{ slide.title }}
+                </h2>
+                <p
+                  class="text-xs sm:text-sm text-neutral-300 font-light italic leading-relaxed [text-shadow:0_1px_3px_rgba(0,0,0,0.6)]"
+                >
+                  {{ slide.subtitle }}
+                </p>
+              </div>
+            </div>
+          }
+        </div>
+      </swiper-slide>
+    }
+  </swiper-container>
+
+  <!-- سهمين فقط -->
+  <div class="absolute bottom-6 left-6 z-30 flex items-center gap-2 sm:left-16">
+    <button
+      type="button"
+      (click)="slidePrev()"
+      aria-label="Previous slide"
+      class="relative flex h-7 w-7 items-center justify-center rounded-full border border-white/25 text-white/70 backdrop-blur-sm transition-all before:absolute before:-inset-2 before:content-[''] hover:border-gold-400 hover:text-gold-400 active:border-gold-400 active:text-gold-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 dark:hover:shadow-[0_0_12px_rgba(229,193,88,0.4)]"
+    >
+      <i class="pi pi-chevron-left text-xs" aria-hidden="true"></i>
+    </button>
+    <button
+      type="button"
+      (click)="slideNext()"
+      aria-label="Next slide"
+      class="relative flex h-7 w-7 items-center justify-center rounded-full border border-white/25 text-white/70 backdrop-blur-sm transition-all before:absolute before:-inset-2 before:content-[''] hover:border-gold-400 hover:text-gold-400 active:border-gold-400 active:text-gold-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 dark:hover:shadow-[0_0_12px_rgba(229,193,88,0.4)]"
+    >
+      <i class="pi pi-chevron-right text-xs" aria-hidden="true"></i>
+    </button>
+  </div>
+</section>

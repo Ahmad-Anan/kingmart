@@ -1,0 +1,166 @@
+<!-- cart.html -->
+<section class="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
+  <!-- Header -->
+  <header class="mb-12">
+    <p class="font-cinzel text-xs tracking-[0.3em] uppercase text-gold-600 dark:text-gold-400">
+      Your Selection
+    </p>
+    <h1 class="mt-3 font-serif text-4xl text-royal-950 dark:text-gold-200">Shopping Cart</h1>
+    <div class="mt-6 h-px w-16 bg-gold-500/50 dark:bg-gold-400/60"></div>
+  </header>
+
+  <!-- Loading state -->
+  @if (isLoading()) {
+    <div class="flex flex-col items-center gap-4 py-28">
+      <p-progress-spinner styleClass="w-9 h-9" strokeWidth="2.5" />
+      <p class="font-cinzel text-xs tracking-[0.25em] uppercase opacity-50">Loading Your Cart</p>
+    </div>
+  }
+
+  <!-- Empty state -->
+  @else if (!cartData() || cartData()!.numOfCartItems === 0) {
+    <div
+      class="gold-glow-border flex flex-col items-center gap-5 rounded-2xl bg-white/50 py-28 text-center backdrop-blur-sm dark:bg-royal-900/20"
+    >
+      <svg
+        class="h-10 w-10 text-gold-500/70 dark:text-gold-400/60"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.25"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 1.994-4.693 2.502-7.152.108-.52-.282-1.006-.813-1.006H5.25M7.5 14.25 5.106 5.272M6.75 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+        />
+      </svg>
+      <p class="font-serif text-lg italic opacity-70">Your cart is quiet for now.</p>
+      <a
+        routerLink="/shop"
+        class="font-cinzel text-xs tracking-[0.2em] uppercase text-gold-600 underline underline-offset-4 transition-colors hover:text-gold-500 dark:text-gold-400 dark:hover:text-gold-300"
+      >
+        Browse the Collection
+      </a>
+    </div>
+  }
+
+  <!-- Cart items -->
+  @else {
+    <div
+      class="gold-glow-border divide-y divide-gold-400/15 rounded-2xl bg-white/50 backdrop-blur-sm dark:divide-gold-500/10 dark:bg-royal-900/20"
+    >
+      @for (item of cartData()!.data.products; track trackByProductId($index, item)) {
+        <div
+          class="flex items-center gap-6 p-6 transition-opacity"
+          [class.opacity-60]="updatingProductId() === item.product._id"
+        >
+          <img
+            [src]="item.product.imageCover"
+            [alt]="item.product.title"
+            class="h-24 w-24 shrink-0 rounded-xl object-cover ring-1 ring-gold-400/20 transition-all dark:ring-gold-500/15"
+          />
+
+          <div class="min-w-0 flex-1">
+            <h3 class="truncate font-serif text-lg text-royal-950 dark:text-gold-200">
+              {{ item.product.title }}
+            </h3>
+            <p class="mt-1 text-sm opacity-55">{{ item.price }} EGP</p>
+
+            <button
+              type="button"
+              (click)="removeProduct(item.product._id)"
+              [disabled]="updatingProductId() === item.product._id"
+              class="font-cinzel mt-3 text-[0.65rem] tracking-[0.15em] uppercase opacity-40 underline underline-offset-4 transition-colors hover:text-red-600 hover:opacity-100 disabled:pointer-events-none"
+            >
+              Remove
+            </button>
+          </div>
+
+          <!-- Quantity stepper -->
+          <div
+            class="inline-flex items-center gap-4 rounded-full border border-gold-400/40 px-1.5 py-1.5 dark:border-gold-500/30"
+          >
+            <button
+              type="button"
+              (click)="decrement(item)"
+              [disabled]="updatingProductId() === item.product._id || item.count <= 1"
+              class="flex h-7 w-7 items-center justify-center rounded-full text-gold-600 transition-colors hover:bg-gold-400/10 disabled:opacity-25 disabled:hover:bg-transparent dark:text-gold-400"
+              aria-label="Decrease quantity"
+            >
+              <svg
+                class="h-3.5 w-3.5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
+              </svg>
+            </button>
+
+            <span class="w-5 text-center text-sm font-medium tabular-nums">
+              @if (updatingProductId() === item.product._id) {
+                <p-progress-spinner styleClass="w-3 h-3 inline-block" strokeWidth="6" />
+              } @else {
+                {{ item.count }}
+              }
+            </span>
+
+            <button
+              type="button"
+              (click)="increment(item)"
+              [disabled]="updatingProductId() === item.product._id"
+              class="flex h-7 w-7 items-center justify-center rounded-full text-gold-600 transition-colors hover:bg-gold-400/10 disabled:opacity-25 disabled:hover:bg-transparent dark:text-gold-400"
+              aria-label="Increase quantity"
+            >
+              <svg
+                class="h-3.5 w-3.5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14" />
+              </svg>
+            </button>
+          </div>
+
+          <p class="w-24 shrink-0 text-right font-serif text-royal-950 dark:text-gold-200">
+            {{ item.price * item.count }} EGP
+          </p>
+        </div>
+      }
+    </div>
+
+    <!-- Clear cart -->
+    <div class="mt-5 flex justify-end">
+      <button
+        type="button"
+        (click)="clearCart()"
+        class="font-cinzel text-[0.65rem] tracking-[0.15em] uppercase opacity-40 underline underline-offset-4 transition-colors hover:text-red-600 hover:opacity-100"
+      >
+        Clear Cart
+      </button>
+    </div>
+
+    <!-- Order summary -->
+    <div
+      class="gold-glow-border mt-6 flex flex-col items-start justify-between gap-6 rounded-2xl bg-white/50 p-8 backdrop-blur-sm sm:flex-row sm:items-center dark:bg-royal-900/20"
+    >
+      <div>
+        <p class="font-cinzel text-xs tracking-[0.25em] uppercase opacity-50">Total</p>
+        <p class="text-gold-gradient mt-2 font-serif text-4xl">
+          {{ cartData()!.data.totalCartPrice }} EGP
+        </p>
+      </div>
+
+      <a
+        routerLink="/checkout"
+        class="bg-gold-gradient font-cinzel block w-full rounded-full px-10 py-3.5 text-center text-xs tracking-[0.2em] text-royal-950 uppercase sm:w-auto"
+      >
+        Checkout
+      </a>
+    </div>
+  }
+</section>

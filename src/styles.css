@@ -1,3 +1,246 @@
-/* You can add global styles to this file, and also import other style files */
+@import '@fontsource-variable/inter';
+@import '@fontsource/ibm-plex-sans-arabic';
+@import '@fontsource/playfair-display';
+@import '@fontsource/cinzel';
+
+@import 'primeicons/primeicons.css';
 
 @import 'tailwindcss';
+
+/* الـ reset layer الوحيد اللي محتاجينه فعليًا لو عندك ريسيت مخصص */
+@layer reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+}
+
+/* تعريف الـ Dark Variant */
+@custom-variant dark (&:where(.my-app-dark, .my-app-dark *));
+
+/* ==========================================
+   2. ROYAL ULTRA-LUXURY THEME VARIABLES
+   ========================================== */
+@theme {
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-cinzel: 'Cinzel', serif;
+
+  --color-royal-950: #011412;
+  --color-royal-900: #042622;
+  --color-royal-800: #093c35;
+  --color-royal-700: #105248;
+
+  --color-gold-600: #997819;
+  --color-gold-500: #c5a028;
+  --color-gold-400: #e5c158;
+  --color-gold-300: #f4d882;
+  --color-gold-200: #fbf0b9;
+
+  --color-surface-light: #fbfaf8;
+  --color-surface-dark: #010a09;
+}
+
+/* ==========================================
+   3. PRIMENG COMPONENT OVERRIDES
+   (دول عمليًا مش لازم !important بعد ما نظبط الـ cssLayer order،
+   لكن سايبينهم لأنهم بيستهدفوا عناصر PrimeNG داخلية (pseudo-elements) بره نطاق Tailwind أصلًا)
+   ========================================== */
+@layer primeng {
+  .p-tooltip .p-tooltip-text {
+    background: linear-gradient(135deg, var(--color-royal-900), var(--color-royal-950));
+    color: var(--color-gold-300);
+    font-weight: 600;
+    font-size: 0.75rem;
+    border: 1px solid rgba(229, 193, 88, 0.35);
+    border-radius: 0.75rem;
+    padding: 0.6rem 0.9rem;
+    box-shadow:
+      0 10px 30px -5px rgba(0, 0, 0, 0.8),
+      0 0 15px rgba(197, 160, 40, 0.15);
+    backdrop-filter: blur(12px);
+  }
+
+  .p-drawer {
+    background: rgba(251, 250, 248, 0.95);
+    backdrop-filter: blur(20px) saturate(180%);
+    border-inline-start: 1px solid rgba(197, 160, 40, 0.3);
+  }
+
+  .my-app-dark .p-drawer {
+    background: rgba(1, 20, 18, 0.96);
+    border-inline-start: 1px solid rgba(229, 193, 88, 0.25);
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.7);
+  }
+}
+
+/* ==========================================
+   3b. SHOP PAGINATOR (بره أي @layer + !important عمدًا)
+   PrimeNG بتبني كلاس الزرار المختار كـ "p-paginator-page p-paginator-page-selected"
+   على نفس العنصر، وبتحقن CSS ليها بـ background-color من design token (لون أخضر
+   افتراضي من Nora preset) — الحقن ده بيحصل وقت تحميل الكومبوننت، بعد ما styles.css
+   يتحمّل، فجوه نفس الـ layer بتكسب هي. الحل: قواعد من غير layer بتكسب دايمًا على أي
+   حاجة جوه أي layer بغض النظر عن التوقيت، و!important هنا كضمان إضافي مية بالمية
+   ========================================== */
+.shop-paginator.p-paginator {
+  background: transparent !important;
+  border: none;
+  gap: 0.625rem;
+}
+
+.shop-paginator .p-paginator-page,
+.shop-paginator .p-paginator-first,
+.shop-paginator .p-paginator-prev,
+.shop-paginator .p-paginator-next,
+.shop-paginator .p-paginator-last {
+  min-width: 2rem;
+  height: 2rem;
+  border: none;
+  background: transparent !important;
+  color: var(--color-surface-dark);
+}
+
+.my-app-dark .shop-paginator .p-paginator-page,
+.my-app-dark .shop-paginator .p-paginator-first,
+.my-app-dark .shop-paginator .p-paginator-prev,
+.my-app-dark .shop-paginator .p-paginator-next,
+.my-app-dark .shop-paginator .p-paginator-last {
+  color: var(--color-surface-light);
+}
+
+.shop-paginator .p-paginator-page-selected {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  font-weight: 700;
+}
+
+/* ==========================================
+   4. LUXURY CUSTOM UTILITIES & GRADIENTS
+   ========================================== */
+
+/*
+  .text-gold-gradient: solid, readable color by default (light mode) — the
+  metallic gradient has poor contrast against light/gold surfaces. The actual
+  gradient effect only applies in dark mode, via .my-app-dark directly, since
+  the Tailwind `dark:` variant does not apply to hand-written CSS classes like
+  this one (it only works on real Tailwind-generated utilities). This is a
+  project-wide rule — any component using `text-gold-gradient` gets this
+  behavior automatically, with nothing to repeat per-component.
+*/
+.text-gold-gradient {
+  color: var(--color-royal-950);
+}
+
+.my-app-dark .text-gold-gradient {
+  background: linear-gradient(
+    135deg,
+    #bf953f 0%,
+    #fcf6ba 25%,
+    #b38728 50%,
+    #fbf5b7 75%,
+    #aa771c 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.bg-gold-gradient {
+  background: linear-gradient(135deg, #c5a028 0%, #e5c158 50%, #997819 100%);
+  transition: all 0.3s ease;
+}
+
+.bg-gold-gradient:hover {
+  background: linear-gradient(135deg, #e5c158 0%, #f4d882 50%, #c5a028 100%);
+  box-shadow: 0 8px 25px -5px rgba(197, 160, 40, 0.4);
+}
+
+.gold-glow-border {
+  border: 1px solid rgba(229, 193, 88, 0.3);
+  box-shadow: 0 0 20px rgba(197, 160, 40, 0.08);
+}
+
+/* ==========================================
+   5. GLOBAL BASE & BACKGROUND EFFECTS
+   ========================================== */
+html {
+  background-color: var(--color-surface-light);
+  color-scheme: light;
+  scroll-behavior: smooth;
+}
+
+html.my-app-dark {
+  background-color: var(--color-surface-dark);
+  color-scheme: dark;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: transparent;
+  color: var(--color-royal-950);
+  min-height: 100vh;
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease;
+  overflow-x: hidden;
+}
+
+.my-app-dark body {
+  color: #ecfdf5;
+  background-image:
+    radial-gradient(circle at 50% 0%, rgba(16, 82, 72, 0.25) 0%, transparent 50%),
+    radial-gradient(circle at 85% 30%, rgba(197, 160, 40, 0.05) 0%, transparent 40%);
+  background-attachment: fixed;
+}
+
+/* ==========================================
+   6. SCROLLBAR CUSTOMIZATION (GOLD THREAD)
+   ========================================== */
+::-webkit-scrollbar {
+  width: 7px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-surface-light);
+}
+.my-app-dark ::-webkit-scrollbar-track {
+  background: var(--color-surface-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, var(--color-royal-800), var(--color-gold-600));
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, var(--color-gold-500), var(--color-gold-300));
+}
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-gold-600) var(--color-surface-light);
+}
+.my-app-dark * {
+  scrollbar-color: var(--color-gold-500) var(--color-surface-dark);
+}
+
+/* ==========================================
+   7. VIEW TRANSITIONS ANIMATION
+   ========================================== */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.4s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==========================================
+   8. LUXURY FASHION & ELECTRONICS CARD UTILITIES
+   ========================================== */
+.aspect-fashion {
+  aspect-ratio: 3 / 4;
+}
+
+.royal-card-glow {
+  background: linear-gradient(135deg, rgba(16, 82, 72, 0.4) 0%, rgba(1, 20, 18, 0.8) 100%);
+  backdrop-filter: blur(16px);
+}

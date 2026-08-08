@@ -1,0 +1,89 @@
+<!-- wishlist.html -->
+<section class="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
+  <!-- Header -->
+  <header class="mb-12">
+    <p class="font-cinzel text-xs tracking-[0.3em] uppercase text-gold-600 dark:text-gold-400">
+      Your Favorites
+    </p>
+    <h1 class="mt-3 font-serif text-4xl text-royal-950 dark:text-gold-200">Wishlist</h1>
+    <div class="mt-6 h-px w-16 bg-gold-500/50 dark:bg-gold-400/60"></div>
+  </header>
+
+  <!-- Loading state -->
+  @if (isLoading()) {
+    <div class="flex flex-col items-center gap-4 py-28">
+      <p-progress-spinner styleClass="w-9 h-9" strokeWidth="2.5" />
+      <p class="font-cinzel text-xs tracking-[0.25em] uppercase opacity-50">
+        Loading Your Wishlist
+      </p>
+    </div>
+  }
+
+  <!-- Empty state -->
+  @else if (!wishlistData() || wishlistData()!.count === 0) {
+    <div
+      class="gold-glow-border flex flex-col items-center gap-5 rounded-2xl bg-white/50 py-28 text-center backdrop-blur-sm dark:bg-royal-900/20"
+    >
+      <i class="pi pi-heart text-4xl text-gold-500/70 dark:text-gold-400/60" aria-hidden="true"></i>
+      <p class="font-serif text-lg italic opacity-70">Your wishlist is quiet for now.</p>
+      <a
+        routerLink="/shop"
+        class="font-cinzel text-xs tracking-[0.2em] uppercase text-gold-600 underline underline-offset-4 transition-colors hover:text-gold-500 dark:text-gold-400 dark:hover:text-gold-300"
+      >
+        Browse the Collection
+      </a>
+    </div>
+  }
+
+  <!-- Wishlist items -->
+  @else {
+    <div
+      class="gold-glow-border divide-y divide-gold-400/15 rounded-2xl bg-white/50 backdrop-blur-sm dark:divide-gold-500/10 dark:bg-royal-900/20"
+    >
+      @for (item of wishlistData()!.data; track trackByProductId($index, item)) {
+        <div
+          class="flex items-center gap-6 p-6 transition-opacity"
+          [class.opacity-60]="removingProductId() === item._id"
+        >
+          <img
+            [src]="item.imageCover"
+            [alt]="item.title"
+            class="h-24 w-24 shrink-0 rounded-xl object-cover ring-1 ring-gold-400/20 transition-all dark:ring-gold-500/15"
+          />
+
+          <div class="min-w-0 flex-1">
+            <h3 class="truncate font-serif text-lg text-royal-950 dark:text-gold-200">
+              {{ item.title }}
+            </h3>
+            <p class="mt-1 text-sm opacity-55">{{ item.price }} EGP</p>
+
+            <button
+              type="button"
+              (click)="removeProduct(item._id)"
+              [disabled]="removingProductId() === item._id"
+              class="font-cinzel mt-3 text-[0.65rem] tracking-[0.15em] uppercase opacity-40 underline underline-offset-4 transition-colors hover:text-red-600 hover:opacity-100 disabled:pointer-events-none"
+            >
+              Remove
+            </button>
+          </div>
+
+          <button
+            type="button"
+            (click)="addToCart(item._id)"
+            [disabled]="addingToCartId() === item._id"
+            class="font-cinzel flex shrink-0 items-center gap-2 rounded-full border border-gold-400/40 px-4 py-2 text-[0.65rem] tracking-[0.15em] uppercase text-gold-600 transition-colors hover:bg-gold-400/10 disabled:cursor-wait disabled:opacity-50 dark:border-gold-500/30 dark:text-gold-400"
+          >
+            <i
+              class="pi text-xs"
+              [class.pi-shopping-bag]="addingToCartId() !== item._id"
+              [class.pi-spin]="addingToCartId() === item._id"
+              [class.pi-spinner]="addingToCartId() === item._id"
+              aria-hidden="true"
+            ></i>
+            <span>{{ addingToCartId() === item._id ? 'Adding…' : 'Add to Cart' }}</span>
+          </button>
+        </div>
+      }
+    </div>
+  }
+</section>

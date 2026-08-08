@@ -1,0 +1,25 @@
+/*
+  ارتفاع بأسلوب السلايدر التجاري — لا علاقة له بالألوان،
+  فمفيش أي متغيرات لونية هنا؛ كل الألوان بتيجي من الـ theme الرئيسي مباشرة.
+*/
+.hero-frame {
+  height: 42dvh;
+  min-height: 340px;
+  max-height: 460px;
+}
+
+@media (min-width: 640px) {
+  .hero-frame {
+    height: 46dvh;
+    min-height: 380px;
+    max-height: 520px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-frame {
+    height: 48dvh;
+    min-height: 420px;
+    max-height: 560px;
+  }
+}

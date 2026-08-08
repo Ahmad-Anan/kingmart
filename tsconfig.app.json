@@ -1,16 +1,19 @@
 /* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
 /* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
 {
-  "extends": "./tsconfig.json",
+  "extends": "./tsconfig.json", // بيورث الإعدادات الأساسية من الملف الرئيسي للمشروع
   "compilerOptions": {
     "types": [
-      "node"
+      "node" // بيعرف المشروع على بيئة Node.js لتشغيل الأكواد بالسيرفر
     ]
   },
+  "angularCompilerOptions": {
+    "strictTemplates": true // بيفعل الفحص الصارم والذكي للأخطاء جوه ملفات الـ HTML
+  },
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts" // بيحدد الملفات اللي المترجم لازم يفحصها (كل ملفات الـ TS)
   ],
   "exclude": [
-    "src/**/*.spec.ts"
+    "src/**/*.spec.ts" // بيستبعد ملفات التست والاختبارات من عملية الترجمة الأساسية
   ]
 }

@@ -1,0 +1,237 @@
+<!-- checkout.html -->
+<section class="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
+  <!-- Header -->
+  <header class="mb-12">
+    <p class="font-cinzel text-xs tracking-[0.3em] uppercase text-gold-600 dark:text-gold-400">
+      Final Step
+    </p>
+    <h1 class="mt-3 font-serif text-4xl text-royal-950 dark:text-gold-200">Checkout</h1>
+    <div class="mt-6 h-px w-16 bg-gold-500/50 dark:bg-gold-400/60"></div>
+  </header>
+
+  <!-- Loading state -->
+  @if (isLoading()) {
+    <div class="flex flex-col items-center gap-4 py-28">
+      <p-progress-spinner styleClass="w-9 h-9" strokeWidth="2.5" />
+      <p class="font-cinzel text-xs tracking-[0.25em] uppercase opacity-50">
+        Preparing Your Checkout
+      </p>
+    </div>
+  }
+
+  <!-- Order placed confirmation -->
+  @else if (placedOrder(); as order) {
+    <div
+      class="gold-glow-border flex flex-col items-center gap-5 rounded-2xl bg-white/50 py-28 text-center backdrop-blur-sm dark:bg-royal-900/20"
+    >
+      <i class="pi pi-check-circle text-5xl text-gold-500" aria-hidden="true"></i>
+      <p class="font-serif text-2xl text-royal-950 dark:text-gold-200">Order Placed Successfully</p>
+      <p class="max-w-sm text-sm opacity-60">
+        Thank you for your order. A confirmation has been recorded — order reference
+        <span class="font-mono opacity-90">{{ order._id }}</span>.
+      </p>
+      <p class="font-serif text-3xl text-gold-gradient">{{ order.totalOrderPrice }} EGP</p>
+      <div class="mt-4 flex flex-col items-center gap-3 sm:flex-row">
+        <a
+          routerLink="/orders"
+          class="font-cinzel rounded-full bg-gold-gradient px-8 py-3 text-xs tracking-[0.2em] text-royal-950 uppercase"
+        >
+          View My Orders
+        </a>
+        <a
+          routerLink="/shop"
+          class="font-cinzel text-xs tracking-[0.2em] uppercase text-gold-600 underline underline-offset-4 transition-colors hover:text-gold-500 dark:text-gold-400 dark:hover:text-gold-300"
+        >
+          Continue Shopping
+        </a>
+      </div>
+    </div>
+  }
+
+  <!-- Empty cart guard -->
+  @else if (!cartData() || cartData()!.numOfCartItems === 0) {
+    <div
+      class="gold-glow-border flex flex-col items-center gap-5 rounded-2xl bg-white/50 py-28 text-center backdrop-blur-sm dark:bg-royal-900/20"
+    >
+      <p class="font-serif text-lg italic opacity-70">Your cart is empty.</p>
+      <a
+        routerLink="/shop"
+        class="font-cinzel text-xs tracking-[0.2em] uppercase text-gold-600 underline underline-offset-4 transition-colors hover:text-gold-500 dark:text-gold-400 dark:hover:text-gold-300"
+      >
+        Browse the Collection
+      </a>
+    </div>
+  }
+
+  <!-- Checkout form -->
+  @else {
+    @if (serverError(); as errorMessage) {
+      <p-message severity="error" styleClass="mb-6 w-full">{{ errorMessage }}</p-message>
+    }
+
+    <div class="grid grid-cols-1 gap-8 lg:grid-cols-5">
+      <!-- Shipping address -->
+      <div class="lg:col-span-3">
+        <h2 class="font-cinzel mb-4 text-xs tracking-[0.2em] uppercase text-gold-600 dark:text-gold-400">
+          Shipping Address
+        </h2>
+
+        @if (addresses().length === 0) {
+          <div
+            class="gold-glow-border flex flex-col items-center gap-4 rounded-2xl bg-white/50 p-10 text-center backdrop-blur-sm dark:bg-royal-900/20"
+          >
+            <p class="text-sm opacity-70">
+              You don't have any saved addresses yet. Add one to continue.
+            </p>
+            <a
+              routerLink="/addresses"
+              class="font-cinzel rounded-full bg-gold-gradient px-6 py-2.5 text-xs tracking-[0.2em] text-royal-950 uppercase"
+            >
+              Add an Address
+            </a>
+          </div>
+        } @else {
+          <div class="space-y-3">
+            @for (address of addresses(); track address._id) {
+              <button
+                type="button"
+                (click)="selectAddress(address._id)"
+                class="gold-glow-border flex w-full items-start gap-4 rounded-2xl bg-white/50 p-5 text-start backdrop-blur-sm transition-colors dark:bg-royal-900/20"
+                [class.border-gold-500]="selectedAddressId() === address._id"
+                [class.ring-2]="selectedAddressId() === address._id"
+                [class.ring-gold-500/40]="selectedAddressId() === address._id"
+              >
+                <i
+                  class="pi mt-0.5 text-lg"
+                  [class.pi-check-circle]="selectedAddressId() === address._id"
+                  [class.text-gold-600]="selectedAddressId() === address._id"
+                  [class.dark:text-gold-400]="selectedAddressId() === address._id"
+                  [class.pi-circle]="selectedAddressId() !== address._id"
+                  [class.opacity-30]="selectedAddressId() !== address._id"
+                  aria-hidden="true"
+                ></i>
+                <div class="min-w-0 flex-1">
+                  <h3 class="font-serif text-base text-royal-950 dark:text-gold-200">
+                    {{ address.name }}
+                  </h3>
+                  <p class="mt-1 text-sm opacity-70">{{ address.details }}, {{ address.city }}</p>
+                  <p class="mt-1 text-sm opacity-55">{{ address.phone }}</p>
+                </div>
+              </button>
+            }
+
+            <a
+              routerLink="/addresses"
+              class="flex w-full items-center justify-center gap-2 rounded-2xl border border-dashed border-gold-500/40 p-4 text-sm font-medium text-gold-600 transition-colors hover:bg-gold-300/10 dark:text-gold-400"
+            >
+              <i class="pi pi-plus text-xs" aria-hidden="true"></i>
+              Add New Address
+            </a>
+          </div>
+        }
+      </div>
+
+      <!-- Order summary -->
+      <div class="lg:col-span-2">
+        <h2 class="font-cinzel mb-4 text-xs tracking-[0.2em] uppercase text-gold-600 dark:text-gold-400">
+          Order Summary
+        </h2>
+
+        <div
+          class="gold-glow-border divide-y divide-gold-400/15 rounded-2xl bg-white/50 backdrop-blur-sm dark:divide-gold-500/10 dark:bg-royal-900/20"
+        >
+          @for (item of cartData()!.data.products; track item._id) {
+            <div class="flex items-center gap-4 p-4">
+              <img
+                [src]="item.product.imageCover"
+                [alt]="item.product.title"
+                class="h-14 w-14 shrink-0 rounded-lg object-cover ring-1 ring-gold-400/20 dark:ring-gold-500/15"
+              />
+              <div class="min-w-0 flex-1">
+                <p class="truncate text-sm text-royal-950 dark:text-gold-200">
+                  {{ item.product.title }}
+                </p>
+                <p class="mt-0.5 text-xs opacity-55">Qty {{ item.count }}</p>
+              </div>
+              <p class="shrink-0 font-serif text-sm text-royal-950 dark:text-gold-200">
+                {{ item.price * item.count }} EGP
+              </p>
+            </div>
+          }
+
+          <div class="flex items-center justify-between p-5">
+            <p class="font-cinzel text-xs tracking-[0.2em] uppercase opacity-50">Total</p>
+            <p class="text-gold-gradient font-serif text-2xl">
+              {{ cartData()!.data.totalCartPrice }} EGP
+            </p>
+          </div>
+        </div>
+
+        <!-- Payment method -->
+        <h2
+          class="font-cinzel mt-8 mb-4 text-xs tracking-[0.2em] uppercase text-gold-600 dark:text-gold-400"
+        >
+          Payment Method
+        </h2>
+
+        <div class="grid grid-cols-2 gap-3">
+          <button
+            type="button"
+            (click)="selectPaymentMethod('cash')"
+            class="gold-glow-border flex flex-col items-center gap-2 rounded-2xl bg-white/50 p-4 text-center backdrop-blur-sm transition-colors dark:bg-royal-900/20"
+            [class.border-gold-500]="paymentMethod() === 'cash'"
+            [class.ring-2]="paymentMethod() === 'cash'"
+            [class.ring-gold-500/40]="paymentMethod() === 'cash'"
+          >
+            <i
+              class="pi pi-wallet text-lg"
+              [class.text-gold-600]="paymentMethod() === 'cash'"
+              [class.dark:text-gold-400]="paymentMethod() === 'cash'"
+              [class.opacity-40]="paymentMethod() !== 'cash'"
+              aria-hidden="true"
+            ></i>
+            <span class="text-xs font-medium text-royal-950 dark:text-gold-200"
+              >Cash on Delivery</span
+            >
+          </button>
+
+          <button
+            type="button"
+            (click)="selectPaymentMethod('card')"
+            class="gold-glow-border flex flex-col items-center gap-2 rounded-2xl bg-white/50 p-4 text-center backdrop-blur-sm transition-colors dark:bg-royal-900/20"
+            [class.border-gold-500]="paymentMethod() === 'card'"
+            [class.ring-2]="paymentMethod() === 'card'"
+            [class.ring-gold-500/40]="paymentMethod() === 'card'"
+          >
+            <i
+              class="pi pi-credit-card text-lg"
+              [class.text-gold-600]="paymentMethod() === 'card'"
+              [class.dark:text-gold-400]="paymentMethod() === 'card'"
+              [class.opacity-40]="paymentMethod() !== 'card'"
+              aria-hidden="true"
+            ></i>
+            <span class="text-xs font-medium text-royal-950 dark:text-gold-200"
+              >Card (Stripe)</span
+            >
+          </button>
+        </div>
+
+        <button
+          pButton
+          type="button"
+          [fluid]="true"
+          [disabled]="!selectedAddress() || isPlacingOrder()"
+          (click)="placeOrder()"
+          class="font-cinzel mt-6 rounded-full bg-gold-gradient py-3.5 text-xs tracking-[0.2em] text-royal-950 uppercase disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          @if (isPlacingOrder()) {
+            <i class="pi pi-spinner pi-spin" aria-hidden="true"></i>
+            {{ paymentMethod() === 'card' ? 'Redirecting to Stripe…' : 'Placing Order…' }}
+          } @else {
+            {{ paymentMethod() === 'card' ? 'Pay with Card' : 'Place Order' }}
+          }
+        </button>
+      </div>
+    </div>
+  }
+</section>
