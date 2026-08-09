@@ -1,71 +1,73 @@
+import { TranslationKey } from '../../../core/i18n/en';
+
 export interface IStatHighlight {
   icon: string;
   value: string;
-  label: string;
+  labelKey: TranslationKey;
 }
 
 export interface IIconFeature {
   icon: string;
-  title: string;
-  description: string;
+  titleKey: TranslationKey;
+  descriptionKey: TranslationKey;
 }
 
 export const AUTH_STAT_HIGHLIGHTS: readonly IStatHighlight[] = [
-  { icon: 'pi pi-users', value: '50K+', label: 'Happy customers' },
-  { icon: 'pi pi-box', value: '10K+', label: 'Premium products' },
-  { icon: 'pi pi-star', value: '4.9/5', label: 'Average rating' },
+  { icon: 'pi pi-users', value: '50K+', labelKey: 'auth.showcase.statsCustomers' },
+  { icon: 'pi pi-box', value: '10K+', labelKey: 'auth.showcase.statsProducts' },
+  { icon: 'pi pi-star', value: '4.9/5', labelKey: 'auth.showcase.statsRating' },
 ];
 
 export const AUTH_MEMBER_BENEFITS: readonly IIconFeature[] = [
   {
     icon: 'pi pi-percentage',
-    title: 'Member-only discounts',
-    description: 'Unlock exclusive pricing available only to registered members.',
+    titleKey: 'auth.showcase.discountsTitle',
+    descriptionKey: 'auth.showcase.discountsDescription',
   },
   {
     icon: 'pi pi-bolt',
-    title: 'Early access to drops',
-    description: 'Be the first to shop new arrivals and limited collections.',
+    titleKey: 'auth.showcase.earlyAccessTitle',
+    descriptionKey: 'auth.showcase.earlyAccessDescription',
   },
   {
     icon: 'pi pi-heart',
-    title: 'Wishlist & order tracking',
-    description: 'Save favorites and follow every order from checkout to delivery.',
+    titleKey: 'auth.showcase.wishlistTitle',
+    descriptionKey: 'auth.showcase.wishlistDescription',
   },
 ];
 
 export const AUTH_TRUST_BADGES: readonly IIconFeature[] = [
   {
     icon: 'pi pi-truck',
-    title: 'Fast Nationwide Delivery',
-    description: 'Every order arrives within 24–48 hours, anywhere in Egypt.',
+    titleKey: 'auth.showcase.deliveryTitle',
+    descriptionKey: 'auth.showcase.deliveryDescription',
   },
   {
     icon: 'pi pi-shield',
-    title: '100% Secure Payments',
-    description: 'Bank-level encryption protects every transaction you make.',
+    titleKey: 'auth.showcase.paymentsTitle',
+    descriptionKey: 'auth.showcase.paymentsDescription',
   },
   {
     icon: 'pi pi-verified',
-    title: 'Guaranteed Authentic',
-    description: 'Every product is backed by our genuine-item guarantee.',
+    titleKey: 'auth.showcase.authenticTitle',
+    descriptionKey: 'auth.showcase.authenticDescription',
   },
 ];
 
 export const AUTH_RESET_REASSURANCE: readonly IIconFeature[] = [
   {
     icon: 'pi pi-shield',
-    title: 'Bank-Level Security',
-    description: 'Your account and payment details stay fully encrypted, always.',
+    titleKey: 'auth.showcase.securityTitle',
+    descriptionKey: 'auth.showcase.securityDescription',
   },
   {
     icon: 'pi pi-envelope',
-    title: 'Verified by Email',
-    description: 'Reset codes are only ever sent to your registered email address.',
+    titleKey: 'auth.showcase.emailVerifyTitle',
+    descriptionKey: 'auth.showcase.emailVerifyDescription',
   },
   {
     icon: 'pi pi-clock',
-    title: 'Quick & Simple',
-    description: 'Regain access to your account in under a minute, no hassle.',
+    titleKey: 'auth.showcase.quickTitle',
+    descriptionKey: 'auth.showcase.quickDescription',
   },
 ];

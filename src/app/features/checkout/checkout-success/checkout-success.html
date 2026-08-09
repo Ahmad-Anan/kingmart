@@ -6,31 +6,28 @@
     @if (isChecking()) {
       <p-progress-spinner styleClass="w-9 h-9" strokeWidth="2.5" />
       <p class="font-cinzel text-xs tracking-[0.25em] uppercase opacity-50">
-        Confirming Your Order
+        {{ 'checkoutSuccess.confirming' | t }}
       </p>
     } @else if (recentOrder(); as order) {
       <i class="pi pi-check-circle text-5xl text-gold-500" aria-hidden="true"></i>
-      <p class="font-serif text-2xl text-royal-950 dark:text-gold-200">Order Confirmed</p>
+      <p class="font-serif text-2xl text-royal-950 dark:text-gold-200">{{ 'checkoutSuccess.orderConfirmed' | t }}</p>
       <p class="max-w-sm text-sm opacity-60">
-        We found your order — reference
-        <span class="font-mono opacity-90">{{ order._id }}</span>, total
-        <span class="opacity-90">{{ order.totalOrderPrice }} EGP</span>.
+        {{
+          'checkoutSuccess.foundOrder' | t: { ref: order._id, total: order.totalOrderPrice }
+        }}
       </p>
       <button
         type="button"
         (click)="goTo('/orders')"
         class="font-cinzel mt-4 rounded-full bg-gold-gradient px-8 py-3 text-xs tracking-[0.2em] text-royal-950 uppercase"
       >
-        View My Orders
+        {{ 'checkoutSuccess.viewMyOrders' | t }}
       </button>
     } @else {
       <i class="pi pi-info-circle text-5xl text-gold-500" aria-hidden="true"></i>
-      <p class="font-serif text-2xl text-royal-950 dark:text-gold-200">We're Not Sure Yet</p>
+      <p class="font-serif text-2xl text-royal-950 dark:text-gold-200">{{ 'checkoutSuccess.notSureTitle' | t }}</p>
       <p class="max-w-sm text-sm opacity-60">
-        You're back from the payment page, but we couldn't confirm a new order just yet. If you
-        completed the payment, it may take a moment to appear — check
-        <span class="font-semibold">My Orders</span> shortly. If you cancelled, your cart is still
-        saved and nothing was charged.
+        {{ 'checkoutSuccess.notSureDescription' | t }}
       </p>
       <div class="mt-4 flex flex-col items-center gap-3 sm:flex-row">
         <button
@@ -38,14 +35,14 @@
           (click)="goTo('/orders')"
           class="font-cinzel rounded-full bg-gold-gradient px-8 py-3 text-xs tracking-[0.2em] text-royal-950 uppercase"
         >
-          Check My Orders
+          {{ 'checkoutSuccess.checkMyOrders' | t }}
         </button>
         <button
           type="button"
           (click)="goTo('/cart')"
           class="font-cinzel text-xs tracking-[0.2em] uppercase text-gold-600 underline underline-offset-4 transition-colors hover:text-gold-500 dark:text-gold-400 dark:hover:text-gold-300"
         >
-          Back to Cart
+          {{ 'checkoutSuccess.backToCart' | t }}
         </button>
       </div>
     }

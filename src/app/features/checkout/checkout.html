@@ -3,9 +3,9 @@
   <!-- Header -->
   <header class="mb-12">
     <p class="font-cinzel text-xs tracking-[0.3em] uppercase text-gold-600 dark:text-gold-400">
-      Final Step
+      {{ 'checkout.eyebrow' | t }}
     </p>
-    <h1 class="mt-3 font-serif text-4xl text-royal-950 dark:text-gold-200">Checkout</h1>
+    <h1 class="mt-3 font-serif text-4xl text-royal-950 dark:text-gold-200">{{ 'checkout.title' | t }}</h1>
     <div class="mt-6 h-px w-16 bg-gold-500/50 dark:bg-gold-400/60"></div>
   </header>
 
@@ -14,7 +14,7 @@
     <div class="flex flex-col items-center gap-4 py-28">
       <p-progress-spinner styleClass="w-9 h-9" strokeWidth="2.5" />
       <p class="font-cinzel text-xs tracking-[0.25em] uppercase opacity-50">
-        Preparing Your Checkout
+        {{ 'checkout.preparing' | t }}
       </p>
     </div>
   }
@@ -25,24 +25,25 @@
       class="gold-glow-border flex flex-col items-center gap-5 rounded-2xl bg-white/50 py-28 text-center backdrop-blur-sm dark:bg-royal-900/20"
     >
       <i class="pi pi-check-circle text-5xl text-gold-500" aria-hidden="true"></i>
-      <p class="font-serif text-2xl text-royal-950 dark:text-gold-200">Order Placed Successfully</p>
+      <p class="font-serif text-2xl text-royal-950 dark:text-gold-200">{{ 'checkout.orderPlaced' | t }}</p>
       <p class="max-w-sm text-sm opacity-60">
-        Thank you for your order. A confirmation has been recorded — order reference
-        <span class="font-mono opacity-90">{{ order._id }}</span>.
+        {{ 'checkout.orderPlacedDescription' | t: { ref: order._id } }}
       </p>
-      <p class="font-serif text-3xl text-gold-gradient">{{ order.totalOrderPrice }} EGP</p>
+      <p class="font-serif text-3xl text-gold-gradient">
+        {{ order.totalOrderPrice }} {{ 'common.egp' | t }}
+      </p>
       <div class="mt-4 flex flex-col items-center gap-3 sm:flex-row">
         <a
           routerLink="/orders"
           class="font-cinzel rounded-full bg-gold-gradient px-8 py-3 text-xs tracking-[0.2em] text-royal-950 uppercase"
         >
-          View My Orders
+          {{ 'checkout.viewMyOrders' | t }}
         </a>
         <a
           routerLink="/shop"
           class="font-cinzel text-xs tracking-[0.2em] uppercase text-gold-600 underline underline-offset-4 transition-colors hover:text-gold-500 dark:text-gold-400 dark:hover:text-gold-300"
         >
-          Continue Shopping
+          {{ 'common.continueShopping' | t }}
         </a>
       </div>
     </div>
@@ -53,12 +54,12 @@
     <div
       class="gold-glow-border flex flex-col items-center gap-5 rounded-2xl bg-white/50 py-28 text-center backdrop-blur-sm dark:bg-royal-900/20"
     >
-      <p class="font-serif text-lg italic opacity-70">Your cart is empty.</p>
+      <p class="font-serif text-lg italic opacity-70">{{ 'checkout.emptyCart' | t }}</p>
       <a
         routerLink="/shop"
         class="font-cinzel text-xs tracking-[0.2em] uppercase text-gold-600 underline underline-offset-4 transition-colors hover:text-gold-500 dark:text-gold-400 dark:hover:text-gold-300"
       >
-        Browse the Collection
+        {{ 'common.browseCollection' | t }}
       </a>
     </div>
   }
@@ -73,7 +74,7 @@
       <!-- Shipping address -->
       <div class="lg:col-span-3">
         <h2 class="font-cinzel mb-4 text-xs tracking-[0.2em] uppercase text-gold-600 dark:text-gold-400">
-          Shipping Address
+          {{ 'checkout.shippingAddress' | t }}
         </h2>
 
         @if (addresses().length === 0) {
@@ -81,13 +82,13 @@
             class="gold-glow-border flex flex-col items-center gap-4 rounded-2xl bg-white/50 p-10 text-center backdrop-blur-sm dark:bg-royal-900/20"
           >
             <p class="text-sm opacity-70">
-              You don't have any saved addresses yet. Add one to continue.
+              {{ 'checkout.noAddresses' | t }}
             </p>
             <a
               routerLink="/addresses"
               class="font-cinzel rounded-full bg-gold-gradient px-6 py-2.5 text-xs tracking-[0.2em] text-royal-950 uppercase"
             >
-              Add an Address
+              {{ 'checkout.addAnAddress' | t }}
             </a>
           </div>
         } @else {
@@ -125,7 +126,7 @@
               class="flex w-full items-center justify-center gap-2 rounded-2xl border border-dashed border-gold-500/40 p-4 text-sm font-medium text-gold-600 transition-colors hover:bg-gold-300/10 dark:text-gold-400"
             >
               <i class="pi pi-plus text-xs" aria-hidden="true"></i>
-              Add New Address
+              {{ 'checkout.addNewAddress' | t }}
             </a>
           </div>
         }
@@ -134,7 +135,7 @@
       <!-- Order summary -->
       <div class="lg:col-span-2">
         <h2 class="font-cinzel mb-4 text-xs tracking-[0.2em] uppercase text-gold-600 dark:text-gold-400">
-          Order Summary
+          {{ 'checkout.orderSummary' | t }}
         </h2>
 
         <div
@@ -151,18 +152,18 @@
                 <p class="truncate text-sm text-royal-950 dark:text-gold-200">
                   {{ item.product.title }}
                 </p>
-                <p class="mt-0.5 text-xs opacity-55">Qty {{ item.count }}</p>
+                <p class="mt-0.5 text-xs opacity-55">{{ 'checkout.qty' | t: { count: item.count } }}</p>
               </div>
               <p class="shrink-0 font-serif text-sm text-royal-950 dark:text-gold-200">
-                {{ item.price * item.count }} EGP
+                {{ item.price * item.count }} {{ 'common.egp' | t }}
               </p>
             </div>
           }
 
           <div class="flex items-center justify-between p-5">
-            <p class="font-cinzel text-xs tracking-[0.2em] uppercase opacity-50">Total</p>
+            <p class="font-cinzel text-xs tracking-[0.2em] uppercase opacity-50">{{ 'checkout.total' | t }}</p>
             <p class="text-gold-gradient font-serif text-2xl">
-              {{ cartData()!.data.totalCartPrice }} EGP
+              {{ cartData()!.data.totalCartPrice }} {{ 'common.egp' | t }}
             </p>
           </div>
         </div>
@@ -171,7 +172,7 @@
         <h2
           class="font-cinzel mt-8 mb-4 text-xs tracking-[0.2em] uppercase text-gold-600 dark:text-gold-400"
         >
-          Payment Method
+          {{ 'checkout.paymentMethod' | t }}
         </h2>
 
         <div class="grid grid-cols-2 gap-3">
@@ -191,7 +192,7 @@
               aria-hidden="true"
             ></i>
             <span class="text-xs font-medium text-royal-950 dark:text-gold-200"
-              >Cash on Delivery</span
+              >{{ 'checkout.cashOnDelivery' | t }}</span
             >
           </button>
 
@@ -211,7 +212,7 @@
               aria-hidden="true"
             ></i>
             <span class="text-xs font-medium text-royal-950 dark:text-gold-200"
-              >Card (Stripe)</span
+              >{{ 'checkout.cardStripe' | t }}</span
             >
           </button>
         </div>
@@ -226,9 +227,9 @@
         >
           @if (isPlacingOrder()) {
             <i class="pi pi-spinner pi-spin" aria-hidden="true"></i>
-            {{ paymentMethod() === 'card' ? 'Redirecting to Stripe…' : 'Placing Order…' }}
+            {{ (paymentMethod() === 'card' ? 'checkout.redirectingToStripe' : 'checkout.placingOrder') | t }}
           } @else {
-            {{ paymentMethod() === 'card' ? 'Pay with Card' : 'Place Order' }}
+            {{ (paymentMethod() === 'card' ? 'checkout.payWithCard' : 'checkout.placeOrder') | t }}
           }
         </button>
       </div>

@@ -5,10 +5,11 @@ import { ButtonModule } from 'primeng/button';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ICartProduct } from '../../core/models/cart';
 import { Cart as CartService } from '../../core/services/cart/cart';
+import { TranslatePipe } from '../../shared/pipes/translate-pipe';
 
 @Component({
   selector: 'app-cart',
-  imports: [ButtonModule, ProgressSpinnerModule, RouterLink],
+  imports: [ButtonModule, ProgressSpinnerModule, RouterLink, TranslatePipe],
   templateUrl: './cart.html',
   styleUrl: './cart.css',
 })

@@ -6,12 +6,13 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { IOrder } from '../../../core/models/order';
 import { AuthService } from '../../../core/services/auth/auth';
 import { OrderService } from '../../../core/services/order/order';
+import { TranslatePipe } from '../../../shared/pipes/translate-pipe';
 
 const RECENT_ORDER_WINDOW_MS = 10 * 60 * 1000;
 
 @Component({
   selector: 'app-checkout-success',
-  imports: [ProgressSpinnerModule],
+  imports: [ProgressSpinnerModule, TranslatePipe],
   templateUrl: './checkout-success.html',
   styleUrl: './checkout-success.css',
 })

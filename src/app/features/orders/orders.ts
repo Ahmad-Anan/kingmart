@@ -7,11 +7,12 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { IOrder } from '../../core/models/order';
 import { AuthService } from '../../core/services/auth/auth';
 import { OrderService } from '../../core/services/order/order';
+import { TranslatePipe } from '../../shared/pipes/translate-pipe';
 
 @Component({
   selector: 'app-orders',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DatePipe, RouterLink, ProgressSpinnerModule],
+  imports: [DatePipe, RouterLink, ProgressSpinnerModule, TranslatePipe],
   templateUrl: './orders.html',
   styleUrl: './orders.css',
 })

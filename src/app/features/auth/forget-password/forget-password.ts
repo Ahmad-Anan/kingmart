@@ -18,6 +18,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 
 import { AuthService } from '../../../core/services/auth/auth';
+import { LanguageService } from '../../../core/services/language/language';
+import { TranslatePipe } from '../../../shared/pipes/translate-pipe';
 import { AUTH_RESET_REASSURANCE } from '../auth-interface/auth-showcase.data';
 
 type Step = 'email' | 'code' | 'password' | 'done';
@@ -33,6 +35,7 @@ type Step = 'email' | 'code' | 'password' | 'done';
     InputPasswordModule,
     InputTextModule,
     MessageModule,
+    TranslatePipe,
   ],
   templateUrl: './forget-password.html',
   styleUrl: './forget-password.css',
@@ -40,6 +43,7 @@ type Step = 'email' | 'code' | 'password' | 'done';
 export class ForgetPassword {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly languageService = inject(LanguageService);
 
   protected readonly step = signal<Step>('email');
   protected readonly serverError = signal<string | null>(null);
@@ -57,8 +61,8 @@ export class ForgetPassword {
   protected readonly emailForm = form(
     this.emailModel,
     (p) => {
-      required(p.email, { message: 'Email is required' });
-      email(p.email, { message: 'Enter a valid email address' });
+      required(p.email, { message: () => this.languageService.translate('validation.emailRequired') });
+      email(p.email, { message: () => this.languageService.translate('validation.emailInvalid') });
     },
     {
       submission: {
@@ -84,8 +88,12 @@ export class ForgetPassword {
   protected readonly codeForm = form(
     this.codeModel,
     (p) => {
-      required(p.resetCode, { message: 'The reset code is required' });
-      minLength(p.resetCode, 6, { message: 'Enter the full 6-digit code' });
+      required(p.resetCode, {
+        message: () => this.languageService.translate('validation.resetCodeRequired'),
+      });
+      minLength(p.resetCode, 6, {
+        message: () => this.languageService.translate('validation.resetCodeLength'),
+      });
     },
     {
       submission: {
@@ -110,14 +118,23 @@ export class ForgetPassword {
   protected readonly passwordForm = form(
     this.passwordModel,
     (p) => {
-      required(p.newPassword, { message: 'New password is required' });
-      minLength(p.newPassword, 6, { message: 'Password must be at least 6 characters' });
+      required(p.newPassword, {
+        message: () => this.languageService.translate('validation.newPasswordRequired'),
+      });
+      minLength(p.newPassword, 6, {
+        message: () => this.languageService.translate('validation.passwordMinLength'),
+      });
 
-      required(p.confirmPassword, { message: 'Please confirm your new password' });
+      required(p.confirmPassword, {
+        message: () => this.languageService.translate('validation.confirmNewPasswordRequired'),
+      });
       validate(p.confirmPassword, ({ value, valueOf }) =>
         value() === valueOf(p.newPassword)
           ? undefined
-          : { kind: 'mismatch', message: 'Passwords do not match' },
+          : {
+              kind: 'mismatch',
+              message: this.languageService.translate('validation.passwordMismatch'),
+            },
       );
     },
     {
@@ -157,6 +174,6 @@ export class ForgetPassword {
     if (err instanceof HttpErrorResponse && typeof err.error?.message === 'string') {
       return err.error.message;
     }
-    return 'Something went wrong. Please try again.';
+    return this.languageService.translate('auth.forgetPassword.genericError');
   }
 }

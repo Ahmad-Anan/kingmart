@@ -10,14 +10,14 @@
       >
         <i class="pi pi-phone text-gold-600 dark:text-gold-500" aria-hidden="true"></i>
         <span>
-          Concierge:
+          {{ 'navbar.topBar.concierge' | t }}
           <strong class="font-semibold text-royal-950 dark:text-white">+966 50 000 0000</strong>
         </span>
       </a>
       <span class="hidden h-3 w-px bg-gold-500/30 md:inline-block"></span>
       <span class="hidden items-center gap-1.5 tracking-wide md:flex">
         <i class="pi pi-clock text-gold-600 dark:text-gold-500" aria-hidden="true"></i>
-        24/7 VIP Global Assistance
+        {{ 'navbar.topBar.vipAssistance' | t }}
       </span>
     </div>
 
@@ -26,39 +26,41 @@
         class="hidden items-center gap-1.5 font-medium tracking-wide text-royal-900 dark:text-gold-300 sm:flex"
       >
         <i class="pi pi-sparkles text-gold-600 dark:text-gold-400" aria-hidden="true"></i>
-        Complimentary White-Glove Express Delivery
+        {{ 'navbar.topBar.whiteGlove' | t }}
       </span>
       <span
         class="rounded-full border border-gold-600/40 bg-gold-500/10 px-3 py-0.5 text-[10px] font-extrabold uppercase tracking-widest text-royal-950 shadow-sm dark:border-gold-500/50 dark:bg-gold-500/15 dark:text-gold-400"
       >
-        Royal Edition
+        {{ 'navbar.topBar.royalEdition' | t }}
       </span>
       <div
         class="flex items-center gap-3 border-s border-gold-500/30 ps-3 text-[11px] font-medium tracking-wide"
       >
         @if (isLoggedIn()) {
-          <span class="text-royal-900 dark:text-gold-300">Welcome, {{ currentUser()?.name }}</span>
+          <span class="text-royal-900 dark:text-gold-300">{{
+            'navbar.topBar.welcome' | t: { name: currentUser()?.name ?? '' }
+          }}</span>
           <span class="h-3 w-px bg-gold-500/30"></span>
           <button
             type="button"
             (click)="signOut()"
             class="transition-colors hover:text-gold-600 dark:hover:text-gold-400"
           >
-            Sign Out
+            {{ 'navbar.topBar.signOut' | t }}
           </button>
         } @else {
           <a
             routerLink="/login"
             class="transition-colors hover:text-gold-600 dark:hover:text-gold-400"
           >
-            Sign In
+            {{ 'navbar.topBar.signIn' | t }}
           </a>
           <span class="h-3 w-px bg-gold-500/30"></span>
           <a
             routerLink="/register"
             class="transition-colors hover:text-gold-600 dark:hover:text-gold-400"
           >
-            Sign Up
+            {{ 'navbar.topBar.signUp' | t }}
           </a>
         }
       </div>
@@ -105,7 +107,7 @@
         ></i>
         <input
           type="text"
-          placeholder="Search luxury collections, fine timepieces..."
+          [placeholder]="'navbar.searchPlaceholder' | t"
           class="w-full bg-transparent text-sm font-medium text-royal-950 placeholder-royal-950/50 outline-none dark:text-white dark:placeholder-gold-300/40"
         />
       </div>
@@ -120,7 +122,7 @@
         class="flex items-center gap-2 rounded-lg px-3.5 py-2 text-sm font-medium tracking-wide text-royal-950 transition-all hover:bg-gold-300/20 hover:text-gold-600 dark:text-white/90 dark:hover:bg-royal-900/60 dark:hover:text-gold-400"
       >
         <i class="pi pi-home text-gold-600 dark:text-gold-400" aria-hidden="true"></i>
-        <span>Home</span>
+        <span>{{ 'navbar.home' | t }}</span>
       </a>
 
       <a
@@ -129,7 +131,7 @@
         class="flex items-center gap-2 rounded-lg px-3.5 py-2 text-sm font-medium tracking-wide text-royal-950 transition-all hover:bg-gold-300/20 hover:text-gold-600 dark:text-white/90 dark:hover:bg-royal-900/60 dark:hover:text-gold-400"
       >
         <i class="pi pi-shopping-bag text-gold-600 dark:text-gold-400" aria-hidden="true"></i>
-        <span>Shop</span>
+        <span>{{ 'navbar.shop' | t }}</span>
       </a>
 
       <a
@@ -138,7 +140,7 @@
         class="flex items-center gap-2 rounded-lg px-3.5 py-2 text-sm font-medium tracking-wide text-royal-950 transition-all hover:bg-gold-300/20 hover:text-gold-600 dark:text-white/90 dark:hover:bg-royal-900/60 dark:hover:text-gold-400"
       >
         <i class="pi pi-tag text-gold-600 dark:text-gold-400" aria-hidden="true"></i>
-        <span>Brands</span>
+        <span>{{ 'navbar.brands' | t }}</span>
       </a>
 
       <!-- Categories Direct Link (Desktop) -->
@@ -148,7 +150,7 @@
         class="flex items-center gap-2 rounded-lg px-3.5 py-2 text-sm font-medium tracking-wide text-royal-950 transition-all hover:bg-gold-300/20 hover:text-gold-600 dark:text-white/90 dark:hover:bg-royal-900/60 dark:hover:text-gold-400"
       >
         <i class="pi pi-th-large text-gold-600 dark:text-gold-400" aria-hidden="true"></i>
-        <span>Categories</span>
+        <span>{{ 'navbar.categories' | t }}</span>
       </a>
     </div>
 
@@ -157,13 +159,13 @@
       <button
         routerLink="/wishlist"
         type="button"
-        aria-label="Wishlist"
+        [attr.aria-label]="'navbar.wishlist' | t"
         class="relative flex h-10 w-10 items-center justify-center rounded-xl border border-gold-500/30 bg-gold-300/10 text-gold-600 transition-all hover:border-gold-600 hover:bg-gold-300/30 dark:bg-royal-900/50 dark:text-gold-400 dark:hover:border-gold-400 dark:hover:bg-royal-900"
       >
         <i class="pi pi-heart" aria-hidden="true"></i>
         @if (wishlistCount() > 0) {
           <span
-            class="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-gold-600 text-[10px] font-bold text-white shadow-md dark:bg-gold-500 dark:text-royal-950"
+            class="absolute -end-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-gold-600 text-[10px] font-bold text-white shadow-md dark:bg-gold-500 dark:text-royal-950"
           >
             {{ wishlistCount() }}
           </span>
@@ -173,13 +175,13 @@
       <button
         routerLink="/cart"
         type="button"
-        aria-label="Cart"
+        [attr.aria-label]="'navbar.cart' | t"
         class="relative flex h-10 w-10 items-center justify-center rounded-xl border border-gold-500/30 bg-gold-300/10 text-gold-600 transition-all hover:border-gold-600 hover:bg-gold-300/30 dark:bg-royal-900/50 dark:text-gold-400 dark:hover:border-gold-400 dark:hover:bg-royal-900"
       >
         <i class="pi pi-shopping-cart" aria-hidden="true"></i>
         @if (cartCount() > 0) {
           <span
-            class="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-gold-600 text-[10px] font-bold text-white shadow-md dark:bg-gold-500 dark:text-royal-950"
+            class="absolute -end-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-gold-600 text-[10px] font-bold text-white shadow-md dark:bg-gold-500 dark:text-royal-950"
           >
             {{ cartCount() }}
           </span>
@@ -190,7 +192,7 @@
       <button
         type="button"
         (click)="toggleTheme()"
-        aria-label="Toggle theme"
+        [attr.aria-label]="'navbar.toggleTheme' | t"
         class="flex h-10 w-10 items-center justify-center rounded-xl border border-gold-500/30 bg-gold-300/10 text-gold-600 transition-all hover:border-gold-600 hover:bg-gold-300/30 dark:bg-royal-900/50 dark:text-gold-400 dark:hover:border-gold-400 dark:hover:bg-royal-900"
       >
         <i
@@ -199,6 +201,17 @@
           [class.pi-moon]="!isDarkMode()"
           aria-hidden="true"
         ></i>
+      </button>
+
+      <!-- Toggle Language Button -->
+      <button
+        type="button"
+        (click)="toggleLanguage()"
+        [attr.aria-label]="'navbar.toggleLanguage' | t"
+        class="flex h-10 items-center gap-1.5 rounded-xl border border-gold-500/30 bg-gold-300/10 px-3 text-xs font-bold text-gold-600 transition-all hover:border-gold-600 hover:bg-gold-300/30 dark:bg-royal-900/50 dark:text-gold-400 dark:hover:border-gold-400 dark:hover:bg-royal-900"
+      >
+        <i class="pi pi-language text-sm" aria-hidden="true"></i>
+        <span>{{ targetLocaleLabel() }}</span>
       </button>
 
       <span class="h-6 w-px bg-gold-500/30"></span>
@@ -236,7 +249,7 @@
               class="flex items-center gap-2 rounded-lg px-3 py-2 text-start text-sm text-royal-950 transition-colors hover:bg-gold-300/20 dark:text-white dark:hover:bg-royal-900/60"
             >
               <i class="pi pi-receipt" aria-hidden="true"></i>
-              My Orders
+              {{ 'navbar.myOrders' | t }}
             </a>
             <button
               type="button"
@@ -244,7 +257,7 @@
               class="flex items-center gap-2 rounded-lg px-3 py-2 text-start text-sm text-red-600 transition-colors hover:bg-red-50 dark:hover:bg-red-500/10"
             >
               <i class="pi pi-sign-out" aria-hidden="true"></i>
-              Sign Out
+              {{ 'navbar.signOut' | t }}
             </button>
           </div>
         </p-popover>
@@ -254,7 +267,7 @@
           class="flex items-center gap-2 rounded-xl border border-gold-600/40 bg-gold-500 px-4 py-2 text-sm font-bold text-royal-950 shadow-lg shadow-gold-500/20 transition-all duration-300 hover:brightness-110 dark:border-gold-400/50"
         >
           <i class="pi pi-user" aria-hidden="true"></i>
-          <span>Sign Up</span>
+          <span>{{ 'navbar.signUp' | t }}</span>
         </a>
       }
     </div>
@@ -264,7 +277,7 @@
       <button
         type="button"
         (click)="toggleTheme()"
-        aria-label="Toggle theme mobile"
+        [attr.aria-label]="'navbar.toggleTheme' | t"
         class="flex h-11 w-11 items-center justify-center rounded-xl border border-gold-500/40 bg-gold-300/20 text-gold-600 shadow-md transition-all active:scale-95 dark:bg-royal-900/70 dark:text-gold-400"
       >
         <i
@@ -275,10 +288,21 @@
         ></i>
       </button>
 
+      <!-- Toggle Language Button (Mobile) -->
+      <button
+        type="button"
+        (click)="toggleLanguage()"
+        [attr.aria-label]="'navbar.toggleLanguage' | t"
+        class="flex h-11 items-center gap-1 rounded-xl border border-gold-500/40 bg-gold-300/20 px-2.5 text-xs font-bold text-gold-600 shadow-md transition-all active:scale-95 dark:bg-royal-900/70 dark:text-gold-400"
+      >
+        <i class="pi pi-language text-base" aria-hidden="true"></i>
+        <span>{{ targetLocaleLabel() }}</span>
+      </button>
+
       <button
         type="button"
         (click)="toggleMobileMenu()"
-        aria-label="Toggle menu"
+        [attr.aria-label]="'navbar.toggleMenu' | t"
         class="flex h-11 w-11 items-center justify-center rounded-xl border border-gold-500/40 bg-gold-300/20 text-gold-600 shadow-md transition-all active:scale-95 dark:bg-royal-900/70 dark:text-gold-400"
       >
         <i
@@ -319,7 +343,7 @@
         <button
           type="button"
           (click)="closeMobileMenu()"
-          aria-label="Close menu"
+          [attr.aria-label]="'navbar.closeMenu' | t"
           class="flex h-8 w-8 items-center justify-center rounded-lg bg-gold-300/20 text-gold-600 dark:bg-royal-900 dark:text-gold-400"
         >
           <i class="pi pi-times" aria-hidden="true"></i>
@@ -355,7 +379,7 @@
         ></i>
         <input
           type="text"
-          placeholder="Search luxury products..."
+          [placeholder]="'navbar.searchPlaceholderMobile' | t"
           class="w-full bg-transparent text-sm text-royal-950 placeholder-royal-950/50 outline-none dark:text-white dark:placeholder-gold-300/40"
         />
       </div>
@@ -368,7 +392,7 @@
           class="flex items-center gap-3 rounded-xl px-4 py-3 font-medium transition-all hover:bg-gold-300/20 hover:text-gold-600 dark:hover:bg-royal-900/80 dark:hover:text-gold-400"
         >
           <i class="pi pi-home text-gold-600 dark:text-gold-400" aria-hidden="true"></i>
-          <span>Home</span>
+          <span>{{ 'navbar.home' | t }}</span>
         </a>
 
         <a
@@ -377,7 +401,7 @@
           class="flex items-center gap-3 rounded-xl px-4 py-3 font-medium transition-all hover:bg-gold-300/20 hover:text-gold-600 dark:hover:bg-royal-900/80 dark:hover:text-gold-400"
         >
           <i class="pi pi-shopping-bag text-gold-600 dark:text-gold-400" aria-hidden="true"></i>
-          <span>Shop</span>
+          <span>{{ 'navbar.shop' | t }}</span>
         </a>
 
         <a
@@ -386,7 +410,7 @@
           class="flex items-center gap-3 rounded-xl px-4 py-3 font-medium transition-all hover:bg-gold-300/20 hover:text-gold-600 dark:hover:bg-royal-900/80 dark:hover:text-gold-400"
         >
           <i class="pi pi-tag text-gold-600 dark:text-gold-400" aria-hidden="true"></i>
-          <span>Brands</span>
+          <span>{{ 'navbar.brands' | t }}</span>
         </a>
 
         <!-- Categories Direct Link (Mobile) -->
@@ -396,7 +420,7 @@
           class="flex items-center gap-3 rounded-xl px-4 py-3 font-medium transition-all hover:bg-gold-300/20 hover:text-gold-600 dark:hover:bg-royal-900/80 dark:hover:text-gold-400"
         >
           <i class="pi pi-th-large text-gold-600 dark:text-gold-400" aria-hidden="true"></i>
-          <span>Categories</span>
+          <span>{{ 'navbar.categories' | t }}</span>
         </a>
 
         <!-- Auth Links Mobile -->
@@ -408,7 +432,7 @@
               class="mb-2 flex items-center gap-3 rounded-xl px-4 py-3 font-medium transition-all hover:bg-gold-300/20 hover:text-gold-600 dark:hover:bg-royal-900/80 dark:hover:text-gold-400"
             >
               <i class="pi pi-receipt text-gold-600 dark:text-gold-400" aria-hidden="true"></i>
-              <span>My Orders</span>
+              <span>{{ 'navbar.myOrders' | t }}</span>
             </a>
             <button
               type="button"
@@ -416,7 +440,7 @@
               class="flex w-full items-center justify-center gap-2 rounded-xl border border-red-500/30 px-4 py-2.5 text-sm font-medium text-red-600 transition-all hover:bg-red-50 dark:hover:bg-red-500/10"
             >
               <i class="pi pi-sign-out" aria-hidden="true"></i>
-              Sign Out
+              {{ 'navbar.signOut' | t }}
             </button>
           } @else {
             <div class="flex items-center gap-2">
@@ -425,14 +449,14 @@
                 (click)="closeMobileMenu()"
                 class="flex flex-1 items-center justify-center rounded-xl border border-gold-500/30 px-4 py-2.5 text-sm font-medium transition-all hover:bg-gold-300/20 hover:text-gold-600 dark:hover:bg-royal-900/80 dark:hover:text-gold-400"
               >
-                Sign In
+                {{ 'navbar.signIn' | t }}
               </a>
               <a
                 routerLink="/register"
                 (click)="closeMobileMenu()"
                 class="flex flex-1 items-center justify-center rounded-xl border border-gold-500/30 px-4 py-2.5 text-sm font-medium transition-all hover:bg-gold-300/20 hover:text-gold-600 dark:hover:bg-royal-900/80 dark:hover:text-gold-400"
               >
-                Sign Up
+                {{ 'navbar.signUp' | t }}
               </a>
             </div>
           }

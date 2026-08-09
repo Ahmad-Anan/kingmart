@@ -7,19 +7,19 @@
     <span
       class="inline-block text-[11px] font-semibold uppercase tracking-[0.35em] text-neutral-500 dark:text-neutral-400 mb-4 font-sans"
     >
-      Most Coveted
+      {{ 'home.productsSection.eyebrow' | t }}
     </span>
     <h2
       class="font-serif text-4xl sm:text-5xl font-light tracking-tight text-neutral-900 dark:text-white"
     >
-      Signature <span class="italic font-normal">Selections</span>
+      {{ 'home.productsSection.title' | t }}
+      <span class="italic font-normal">{{ 'home.productsSection.titleItalic' | t }}</span>
     </h2>
     <div class="w-12 h-px bg-neutral-300 dark:bg-neutral-800 mx-auto mt-6 mb-6"></div>
     <p
       class="text-sm text-neutral-600 dark:text-neutral-400 font-sans tracking-wide leading-relaxed font-light"
     >
-      A quietly curated edit where clarity of design meets the finest detail — an experience worth
-      savoring.
+      {{ 'home.productsSection.description' | t }}
     </p>
   </div>
 
@@ -28,13 +28,13 @@
     <div
       class="flex flex-col items-center justify-center py-32"
       role="status"
-      aria-label="Preparing the selection"
+      [attr.aria-label]="'home.productsSection.preparing' | t"
     >
       <div
         class="w-12 h-12 rounded-full border border-neutral-300 dark:border-neutral-700 border-t-neutral-900 dark:border-t-white animate-spin mb-6"
       ></div>
       <p class="text-xs font-mono tracking-[0.2em] text-neutral-400 uppercase">
-        Preparing the selection...
+        {{ 'home.productsSection.preparing' | t }}
       </p>
     </div>
   }
@@ -46,9 +46,9 @@
       role="alert"
     >
       <p class="font-serif text-base font-normal tracking-wide">
-        Unable to display products right now.
+        {{ 'home.productsSection.loadError' | t }}
       </p>
-      <p class="text-xs mt-2 text-neutral-400">Please try again later.</p>
+      <p class="text-xs mt-2 text-neutral-400">{{ 'home.productsSection.tryAgainLater' | t }}</p>
     </div>
   }
 
@@ -78,7 +78,8 @@
             <button
               type="button"
               [attr.aria-label]="
-                isWishlisted(product._id) ? 'Remove from wishlist' : 'Add to wishlist'
+                (isWishlisted(product._id) ? 'common.removeFromWishlist' : 'common.addToWishlist')
+                  | t
               "
               [disabled]="togglingWishlistId() === product._id"
               (click)="toggleWishlist($event, product._id)"
@@ -113,7 +114,12 @@
                     [class.pi-spinner]="addingProductId() === product._id"
                     aria-hidden="true"
                   ></i>
-                  <span>{{ addingProductId() === product._id ? 'Adding…' : 'Add to Bag' }}</span>
+                  <span>{{
+                    (addingProductId() === product._id
+                      ? 'home.productsSection.adding'
+                      : 'home.productsSection.addToBag'
+                    ) | t
+                  }}</span>
                 </button>
               } @else {
                 <button
@@ -121,7 +127,7 @@
                   disabled
                   class="pointer-events-none flex w-full cursor-not-allowed items-center justify-center gap-2 rounded-md bg-neutral-200 dark:bg-neutral-800 py-2.5 text-[11px] font-medium tracking-widest text-neutral-400 dark:text-neutral-600 shadow-none"
                 >
-                  <span>Currently Unavailable</span>
+                  <span>{{ 'home.productsSection.unavailable' | t }}</span>
                 </button>
               }
             </div>
@@ -180,7 +186,7 @@
       } @empty {
         <div class="col-span-full py-24 text-center">
           <p class="font-serif text-lg text-neutral-400 font-light">
-            No items available in this section.
+            {{ 'home.productsSection.empty' | t }}
           </p>
         </div>
       }
@@ -192,7 +198,7 @@
         routerLink="/shop"
         class="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.25em] text-neutral-700 dark:text-neutral-300 border-b border-neutral-300 dark:border-neutral-700 pb-1 transition-colors hover:text-neutral-900 dark:hover:text-white hover:border-neutral-900 dark:hover:border-white"
       >
-        View All Products
+        {{ 'home.productsSection.viewAll' | t }}
         <i class="pi pi-arrow-left text-[10px]" aria-hidden="true"></i>
       </a>
     </div>

@@ -18,14 +18,14 @@
 
         <div class="mb-8 text-center lg:text-start">
           <h2 class="font-serif text-3xl font-bold text-royal-950 dark:text-white">
-            Create Your Account
+            {{ 'auth.register.title' | t }}
           </h2>
           <p class="mt-2 text-sm text-royal-950/60 dark:text-white/60">
-            Already a member?
+            {{ 'auth.register.alreadyMember' | t }}
             <a
               routerLink="/login"
               class="font-semibold text-gold-600 hover:underline dark:text-gold-400"
-              >Sign in instead</a
+              >{{ 'auth.register.signInInstead' | t }}</a
             >
           </p>
         </div>
@@ -40,7 +40,7 @@
             <label
               for="register-name"
               class="mb-1.5 block text-sm font-medium text-royal-950/80 dark:text-white/80"
-              >Full Name</label
+              >{{ 'auth.register.fullNameLabel' | t }}</label
             >
             <div class="relative">
               <i
@@ -69,7 +69,7 @@
             <label
               for="register-email"
               class="mb-1.5 block text-sm font-medium text-royal-950/80 dark:text-white/80"
-              >Email Address</label
+              >{{ 'auth.register.emailLabel' | t }}</label
             >
             <div class="relative">
               <i
@@ -98,7 +98,7 @@
             <label
               for="register-phone"
               class="mb-1.5 block text-sm font-medium text-royal-950/80 dark:text-white/80"
-              >Phone Number</label
+              >{{ 'auth.register.phoneLabel' | t }}</label
             >
             <div class="relative">
               <i
@@ -127,7 +127,7 @@
             <label
               for="register-password"
               class="mb-1.5 block text-sm font-medium text-royal-950/80 dark:text-white/80"
-              >Password</label
+              >{{ 'auth.register.passwordLabel' | t }}</label
             >
             <div class="relative">
               <i
@@ -147,7 +147,7 @@
                 type="button"
                 class="absolute inset-e-3 top-1/2 -translate-y-1/2 text-royal-950/40 hover:text-gold-600 dark:text-white/40 dark:hover:text-gold-400"
                 (click)="hidePassword.set(!hidePassword())"
-                [attr.aria-label]="hidePassword() ? 'Show password' : 'Hide password'"
+                [attr.aria-label]="(hidePassword() ? 'auth.login.showPassword' : 'auth.login.hidePassword') | t"
               >
                 <i
                   [class]="hidePassword() ? 'pi pi-eye' : 'pi pi-eye-slash'"
@@ -167,7 +167,7 @@
             <label
               for="register-re-password"
               class="mb-1.5 block text-sm font-medium text-royal-950/80 dark:text-white/80"
-              >Confirm Password</label
+              >{{ 'auth.register.confirmPasswordLabel' | t }}</label
             >
             <div class="relative">
               <i
@@ -187,7 +187,7 @@
                 type="button"
                 class="absolute inset-e-3 top-1/2 -translate-y-1/2 text-royal-950/40 hover:text-gold-600 dark:text-white/40 dark:hover:text-gold-400"
                 (click)="hideRePassword.set(!hideRePassword())"
-                [attr.aria-label]="hideRePassword() ? 'Show password' : 'Hide password'"
+                [attr.aria-label]="(hideRePassword() ? 'auth.login.showPassword' : 'auth.login.hidePassword') | t"
               >
                 <i
                   [class]="hideRePassword() ? 'pi pi-eye' : 'pi pi-eye-slash'"
@@ -215,10 +215,10 @@
                 for="register-terms"
                 class="text-sm leading-snug text-royal-950/70 dark:text-white/70"
               >
-                I agree to the
-                <span class="font-semibold text-gold-600 dark:text-gold-400">Terms of Service</span>
-                and
-                <span class="font-semibold text-gold-600 dark:text-gold-400">Privacy Policy</span>
+                {{ 'auth.register.agreeToTerms' | t }}
+                <span class="font-semibold text-gold-600 dark:text-gold-400">{{ 'auth.register.termsOfService' | t }}</span>
+                {{ 'auth.register.and' | t }}
+                <span class="font-semibold text-gold-600 dark:text-gold-400">{{ 'auth.register.privacyPolicy' | t }}</span>
               </label>
             </div>
             @if (termsError(); as message) {
@@ -235,10 +235,10 @@
           >
             @if (registerForm().submitting()) {
               <i class="pi pi-spinner pi-spin" aria-hidden="true"></i>
-              Creating your account…
+              {{ 'auth.register.creatingAccount' | t }}
             } @else {
               <i class="pi pi-user-plus" aria-hidden="true"></i>
-              Create Account
+              {{ 'auth.register.createAccount' | t }}
             }
           </button>
         </form>
@@ -273,30 +273,29 @@
 
       <div class="relative my-10 max-w-md">
         <h1 class="text-gold-gradient font-serif text-4xl leading-tight font-bold">
-          Join a community that shops like royalty
+          {{ 'auth.register.heroTitle' | t }}
         </h1>
         <p class="mt-4 text-royal-950/70 dark:text-white/70">
-          Create your free account to unlock exclusive discounts, faster checkout, and a shopping
-          experience tailored to you.
+          {{ 'auth.register.heroDescription' | t }}
         </p>
 
         <div
           class="mt-8 grid grid-cols-3 gap-4 border-y border-royal-950/10 py-6 dark:border-white/10"
         >
-          @for (stat of statHighlights; track stat.label) {
+          @for (stat of statHighlights; track stat.labelKey) {
             <div class="text-center">
               <i class="{{ stat.icon }} mb-1 text-gold-700 dark:text-gold-400"></i>
               <p class="font-serif text-xl font-bold text-royal-950 dark:text-white">
                 {{ stat.value }}
               </p>
-              <p class="text-xs text-royal-950/50 dark:text-white/50">{{ stat.label }}</p>
+              <p class="text-xs text-royal-950/50 dark:text-white/50">{{ stat.labelKey | t }}</p>
             </div>
           }
         </div>
       </div>
 
       <ul class="relative space-y-5">
-        @for (benefit of memberBenefits; track benefit.title) {
+        @for (benefit of memberBenefits; track benefit.titleKey) {
           <li class="flex items-start gap-4">
             <span
               class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-gold-600/30 bg-royal-950/5 text-gold-700 dark:border-gold-500/30 dark:bg-white/5 dark:text-gold-400"
@@ -304,8 +303,8 @@
               <i [class]="benefit.icon" aria-hidden="true"></i>
             </span>
             <div>
-              <p class="font-semibold text-royal-950 dark:text-white">{{ benefit.title }}</p>
-              <p class="text-sm text-royal-950/60 dark:text-white/60">{{ benefit.description }}</p>
+              <p class="font-semibold text-royal-950 dark:text-white">{{ benefit.titleKey | t }}</p>
+              <p class="text-sm text-royal-950/60 dark:text-white/60">{{ benefit.descriptionKey | t }}</p>
             </div>
           </li>
         }

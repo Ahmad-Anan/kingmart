@@ -3,9 +3,9 @@
   <!-- Header -->
   <header class="mb-12">
     <p class="font-cinzel text-xs tracking-[0.3em] uppercase text-gold-600 dark:text-gold-400">
-      Order History
+      {{ 'orders.eyebrow' | t }}
     </p>
-    <h1 class="mt-3 font-serif text-4xl text-royal-950 dark:text-gold-200">My Orders</h1>
+    <h1 class="mt-3 font-serif text-4xl text-royal-950 dark:text-gold-200">{{ 'orders.title' | t }}</h1>
     <div class="mt-6 h-px w-16 bg-gold-500/50 dark:bg-gold-400/60"></div>
   </header>
 
@@ -13,7 +13,7 @@
   @if (isLoading()) {
     <div class="flex flex-col items-center gap-4 py-28">
       <p-progress-spinner styleClass="w-9 h-9" strokeWidth="2.5" />
-      <p class="font-cinzel text-xs tracking-[0.25em] uppercase opacity-50">Loading Your Orders</p>
+      <p class="font-cinzel text-xs tracking-[0.25em] uppercase opacity-50">{{ 'orders.loading' | t }}</p>
     </div>
   }
 
@@ -23,12 +23,12 @@
       class="gold-glow-border flex flex-col items-center gap-5 rounded-2xl bg-white/50 py-28 text-center backdrop-blur-sm dark:bg-royal-900/20"
     >
       <i class="pi pi-inbox text-4xl text-gold-500/70 dark:text-gold-400/60" aria-hidden="true"></i>
-      <p class="font-serif text-lg italic opacity-70">You haven't placed any orders yet.</p>
+      <p class="font-serif text-lg italic opacity-70">{{ 'orders.emptyMessage' | t }}</p>
       <a
         routerLink="/shop"
         class="font-cinzel text-xs tracking-[0.2em] uppercase text-gold-600 underline underline-offset-4 transition-colors hover:text-gold-500 dark:text-gold-400 dark:hover:text-gold-300"
       >
-        Browse the Collection
+        {{ 'common.browseCollection' | t }}
       </a>
     </div>
   }
@@ -46,7 +46,7 @@
           >
             <div>
               <p class="font-cinzel text-[0.65rem] tracking-[0.15em] uppercase opacity-50">
-                Order Reference
+                {{ 'orders.orderReference' | t }}
               </p>
               <p class="mt-1 font-mono text-sm opacity-80" [title]="order._id">
                 {{ shortOrderRef(order._id) }}
@@ -60,14 +60,14 @@
                   class="font-cinzel flex items-center gap-1.5 rounded-full bg-gold-gradient px-3 py-1 text-[0.6rem] tracking-[0.15em] text-royal-950 uppercase"
                 >
                   <i class="pi pi-credit-card text-[0.65rem]" aria-hidden="true"></i>
-                  Paid Online
+                  {{ 'orders.paidOnline' | t }}
                 </span>
               } @else {
                 <span
                   class="font-cinzel flex items-center gap-1.5 rounded-full bg-neutral-500/10 px-3 py-1 text-[0.6rem] tracking-[0.15em] text-neutral-500 uppercase dark:bg-white/10 dark:text-neutral-400"
                 >
                   <i class="pi pi-wallet text-[0.65rem]" aria-hidden="true"></i>
-                  Cash on Delivery
+                  {{ 'orders.cashOnDelivery' | t }}
                 </span>
               }
 
@@ -80,7 +80,7 @@
                 [class.text-gold-600]="!order.isPaid"
                 [class.dark:text-gold-400]="!order.isPaid"
               >
-                {{ order.isPaid ? 'Paid' : 'Payment Pending' }}
+                {{ (order.isPaid ? 'orders.paid' : 'orders.paymentPending') | t }}
               </span>
 
               <span
@@ -91,7 +91,7 @@
                 [class.bg-neutral-500/10]="!order.isDelivered"
                 [class.text-neutral-500]="!order.isDelivered"
               >
-                {{ order.isDelivered ? 'Delivered' : 'Processing' }}
+                {{ (order.isDelivered ? 'orders.delivered' : 'orders.processing') | t }}
               </span>
             </div>
           </div>
@@ -114,10 +114,10 @@
                   >
                     {{ item.product.category.name }}
                   </p>
-                  <p class="mt-0.5 text-xs opacity-55">Qty {{ item.count }}</p>
+                  <p class="mt-0.5 text-xs opacity-55">{{ 'orders.qty' | t: { count: item.count } }}</p>
                 </div>
                 <p class="shrink-0 font-serif text-sm text-royal-950 dark:text-gold-200">
-                  {{ item.price * item.count }} EGP
+                  {{ item.price * item.count }} {{ 'common.egp' | t }}
                 </p>
               </div>
             }
@@ -125,8 +125,8 @@
 
           <!-- Order total -->
           <div class="flex items-center justify-between p-6 pt-4">
-            <p class="font-cinzel text-xs tracking-[0.2em] uppercase opacity-50">Total</p>
-            <p class="text-gold-gradient font-serif text-2xl">{{ order.totalOrderPrice }} EGP</p>
+            <p class="font-cinzel text-xs tracking-[0.2em] uppercase opacity-50">{{ 'orders.total' | t }}</p>
+            <p class="text-gold-gradient font-serif text-2xl">{{ order.totalOrderPrice }} {{ 'common.egp' | t }}</p>
           </div>
         </div>
       }

@@ -26,6 +26,7 @@
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-serif: 'Playfair Display', Georgia, serif;
   --font-cinzel: 'Cinzel', serif;
+  --font-arabic: 'IBM Plex Sans Arabic', 'Inter', system-ui, -apple-system, sans-serif;
 
   --color-royal-950: #011412;
   --color-royal-900: #042622;
@@ -194,6 +195,18 @@ body {
     radial-gradient(circle at 50% 0%, rgba(16, 82, 72, 0.25) 0%, transparent 50%),
     radial-gradient(circle at 85% 30%, rgba(197, 160, 40, 0.05) 0%, transparent 40%);
   background-attachment: fixed;
+}
+
+/*
+  Arabic mode: IBM Plex Sans Arabic replaces Inter/Playfair Display/Cinzel uniformly.
+  The Latin display fonts (font-serif, font-cinzel) have no Arabic glyphs, so leaving
+  them would silently fall back to the browser's default system font and break the
+  royal/gold typographic identity — this keeps a single consistent look instead.
+*/
+html[dir='rtl'] body,
+html[dir='rtl'] .font-serif,
+html[dir='rtl'] .font-cinzel {
+  font-family: var(--font-arabic);
 }
 
 /* ==========================================

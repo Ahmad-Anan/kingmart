@@ -12,7 +12,7 @@
         class="w-16 h-16 rounded-full border-2 border-neutral-300 dark:border-neutral-800 border-t-gold-500 animate-spin mb-6"
       ></div>
       <p class="text-xs font-cinzel tracking-[0.3em] text-gold-400 uppercase">
-        Summoning the masterpiece...
+        {{ 'productDetails.summoning' | t }}
       </p>
     </div>
   } @else if (productResource.error()) {
@@ -27,14 +27,14 @@
       <p
         class="font-serif text-lg font-normal tracking-wide text-neutral-800 dark:text-neutral-200"
       >
-        Unable to display product details at this time.
+        {{ 'productDetails.loadError' | t }}
       </p>
 
       <a
         routerLink="/shop"
         class="mt-8 inline-block text-xs uppercase tracking-[0.25em] text-gold-400 hover:text-gold-300 underline underline-offset-8 transition-colors"
       >
-        Return to the Royal Gallery
+        {{ 'productDetails.returnToGallery' | t }}
       </a>
     </div>
   } @else {
@@ -87,7 +87,7 @@
                     class="bg-neutral-950/80 text-gold-300 backdrop-blur-xl px-4 py-1.5 text-[10px] font-cinzel font-semibold tracking-[0.3em] rounded-full shadow-lg border border-gold-500/30"
                   >
                     -{{ (1 - product.priceAfterDiscount / product.price) * 100 | number: '1.0-0' }}%
-                    OFF
+                    {{ 'productDetails.off' | t }}
                   </span>
                 </div>
               }
@@ -95,7 +95,8 @@
               <button
                 type="button"
                 [attr.aria-label]="
-                  isWishlisted(product._id) ? 'Remove from wishlist' : 'Add to wishlist'
+                  (isWishlisted(product._id) ? 'common.removeFromWishlist' : 'common.addToWishlist')
+                    | t
                 "
                 [disabled]="isTogglingWishlist()"
                 (click)="toggleWishlist()"
@@ -129,7 +130,9 @@
                 <span class="font-bold text-neutral-900 dark:text-white">{{
                   product.ratingsAverage
                 }}</span>
-                <span class="text-neutral-400">({{ product.ratingsQuantity }} reviews)</span>
+                <span class="text-neutral-400">{{
+                  'productDetails.reviewsCount' | t: { count: product.ratingsQuantity }
+                }}</span>
               </div>
             </div>
 
@@ -158,7 +161,7 @@
               <h3
                 class="text-xs font-cinzel uppercase tracking-[0.25em] font-medium text-neutral-400 dark:text-neutral-500"
               >
-                Details & Story
+                {{ 'productDetails.detailsAndStory' | t }}
               </h3>
               <p
                 class="text-sm font-light text-neutral-600 dark:text-neutral-300 leading-relaxed tracking-wide"
@@ -172,7 +175,7 @@
                 <h3
                   class="text-xs font-cinzel uppercase tracking-[0.25em] font-medium text-neutral-400 dark:text-neutral-500"
                 >
-                  Select Color
+                  {{ 'productDetails.selectColor' | t }}
                 </h3>
                 <div class="flex items-center gap-4">
                   @for (color of product.availableColors; track color) {
@@ -242,7 +245,7 @@
                       class="flex-1 flex items-center justify-center gap-3 rounded-full bg-gold-gradient py-4 px-8 text-xs font-cinzel font-bold tracking-[0.25em] uppercase text-neutral-950 shadow-xl transition-all duration-300 hover:scale-[1.02] active:scale-95 cursor-pointer"
                     >
                       <i class="pi pi-shopping-cart text-sm" aria-hidden="true"></i>
-                      <span>Go to Cart</span>
+                      <span>{{ 'productDetails.goToCart' | t }}</span>
                     </a>
                   } @else {
                     <button
@@ -258,13 +261,16 @@
                         [class.pi-spinner]="isAddingToCart()"
                         aria-hidden="true"
                       ></i>
-                      <span>{{ isAddingToCart() ? 'Adding…' : 'Add to Royal Bag' }}</span>
+                      <span>{{
+                        (isAddingToCart() ? 'productDetails.adding' : 'productDetails.addToRoyalBag')
+                          | t
+                      }}</span>
                     </button>
                   }
                 </div>
 
                 <p class="text-[11px] font-mono text-neutral-400 text-center">
-                  Limited luxury pieces available in stock ({{ product.quantity }} remaining)
+                  {{ 'productDetails.inStock' | t: { count: product.quantity } }}
                 </p>
               } @else {
                 <button
@@ -272,7 +278,7 @@
                   disabled
                   class="w-full flex items-center justify-center gap-2 rounded-full bg-neutral-200 dark:bg-neutral-900 py-4 text-xs font-cinzel tracking-[0.25em] uppercase text-neutral-400 dark:text-neutral-600 cursor-not-allowed border border-neutral-300 dark:border-neutral-800"
                 >
-                  <span>Temporarily Out of Stock</span>
+                  <span>{{ 'productDetails.outOfStock' | t }}</span>
                 </button>
               }
             </div>

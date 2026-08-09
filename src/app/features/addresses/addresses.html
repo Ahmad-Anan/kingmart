@@ -4,9 +4,9 @@
   <header class="mb-12 flex items-center justify-between gap-4">
     <div>
       <p class="font-cinzel text-xs tracking-[0.3em] uppercase text-gold-600 dark:text-gold-400">
-        Shipping
+        {{ 'addresses.eyebrow' | t }}
       </p>
-      <h1 class="mt-3 font-serif text-4xl text-royal-950 dark:text-gold-200">Your Addresses</h1>
+      <h1 class="mt-3 font-serif text-4xl text-royal-950 dark:text-gold-200">{{ 'addresses.title' | t }}</h1>
       <div class="mt-6 h-px w-16 bg-gold-500/50 dark:bg-gold-400/60"></div>
     </div>
 
@@ -17,10 +17,10 @@
       class="font-cinzel shrink-0 rounded-full bg-gold-gradient px-6 py-2.5 text-xs tracking-[0.2em] text-royal-950 uppercase"
     >
       @if (showAddForm()) {
-        Cancel
+        {{ 'addresses.cancel' | t }}
       } @else {
         <i class="pi pi-plus text-xs" aria-hidden="true"></i>
-        Add Address
+        {{ 'addresses.addAddress' | t }}
       }
     </button>
   </header>
@@ -39,12 +39,12 @@
           <label
             for="address-name"
             class="mb-1.5 block text-sm font-medium text-royal-950/80 dark:text-white/80"
-            >Label</label
+            >{{ 'addresses.labelField' | t }}</label
           >
           <input
             id="address-name"
             pInputText
-            placeholder="Home, Work..."
+            [placeholder]="'addresses.labelPlaceholder' | t"
             class="w-full"
             [formField]="addressForm.name"
           />
@@ -59,12 +59,12 @@
           <label
             for="address-city"
             class="mb-1.5 block text-sm font-medium text-royal-950/80 dark:text-white/80"
-            >City</label
+            >{{ 'addresses.cityField' | t }}</label
           >
           <input
             id="address-city"
             pInputText
-            placeholder="Cairo"
+            [placeholder]="'addresses.cityPlaceholder' | t"
             class="w-full"
             [formField]="addressForm.city"
           />
@@ -79,12 +79,12 @@
           <label
             for="address-phone"
             class="mb-1.5 block text-sm font-medium text-royal-950/80 dark:text-white/80"
-            >Phone</label
+            >{{ 'addresses.phoneField' | t }}</label
           >
           <input
             id="address-phone"
             pInputText
-            placeholder="01xxxxxxxxx"
+            [placeholder]="'addresses.phonePlaceholder' | t"
             class="w-full"
             [formField]="addressForm.phone"
           />
@@ -99,12 +99,12 @@
           <label
             for="address-details"
             class="mb-1.5 block text-sm font-medium text-royal-950/80 dark:text-white/80"
-            >Details</label
+            >{{ 'addresses.detailsField' | t }}</label
           >
           <input
             id="address-details"
             pInputText
-            placeholder="Street, building, floor..."
+            [placeholder]="'addresses.detailsPlaceholder' | t"
             class="w-full"
             [formField]="addressForm.details"
           />
@@ -124,9 +124,9 @@
         >
           @if (addressForm().submitting()) {
             <i class="pi pi-spinner pi-spin" aria-hidden="true"></i>
-            Saving…
+            {{ 'addresses.saving' | t }}
           } @else {
-            Save Address
+            {{ 'addresses.saveAddress' | t }}
           }
         </button>
       </form>
@@ -138,7 +138,7 @@
     <div class="flex flex-col items-center gap-4 py-28">
       <p-progress-spinner styleClass="w-9 h-9" strokeWidth="2.5" />
       <p class="font-cinzel text-xs tracking-[0.25em] uppercase opacity-50">
-        Loading Your Addresses
+        {{ 'addresses.loading' | t }}
       </p>
     </div>
   }
@@ -149,7 +149,7 @@
       class="gold-glow-border flex flex-col items-center gap-5 rounded-2xl bg-white/50 py-28 text-center backdrop-blur-sm dark:bg-royal-900/20"
     >
       <i class="pi pi-map-marker text-4xl text-gold-500/70 dark:text-gold-400/60" aria-hidden="true"></i>
-      <p class="font-serif text-lg italic opacity-70">No addresses saved yet.</p>
+      <p class="font-serif text-lg italic opacity-70">{{ 'addresses.emptyMessage' | t }}</p>
     </div>
   }
 
@@ -181,7 +181,7 @@
             [disabled]="removingAddressId() === address._id"
             class="font-cinzel shrink-0 text-[0.65rem] tracking-[0.15em] uppercase opacity-40 underline underline-offset-4 transition-colors hover:text-red-600 hover:opacity-100 disabled:pointer-events-none"
           >
-            Remove
+            {{ 'addresses.remove' | t }}
           </button>
         </div>
       }

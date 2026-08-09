@@ -5,11 +5,13 @@ import { MessageService } from 'primeng/api';
 import { catchError, throwError } from 'rxjs';
 
 import { AuthService } from '../services/auth/auth';
+import { LanguageService } from '../services/language/language';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   const router = inject(Router);
   const messageService = inject(MessageService);
+  const languageService = inject(LanguageService);
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
@@ -17,8 +19,8 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         authService.logout();
         messageService.add({
           severity: 'warn',
-          summary: 'Session expired',
-          detail: 'Please sign in again to continue.',
+          summary: languageService.translate('errors.sessionExpiredTitle'),
+          detail: languageService.translate('errors.sessionExpiredDetail'),
         });
 
         const currentUrl = router.url;
@@ -30,20 +32,20 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
       } else if (error.status === 403) {
         messageService.add({
           severity: 'error',
-          summary: 'Access denied',
-          detail: 'You do not have permission to perform this action.',
+          summary: languageService.translate('errors.accessDeniedTitle'),
+          detail: languageService.translate('errors.accessDeniedDetail'),
         });
       } else if (error.status === 0) {
         messageService.add({
           severity: 'error',
-          summary: 'Connection error',
-          detail: 'Could not reach the server. Check your connection and try again.',
+          summary: languageService.translate('errors.connectionErrorTitle'),
+          detail: languageService.translate('errors.connectionErrorDetail'),
         });
       } else if (error.status >= 500) {
         messageService.add({
           severity: 'error',
-          summary: 'Server error',
-          detail: 'Something went wrong on our end. Please try again shortly.',
+          summary: languageService.translate('errors.serverErrorTitle'),
+          detail: languageService.translate('errors.serverErrorDetail'),
         });
       }
       // باقي الحالات (400/404/409/422...) بتتمرر عادي من غير toast —

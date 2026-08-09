@@ -3,12 +3,13 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { IBrand } from '../../../core/models/brand';
 import { BrandsService } from '../../../core/services/Brands/brands';
+import { TranslatePipe } from '../../../shared/pipes/translate-pipe';
 
 const RELEVANT_BRAND_NAMES: readonly string[] = [];
 
 @Component({
   selector: 'app-home-brands',
-  imports: [RouterLink],
+  imports: [RouterLink, TranslatePipe],
   templateUrl: './home-brand.html',
   styleUrl: './home-brand.css',
 })

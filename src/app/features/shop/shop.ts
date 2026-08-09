@@ -6,10 +6,11 @@ import { IProductsResponse } from '../../core/models/product';
 import { ProductsService } from '../../core/services/products/product';
 import { Cart as CartService } from '../../core/services/cart/cart';
 import { WishlistService } from '../../core/services/wishlist/wishlist';
+import { TranslatePipe } from '../../shared/pipes/translate-pipe';
 
 @Component({
   selector: 'app-shop',
-  imports: [RouterLink, PaginatorModule],
+  imports: [RouterLink, PaginatorModule, TranslatePipe],
   templateUrl: './shop.html',
   styleUrl: './shop.css',
 })

@@ -11,7 +11,7 @@
     <p
       class="font-cinzel text-[11px] font-semibold uppercase tracking-[0.4em] text-gold-600 dark:text-gold-400"
     >
-      Trusted Maisons
+      {{ 'home.brandsSection.trustedMaisons' | t }}
     </p>
     <span class="h-px w-10 bg-gold-600/50 dark:bg-gold-400/40"></span>
   </div>
@@ -26,7 +26,7 @@
     </div>
   } @else if (brandsResource.error()) {
     <p class="text-center text-sm text-neutral-500 dark:text-neutral-400">
-      Unable to load brands right now.
+      {{ 'home.brandsSection.loadError' | t }}
     </p>
   } @else if (filteredBrands().length) {
     <div class="brands-marquee relative z-10">
@@ -35,7 +35,7 @@
           <a
             [routerLink]="['/shop']"
             [queryParams]="{ brand: brand._id }"
-            [attr.aria-label]="'Browse products from ' + brand.name"
+            [attr.aria-label]="'home.brandsSection.browseFrom' | t: { name: brand.name }"
             class="group mx-2 flex h-20 w-32 shrink-0 flex-col items-center justify-center gap-2 rounded-2xl border border-gold-500/15 dark:border-gold-400/15 bg-white/70 dark:bg-linear-to-br dark:from-royal-800/40 dark:to-royal-950/80 backdrop-blur-md transition-all duration-500 hover:border-gold-500/50 dark:hover:border-gold-400/50 hover:shadow-lg hover:shadow-gold-500/10 dark:hover:shadow-gold-500/20 hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400"
           >
             <img
@@ -75,7 +75,7 @@
     </div>
   } @else {
     <p class="text-center text-sm text-neutral-500 dark:text-neutral-400">
-      No brands available at the moment.
+      {{ 'home.brandsSection.empty' | t }}
     </p>
   }
 </section>

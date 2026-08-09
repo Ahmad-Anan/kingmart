@@ -31,7 +31,7 @@ export const routes: Routes = [
 
   {
     path: 'categories',
-    data: { breadcrumb: 'Collections' },
+    data: { breadcrumb: 'categories.eyebrow' },
     children: [
       {
         path: '',

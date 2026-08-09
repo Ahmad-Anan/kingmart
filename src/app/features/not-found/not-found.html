@@ -20,29 +20,24 @@
     </p>
 
     <h1 class="mt-4 font-serif text-3xl font-bold text-royal-950 sm:text-4xl dark:text-white">
-      This Page Has Wandered Off
+      {{ 'notFound.title' | t }}
     </h1>
     <p class="mx-auto mt-4 max-w-md text-royal-950/60 dark:text-white/60">
-      The page you're looking for doesn't exist, may have been moved, or the link you followed is
-      broken. Let's get you back to shopping.
+      {{ 'notFound.description' | t }}
     </p>
 
     <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
-      <a pButton routerLink="/home" label="Back to Home" icon="pi pi-home"></a>
-      <a
-        pButton
-        routerLink="/shop"
-        label="Browse Shop"
-        icon="pi pi-shopping-bag"
-        [outlined]="true"
-      ></a>
+      <a pButton routerLink="/home" icon="pi pi-home">{{ 'notFound.backToHome' | t }}</a>
+      <a pButton routerLink="/shop" icon="pi pi-shopping-bag" [outlined]="true">{{
+        'notFound.browseShop' | t
+      }}</a>
     </div>
 
     <div class="mt-14 border-t border-gold-500/20 pt-10">
       <p
         class="mb-5 text-sm font-medium tracking-wide text-royal-950/50 uppercase dark:text-white/50"
       >
-        Popular destinations
+        {{ 'notFound.popularDestinations' | t }}
       </p>
       <div class="flex flex-wrap items-center justify-center gap-3">
         @for (link of quickLinks; track link.route) {
@@ -51,7 +46,7 @@
             class="flex items-center gap-2 rounded-full border border-gold-500/25 bg-white/40 px-4 py-2 text-sm font-medium text-royal-950/80 transition-colors hover:border-gold-500/50 hover:text-gold-600 dark:bg-white/5 dark:text-white/80 dark:hover:text-gold-400"
           >
             <i [class]="link.icon" aria-hidden="true"></i>
-            {{ link.label }}
+            {{ link.labelKey | t }}
           </a>
         }
       </div>

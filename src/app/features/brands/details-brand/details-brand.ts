@@ -1,16 +1,17 @@
-import { CommonModule } from '@angular/common';
 import { Component, computed, inject } from '@angular/core';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, of } from 'rxjs';
 import { IProduct } from '../../../core/models/product';
 import { BrandsService } from '../../../core/services/Brands/brands';
+import { LanguageService } from '../../../core/services/language/language';
 import { ProductsService } from '../../../core/services/products/product';
+import { TranslatePipe } from '../../../shared/pipes/translate-pipe';
 
 @Component({
   selector: 'app-details-brand',
   standalone: true,
-  imports: [CommonModule],
+  imports: [TranslatePipe],
   templateUrl: './details-brand.html',
   styleUrl: './details-brand.css',
 })
@@ -18,6 +19,7 @@ export class DetailsBrand {
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly productsService = inject(ProductsService);
   private readonly brandsService = inject(BrandsService);
+  private readonly languageService = inject(LanguageService);
   private readonly router = inject(Router);
 
   // 1. التقاط الـ ID تفاعلياً (subscribe) بدل الـ snapshot
@@ -34,7 +36,7 @@ export class DetailsBrand {
 
   readonly selectedBrandName = computed(() => {
     const response = this.brandDetailsResource.value();
-    return response?.data?.name ?? 'Maison';
+    return response?.data?.name ?? this.languageService.translate('detailsBrand.fallbackName');
   });
 
   // 3. جلب منتجات البراند من ProductsService

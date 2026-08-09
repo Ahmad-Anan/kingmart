@@ -16,18 +16,21 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 import { Review } from '../../core/models/reviews-response';
 import { AuthService } from '../../core/services/auth/auth';
+import { LanguageService } from '../../core/services/language/language';
 import { ReviewsService } from '../../core/services/Reviews/reviews';
+import { TranslatePipe } from '../../shared/pipes/translate-pipe';
 
 @Component({
   selector: 'app-reviews',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DatePipe, DecimalPipe, FormsModule, RouterLink, ProgressSpinnerModule],
+  imports: [DatePipe, DecimalPipe, FormsModule, RouterLink, ProgressSpinnerModule, TranslatePipe],
   templateUrl: './reviews.html',
   styleUrl: './reviews.css',
 })
 export class Reviews {
   private readonly reviewsService = inject(ReviewsService);
   private readonly authService = inject(AuthService);
+  private readonly languageService = inject(LanguageService);
   protected readonly router = inject(Router);
 
   readonly productId = input.required<string>();
@@ -88,13 +91,13 @@ export class Reviews {
     this.formError.set(null);
 
     if (this.formRating() < 1) {
-      this.formError.set('Please select a star rating.');
+      this.formError.set(this.languageService.translate('reviews.ratingRequired'));
       return;
     }
 
     const comment = this.formText().trim();
     if (!comment) {
-      this.formError.set('Please write a comment.');
+      this.formError.set(this.languageService.translate('reviews.commentRequired'));
       return;
     }
 
@@ -144,6 +147,6 @@ export class Reviews {
     if (err instanceof HttpErrorResponse && typeof err.error?.message === 'string') {
       return err.error.message;
     }
-    return 'Something went wrong while saving your review. Please try again.';
+    return this.languageService.translate('reviews.genericError');
   }
 }

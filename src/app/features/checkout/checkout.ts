@@ -18,12 +18,14 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { IOrder } from '../../core/models/order';
 import { AddressService } from '../../core/services/address/address';
 import { Cart as CartService } from '../../core/services/cart/cart';
+import { LanguageService } from '../../core/services/language/language';
 import { OrderService } from '../../core/services/order/order';
+import { TranslatePipe } from '../../shared/pipes/translate-pipe';
 
 @Component({
   selector: 'app-checkout',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, ButtonModule, MessageModule, ProgressSpinnerModule],
+  imports: [RouterLink, ButtonModule, MessageModule, ProgressSpinnerModule, TranslatePipe],
   templateUrl: './checkout.html',
   styleUrl: './checkout.css',
 })
@@ -31,6 +33,7 @@ export class Checkout {
   private readonly cartService = inject(CartService);
   private readonly addressService = inject(AddressService);
   private readonly orderService = inject(OrderService);
+  private readonly languageService = inject(LanguageService);
 
   readonly cartData = this.cartService.cartData;
   readonly addresses = this.addressService.addresses;
@@ -124,6 +127,6 @@ export class Checkout {
     if (err instanceof HttpErrorResponse && typeof err.error?.message === 'string') {
       return err.error.message;
     }
-    return 'Something went wrong while placing your order. Please try again.';
+    return this.languageService.translate('checkout.genericError');
   }
 }

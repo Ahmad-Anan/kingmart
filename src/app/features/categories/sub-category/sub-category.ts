@@ -7,11 +7,14 @@ import { forkJoin, map } from 'rxjs';
 import { ISubCategory } from '../../../core/models/category';
 import { CategoryService } from '../../../core/services/category/category';
 import { ProductsService } from '../../../core/services/products/product';
+import { TranslationKey } from '../../../core/i18n/en';
+import { LanguageService } from '../../../core/services/language/language';
+import { TranslatePipe } from '../../../shared/pipes/translate-pipe';
 
 @Component({
   selector: 'app-sub-category',
   standalone: true,
-  imports: [],
+  imports: [TranslatePipe],
   templateUrl: './sub-category.html',
   styleUrl: './sub-category.css',
 })
@@ -20,73 +23,71 @@ export class SubCategory {
   private readonly router = inject(Router);
   private readonly categoryService = inject(CategoryService);
   private readonly productsService = inject(ProductsService);
+  private readonly languageService = inject(LanguageService);
   private readonly title = inject(Title);
-
-  private readonly pageSize = 30;
 
   private readonly categoryUi = {
     computer: {
       icon: 'pi pi-desktop',
-      badge: 'Technology',
-      description: 'Explore the latest technology products and accessories.',
+      badgeKey: 'subCategory.categoryUi.technologyBadge',
+      descriptionKey: 'subCategory.categoryUi.technologyDescription',
     },
     electronics: {
       icon: 'pi pi-desktop',
-      badge: 'Technology',
-      description: 'Explore the latest technology products and accessories.',
+      badgeKey: 'subCategory.categoryUi.technologyBadge',
+      descriptionKey: 'subCategory.categoryUi.technologyDescription',
     },
     mobile: {
       icon: 'pi pi-mobile',
-      badge: 'Mobile',
-      description: 'Browse smartphones and premium mobile accessories.',
+      badgeKey: 'subCategory.categoryUi.mobileBadge',
+      descriptionKey: 'subCategory.categoryUi.mobileDescription',
     },
     phone: {
       icon: 'pi pi-mobile',
-      badge: 'Mobile',
-      description: 'Browse smartphones and premium mobile accessories.',
+      badgeKey: 'subCategory.categoryUi.mobileBadge',
+      descriptionKey: 'subCategory.categoryUi.mobileDescription',
     },
     clothing: {
       icon: 'pi pi-user',
-      badge: 'Fashion',
-      description: 'Discover premium fashion collections.',
+      badgeKey: 'subCategory.categoryUi.fashionBadge',
+      descriptionKey: 'subCategory.categoryUi.fashionDescription',
     },
     fashion: {
       icon: 'pi pi-user',
-      badge: 'Fashion',
-      description: 'Discover premium fashion collections.',
+      badgeKey: 'subCategory.categoryUi.fashionBadge',
+      descriptionKey: 'subCategory.categoryUi.fashionDescription',
     },
     bag: {
       icon: 'pi pi-shopping-bag',
-      badge: 'Accessories',
-      description: 'Browse elegant bags and luggage collections.',
+      badgeKey: 'subCategory.categoryUi.accessoriesBadge',
+      descriptionKey: 'subCategory.categoryUi.accessoriesDescription',
     },
     shoe: {
       icon: 'pi pi-shopping-cart',
-      badge: 'Footwear',
-      description: 'Discover premium shoes for every occasion.',
+      badgeKey: 'subCategory.categoryUi.footwearBadge',
+      descriptionKey: 'subCategory.categoryUi.footwearDescription',
     },
     watch: {
       icon: 'pi pi-clock',
-      badge: 'Luxury',
-      description: 'Discover premium watches and timeless designs.',
+      badgeKey: 'subCategory.categoryUi.luxuryBadge',
+      descriptionKey: 'subCategory.categoryUi.luxuryDescription',
     },
     beauty: {
       icon: 'pi pi-star',
-      badge: 'Beauty',
-      description: 'Explore skincare and beauty essentials.',
+      badgeKey: 'subCategory.categoryUi.beautyBadge',
+      descriptionKey: 'subCategory.categoryUi.beautyDescription',
     },
     cosmetic: {
       icon: 'pi pi-star',
-      badge: 'Beauty',
-      description: 'Explore skincare and beauty essentials.',
+      badgeKey: 'subCategory.categoryUi.beautyBadge',
+      descriptionKey: 'subCategory.categoryUi.beautyDescription',
     },
-  } as const;
+  } as const satisfies Record<string, { icon: string; badgeKey: TranslationKey; descriptionKey: TranslationKey }>;
 
   private readonly defaultCategoryUi = {
     icon: 'pi pi-tag',
-    badge: 'Collection',
-    description: 'Explore this collection.',
-  } as const;
+    badgeKey: 'subCategory.categoryUi.defaultBadge' as TranslationKey,
+  };
 
   private readonly paramMap = toSignal(this.route.paramMap);
 
@@ -180,15 +181,25 @@ export class SubCategory {
     });
   }
 
-  getCategoryUi(name: string) {
+  getCategoryUi(name: string): { icon: string; badge: string; description: string } {
     const value = name.toLowerCase();
+    const match = Object.entries(this.categoryUi).find(([keyword]) => value.includes(keyword))?.[1];
 
-    return (
-      Object.entries(this.categoryUi).find(([keyword]) => value.includes(keyword))?.[1] ?? {
-        ...this.defaultCategoryUi,
-        description: `Explore ${name} collection.`,
-      }
-    );
+    if (match) {
+      return {
+        icon: match.icon,
+        badge: this.languageService.translate(match.badgeKey),
+        description: this.languageService.translate(match.descriptionKey),
+      };
+    }
+
+    return {
+      icon: this.defaultCategoryUi.icon,
+      badge: this.languageService.translate(this.defaultCategoryUi.badgeKey),
+      description: this.languageService.translate('subCategory.categoryUi.defaultDescription', {
+        name,
+      }),
+    };
   }
 
   goToSubCategory(subCategory: ISubCategory): void {

@@ -16,8 +16,7 @@
           </span>
         </a>
         <p class="max-w-sm text-sm leading-relaxed text-royal-900/80 dark:text-white/60">
-          KingMart is your premier destination for daily luxury essentials and top quality brands.
-          Experience seamless shopping with ultra-fast delivery.
+          {{ 'footer.description' | t }}
         </p>
 
         <!-- Social Icons -->
@@ -51,10 +50,10 @@
         <button
           type="button"
           (click)="toggleSection('shop')"
-          class="flex w-full items-center justify-between py-1 text-left lg:pointer-events-none lg:p-0"
+          class="flex w-full items-center justify-between py-1 text-start lg:pointer-events-none lg:p-0"
         >
           <h3 class="text-xs font-bold uppercase tracking-widest text-gold-600 dark:text-gold-400">
-            Shop
+            {{ 'footer.shopTitle' | t }}
           </h3>
           <span class="inline-flex lg:hidden">
             <i
@@ -71,21 +70,21 @@
             <a
               routerLink="/shop"
               class="transition-colors hover:text-gold-600 dark:hover:text-gold-400"
-              >All Products</a
+              >{{ 'footer.allProducts' | t }}</a
             >
           </li>
           <li>
             <a
               routerLink="/categories"
               class="transition-colors hover:text-gold-600 dark:hover:text-gold-400"
-              >Categories</a
+              >{{ 'footer.categories' | t }}</a
             >
           </li>
           <li>
             <a
               routerLink="/brands"
               class="transition-colors hover:text-gold-600 dark:hover:text-gold-400"
-              >Brands</a
+              >{{ 'footer.brands' | t }}</a
             >
           </li>
         </ul>
@@ -96,10 +95,10 @@
         <button
           type="button"
           (click)="toggleSection('account')"
-          class="flex w-full items-center justify-between py-1 text-left lg:pointer-events-none lg:p-0"
+          class="flex w-full items-center justify-between py-1 text-start lg:pointer-events-none lg:p-0"
         >
           <h3 class="text-xs font-bold uppercase tracking-widest text-gold-600 dark:text-gold-400">
-            Account
+            {{ 'footer.accountTitle' | t }}
           </h3>
           <span class="inline-flex lg:hidden">
             <i
@@ -116,21 +115,21 @@
             <a
               routerLink="/account"
               class="transition-colors hover:text-gold-600 dark:hover:text-gold-400"
-              >My Account</a
+              >{{ 'footer.myAccount' | t }}</a
             >
           </li>
           <li>
             <a
               routerLink="/orders"
               class="transition-colors hover:text-gold-600 dark:hover:text-gold-400"
-              >Order History</a
+              >{{ 'footer.orderHistory' | t }}</a
             >
           </li>
           <li>
             <a
               routerLink="/wishlist"
               class="transition-colors hover:text-gold-600 dark:hover:text-gold-400"
-              >Wishlist</a
+              >{{ 'footer.wishlist' | t }}</a
             >
           </li>
         </ul>
@@ -141,10 +140,10 @@
         <button
           type="button"
           (click)="toggleSection('support')"
-          class="flex w-full items-center justify-between py-1 text-left lg:pointer-events-none lg:p-0"
+          class="flex w-full items-center justify-between py-1 text-start lg:pointer-events-none lg:p-0"
         >
           <h3 class="text-xs font-bold uppercase tracking-widest text-gold-600 dark:text-gold-400">
-            Support
+            {{ 'footer.supportTitle' | t }}
           </h3>
           <span class="inline-flex lg:hidden">
             <i
@@ -161,21 +160,21 @@
             <a
               routerLink="/contact"
               class="transition-colors hover:text-gold-600 dark:hover:text-gold-400"
-              >Contact Us</a
+              >{{ 'footer.contactUs' | t }}</a
             >
           </li>
           <li>
             <a
               routerLink="/privacy-policy"
               class="transition-colors hover:text-gold-600 dark:hover:text-gold-400"
-              >Privacy Policy</a
+              >{{ 'footer.privacyPolicy' | t }}</a
             >
           </li>
           <li>
             <a
               routerLink="/terms-of-service"
               class="transition-colors hover:text-gold-600 dark:hover:text-gold-400"
-              >Terms of Service</a
+              >{{ 'footer.termsOfService' | t }}</a
             >
           </li>
         </ul>
@@ -188,11 +187,17 @@
     <div
       class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 text-xs text-royal-900 dark:text-white/50 sm:flex-row sm:px-6 lg:px-8"
     >
-      <p>&#169; 2026 KingMart Inc. All rights reserved.</p>
+      <p>{{ 'footer.copyright' | t }}</p>
       <div class="flex items-center gap-6 text-gold-600 dark:text-gold-400/80">
-        <span class="flex items-center gap-1.5"><i class="pi pi-credit-card"></i> Visa</span>
-        <span class="flex items-center gap-1.5"><i class="pi pi-paypal"></i> PayPal</span>
-        <span class="flex items-center gap-1.5"><i class="pi pi-wallet"></i> Apple Pay</span>
+        <span class="flex items-center gap-1.5"
+          ><i class="pi pi-credit-card"></i> {{ 'footer.visa' | t }}</span
+        >
+        <span class="flex items-center gap-1.5"
+          ><i class="pi pi-paypal"></i> {{ 'footer.paypal' | t }}</span
+        >
+        <span class="flex items-center gap-1.5"
+          ><i class="pi pi-wallet"></i> {{ 'footer.applePay' | t }}</span
+        >
       </div>
     </div>
   </div>

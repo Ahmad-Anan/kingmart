@@ -4,11 +4,12 @@ import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { ICategory } from '../../core/models/category';
 import { CategoryService } from '../../core/services/category/category';
+import { TranslatePipe } from '../../shared/pipes/translate-pipe';
 
 @Component({
   selector: 'app-categories',
   standalone: true,
-  imports: [],
+  imports: [TranslatePipe],
   templateUrl: './categories.html',
   styleUrl: './categories.css',
 })

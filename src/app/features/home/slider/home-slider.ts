@@ -8,6 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { IHeroSlide } from '../../../core/models/hero-slide';
+import { TranslatePipe } from '../../../shared/pipes/translate-pipe';
 import { HERO_SLIDES } from './hero-slides.data';
 
 interface SwiperElementWithInstance extends HTMLElement {
@@ -21,6 +22,7 @@ interface SwiperElementWithInstance extends HTMLElement {
 
 @Component({
   selector: 'app-home-slider',
+  imports: [TranslatePipe],
   templateUrl: './home-slider.html',
   styleUrl: './home-slider.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

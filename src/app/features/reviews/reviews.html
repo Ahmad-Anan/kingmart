@@ -3,9 +3,9 @@
   <!-- Header -->
   <header class="mb-10">
     <p class="font-cinzel text-xs tracking-[0.3em] uppercase text-gold-600 dark:text-gold-400">
-      Customer Voices
+      {{ 'reviews.eyebrow' | t }}
     </p>
-    <h2 class="mt-3 font-serif text-3xl text-royal-950 dark:text-gold-200">Reviews</h2>
+    <h2 class="mt-3 font-serif text-3xl text-royal-950 dark:text-gold-200">{{ 'reviews.title' | t }}</h2>
     <div class="mt-6 h-px w-16 bg-gold-500/50 dark:bg-gold-400/60"></div>
   </header>
 
@@ -29,7 +29,10 @@
         }
       </div>
       <p class="mt-1 text-xs opacity-55">
-        Based on {{ ratingsQuantity() }} review{{ ratingsQuantity() === 1 ? '' : 's' }}
+        {{
+          (ratingsQuantity() === 1 ? 'reviews.basedOnOne' : 'reviews.basedOnMany')
+            | t: { count: ratingsQuantity() }
+        }}
       </p>
     </div>
   </div>
@@ -38,7 +41,7 @@
   @if (reviewsResource.isLoading()) {
     <div class="flex flex-col items-center gap-4 py-16">
       <p-progress-spinner styleClass="w-9 h-9" strokeWidth="2.5" />
-      <p class="font-cinzel text-xs tracking-[0.25em] uppercase opacity-50">Loading Reviews</p>
+      <p class="font-cinzel text-xs tracking-[0.25em] uppercase opacity-50">{{ 'reviews.loading' | t }}</p>
     </div>
   } @else {
     <!-- Your review -->
@@ -52,7 +55,7 @@
               <p
                 class="font-cinzel text-[0.65rem] tracking-[0.15em] uppercase text-gold-600 dark:text-gold-400"
               >
-                Your Review
+                {{ 'reviews.yourReview' | t }}
               </p>
               <div class="mt-2 flex items-center gap-1">
                 @for (star of starValues; track star) {
@@ -77,7 +80,7 @@
                 (click)="startEdit()"
                 class="font-cinzel text-[0.65rem] tracking-[0.15em] uppercase opacity-50 underline underline-offset-4 transition-colors hover:text-gold-600 hover:opacity-100 dark:hover:text-gold-400"
               >
-                Edit
+                {{ 'reviews.edit' | t }}
               </button>
               <button
                 type="button"
@@ -85,7 +88,7 @@
                 [disabled]="deletingOwn()"
                 class="font-cinzel text-[0.65rem] tracking-[0.15em] uppercase opacity-40 underline underline-offset-4 transition-colors hover:text-red-600 hover:opacity-100 disabled:pointer-events-none"
               >
-                {{ deletingOwn() ? 'Removing…' : 'Delete' }}
+                {{ (deletingOwn() ? 'reviews.removing' : 'reviews.delete') | t }}
               </button>
             </div>
           </div>
@@ -99,14 +102,14 @@
         class="gold-glow-border mb-8 flex flex-col items-center gap-3 rounded-2xl bg-white/50 py-10 text-center backdrop-blur-sm dark:bg-royal-900/20"
       >
         <p class="font-serif text-base italic opacity-70">
-          Sign in to share your thoughts on this product.
+          {{ 'reviews.signInPrompt' | t }}
         </p>
         <a
           routerLink="/login"
           [queryParams]="{ returnUrl: router.url }"
           class="font-cinzel text-xs tracking-[0.2em] uppercase text-gold-600 underline underline-offset-4 transition-colors hover:text-gold-500 dark:text-gold-400 dark:hover:text-gold-300"
         >
-          Sign In
+          {{ 'reviews.signIn' | t }}
         </a>
       </div>
     }
@@ -119,7 +122,7 @@
         <p
           class="font-cinzel text-[0.65rem] tracking-[0.15em] uppercase text-gold-600 dark:text-gold-400"
         >
-          {{ isEditing() ? 'Edit Your Review' : 'Write a Review' }}
+          {{ (isEditing() ? 'reviews.editReview' : 'reviews.writeReview') | t }}
         </p>
 
         <div class="mt-4 flex items-center gap-1">
@@ -127,7 +130,7 @@
             <button
               type="button"
               (click)="setRating(star)"
-              [attr.aria-label]="'Rate ' + star + ' star' + (star === 1 ? '' : 's')"
+              [attr.aria-label]="(star === 1 ? 'reviews.rateStar' : 'reviews.rateStars') | t: { count: star }"
               class="p-0.5 text-lg text-gold-400 transition-transform hover:scale-110"
             >
               <i
@@ -143,7 +146,7 @@
         <textarea
           rows="3"
           [(ngModel)]="formText"
-          placeholder="Share your experience with this product…"
+          [placeholder]="'reviews.placeholder' | t"
           class="mt-4 w-full rounded-xl border border-gold-400/30 bg-transparent p-3 text-sm placeholder:opacity-40 focus:border-gold-500 focus:outline-none dark:border-gold-500/25"
         ></textarea>
 
@@ -158,7 +161,14 @@
             [disabled]="submitting()"
             class="bg-gold-gradient font-cinzel rounded-full px-8 py-2.5 text-xs tracking-[0.2em] text-royal-950 uppercase disabled:cursor-wait disabled:opacity-70"
           >
-            {{ submitting() ? 'Saving…' : isEditing() ? 'Update Review' : 'Submit Review' }}
+            {{
+              (submitting()
+                ? 'reviews.saving'
+                : isEditing()
+                  ? 'reviews.updateReview'
+                  : 'reviews.submitReview'
+              ) | t
+            }}
           </button>
           @if (isEditing()) {
             <button
@@ -166,7 +176,7 @@
               (click)="cancelEdit()"
               class="font-cinzel text-xs tracking-[0.15em] uppercase opacity-50 underline underline-offset-4 hover:opacity-100"
             >
-              Cancel
+              {{ 'reviews.cancel' | t }}
             </button>
           }
         </div>
@@ -180,7 +190,7 @@
       >
         <i class="pi pi-comments text-3xl text-gold-500/70 dark:text-gold-400/60" aria-hidden="true"></i>
         <p class="font-serif text-base italic opacity-70">
-          No reviews yet — be the first to share your thoughts.
+          {{ 'reviews.empty' | t }}
         </p>
       </div>
     } @else if (otherReviews().length > 0) {

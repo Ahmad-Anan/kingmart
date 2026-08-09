@@ -14,6 +14,8 @@ import { MessageModule } from 'primeng/message';
 
 import { ISigninRequest } from '../../../core/models/auth';
 import { AuthService } from '../../../core/services/auth/auth';
+import { LanguageService } from '../../../core/services/language/language';
+import { TranslatePipe } from '../../../shared/pipes/translate-pipe';
 import { AUTH_TRUST_BADGES } from '../auth-interface/auth-showcase.data';
 
 @Component({
@@ -30,6 +32,7 @@ import { AUTH_TRUST_BADGES } from '../auth-interface/auth-showcase.data';
     InputPasswordModule,
     InputTextModule,
     MessageModule,
+    TranslatePipe,
   ],
   templateUrl: './login.html',
   styleUrl: './login.css',
@@ -38,6 +41,7 @@ export class Login {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly languageService = inject(LanguageService);
 
   protected readonly serverError = signal<string | null>(null);
   protected readonly rememberMeControl = new FormControl(false, { nonNullable: true });
@@ -53,10 +57,12 @@ export class Login {
   protected readonly loginForm = form(
     this.model,
     (p) => {
-      required(p.email, { message: 'Email is required' });
-      email(p.email, { message: 'Enter a valid email address' });
+      required(p.email, { message: () => this.languageService.translate('validation.emailRequired') });
+      email(p.email, { message: () => this.languageService.translate('validation.emailInvalid') });
 
-      required(p.password, { message: 'Password is required' });
+      required(p.password, {
+        message: () => this.languageService.translate('validation.passwordRequired'),
+      });
     },
     {
       submission: {
@@ -88,6 +94,6 @@ export class Login {
     if (err instanceof HttpErrorResponse && typeof err.error?.message === 'string') {
       return err.error.message;
     }
-    return 'Something went wrong while signing in. Please try again.';
+    return this.languageService.translate('auth.login.genericError');
   }
 }

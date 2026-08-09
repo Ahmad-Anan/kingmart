@@ -6,14 +6,16 @@ import { MenuItem } from 'primeng/api';
 import { map, of, switchMap } from 'rxjs';
 import { ProductsService } from '../../core/services/products/product';
 import { Cart as CartService } from '../../core/services/cart/cart';
+import { LanguageService } from '../../core/services/language/language';
 import { WishlistService } from '../../core/services/wishlist/wishlist';
 import { Reviews } from '../reviews/reviews';
 import { Breadcrumb } from '../../shared/breadcrumb/breadcrumb';
+import { TranslatePipe } from '../../shared/pipes/translate-pipe';
 
 @Component({
   selector: 'app-product-details',
   standalone: true,
-  imports: [DecimalPipe, RouterLink, Breadcrumb, Reviews],
+  imports: [DecimalPipe, RouterLink, Breadcrumb, Reviews, TranslatePipe],
   templateUrl: './product-details.html',
   styleUrl: './product-details.css',
 })
@@ -21,6 +23,7 @@ export class ProductDetails {
   private readonly productsService = inject(ProductsService);
   private readonly cartService = inject(CartService);
   private readonly wishlistService = inject(WishlistService);
+  private readonly languageService = inject(LanguageService);
   private readonly route = inject(ActivatedRoute);
 
   readonly productId = toSignal(this.route.paramMap.pipe(map((params) => params.get('id') || '')));
@@ -47,10 +50,15 @@ export class ProductDetails {
     const product = res?.data;
 
     if (!product) {
-      return [{ label: 'Collections', routerLink: ['/categories'] }, { label: 'Product Details' }];
+      return [
+        { label: this.languageService.translate('categories.eyebrow'), routerLink: ['/categories'] },
+        { label: this.languageService.translate('productDetails.breadcrumbFallback') },
+      ];
     }
 
-    const items: MenuItem[] = [{ label: 'Collections', routerLink: ['/categories'] }];
+    const items: MenuItem[] = [
+      { label: this.languageService.translate('categories.eyebrow'), routerLink: ['/categories'] },
+    ];
 
     if (product.category) {
       items.push({

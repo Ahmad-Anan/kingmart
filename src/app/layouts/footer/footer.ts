@@ -1,10 +1,12 @@
 import { Component, computed, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
+import { TranslatePipe } from '../../shared/pipes/translate-pipe';
+
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, TranslatePipe],
   templateUrl: './footer.html',
   styleUrl: './footer.css',
 })

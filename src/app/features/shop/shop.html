@@ -5,19 +5,18 @@
     <span
       class="inline-block text-[11px] font-semibold uppercase tracking-[0.35em] text-neutral-500 dark:text-neutral-400 mb-4 font-sans"
     >
-      Curated Collection
+      {{ 'shop.eyebrow' | t }}
     </span>
     <h2
       class="font-serif text-4xl sm:text-5xl font-light tracking-tight text-neutral-900 dark:text-white"
     >
-      The <span class="italic font-normal">Gallery</span>
+      {{ 'shop.title' | t }} <span class="italic font-normal">{{ 'shop.titleItalic' | t }}</span>
     </h2>
     <div class="w-12 h-px bg-neutral-300 dark:bg-neutral-800 mx-auto mt-6 mb-6"></div>
     <p
       class="text-sm text-neutral-600 dark:text-neutral-400 font-sans tracking-wide leading-relaxed font-light"
     >
-      A carefully curated selection, where clarity of design meets simplicity of detail for an
-      unrivaled browsing experience.
+      {{ 'shop.description' | t }}
     </p>
   </div>
 
@@ -25,13 +24,13 @@
     <div
       class="flex flex-col items-center justify-center py-32"
       role="status"
-      aria-label="Preparing the gallery"
+      [attr.aria-label]="'shop.preparing' | t"
     >
       <div
         class="w-12 h-12 rounded-full border border-neutral-300 dark:border-neutral-700 border-t-neutral-900 dark:border-t-white animate-spin mb-6"
       ></div>
       <p class="text-xs font-mono tracking-[0.2em] text-neutral-400 uppercase">
-        Preparing the gallery...
+        {{ 'shop.preparing' | t }}
       </p>
     </div>
   } @else if (productsResource.error() && !productsResource.value()) {
@@ -40,16 +39,19 @@
       role="alert"
     >
       <p class="font-serif text-base font-normal tracking-wide">
-        Unable to display products right now.
+        {{ 'shop.loadError' | t }}
       </p>
-      <p class="text-xs mt-2 text-neutral-400">Please try again later.</p>
+      <p class="text-xs mt-2 text-neutral-400">{{ 'shop.tryAgainLater' | t }}</p>
     </div>
   } @else {
     @if (totalRecords() > 0) {
       <p
         class="mb-8 text-center text-xs font-mono tracking-[0.15em] text-neutral-400 uppercase sm:text-start"
       >
-        Showing {{ showingFrom() }}–{{ showingTo() }} of {{ totalRecords() }} products
+        {{
+          'shop.showingRange'
+            | t: { from: showingFrom(), to: showingTo(), total: totalRecords() }
+        }}
       </p>
     }
 
@@ -79,7 +81,8 @@
             <button
               type="button"
               [attr.aria-label]="
-                isWishlisted(product._id) ? 'Remove from wishlist' : 'Add to wishlist'
+                (isWishlisted(product._id) ? 'common.removeFromWishlist' : 'common.addToWishlist')
+                  | t
               "
               [disabled]="togglingWishlistId() === product._id"
               (click)="toggleWishlist($event, product._id)"
@@ -113,7 +116,9 @@
                     [class.pi-spinner]="addingProductId() === product._id"
                     aria-hidden="true"
                   ></i>
-                  <span>{{ addingProductId() === product._id ? 'Adding…' : 'Add to Bag' }}</span>
+                  <span>{{
+                    (addingProductId() === product._id ? 'shop.adding' : 'shop.addToBag') | t
+                  }}</span>
                 </button>
               } @else {
                 <button
@@ -121,7 +126,7 @@
                   disabled
                   class="pointer-events-none flex w-full cursor-not-allowed items-center justify-center gap-2 rounded-full bg-neutral-200 dark:bg-neutral-800 py-3 text-xs font-medium tracking-widest text-neutral-400 dark:text-neutral-600 shadow-none"
                 >
-                  <span>Currently Unavailable</span>
+                  <span>{{ 'shop.unavailable' | t }}</span>
                 </button>
               }
             </div>
@@ -184,7 +189,7 @@
       } @empty {
         <div class="col-span-full py-24 text-center">
           <p class="font-serif text-lg text-neutral-400 font-light">
-            No items available in this section.
+            {{ 'shop.empty' | t }}
           </p>
         </div>
       }

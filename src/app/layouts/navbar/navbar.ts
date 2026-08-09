@@ -2,6 +2,7 @@ import {
   afterNextRender,
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
   signal,
   viewChild,
@@ -13,22 +14,28 @@ import { Popover, PopoverModule } from 'primeng/popover';
 import { Theme } from '../../core/services/theme/theme';
 import { AuthService } from '../../core/services/auth/auth';
 import { Cart as CartService } from '../../core/services/cart/cart';
+import { LanguageService } from '../../core/services/language/language';
 import { WishlistService } from '../../core/services/wishlist/wishlist';
+import { TranslatePipe } from '../../shared/pipes/translate-pipe';
 
 @Component({
   selector: 'app-navbar',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, RouterLinkActive, DrawerModule, PopoverModule],
+  imports: [RouterLink, RouterLinkActive, DrawerModule, PopoverModule, TranslatePipe],
   templateUrl: './navbar.html',
 })
 export class NavbarComponent {
   private readonly themeService = inject(Theme);
   private readonly authService = inject(AuthService);
   private readonly cartService = inject(CartService);
+  private readonly languageService = inject(LanguageService);
   private readonly wishlistService = inject(WishlistService);
   private readonly router = inject(Router);
 
   readonly isDarkMode = this.themeService.isDarkMode;
+
+  readonly locale = this.languageService.locale;
+  readonly targetLocaleLabel = computed(() => (this.locale() === 'en' ? 'AR' : 'EN'));
 
   readonly currentUser = this.authService.currentUser;
   readonly isLoggedIn = this.authService.isLoggedIn;
@@ -55,6 +62,10 @@ export class NavbarComponent {
 
   toggleTheme(): void {
     this.themeService.toggleTheme();
+  }
+
+  toggleLanguage(): void {
+    this.languageService.toggleLocale();
   }
 
   toggleMobileMenu(): void {

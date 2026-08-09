@@ -1,15 +1,16 @@
-import { Component, computed, effect, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { IProduct } from '../../../../core/models/product';
 import { CategoryService } from '../../../../core/services/category/category';
 import { ProductsService } from '../../../../core/services/products/product';
+import { TranslatePipe } from '../../../../shared/pipes/translate-pipe';
 
 @Component({
   selector: 'app-sub-category-products',
   standalone: true,
-  imports: [],
+  imports: [TranslatePipe],
   templateUrl: './sub-category-products.html',
   styleUrl: './sub-category-products.css',
 })
@@ -96,14 +97,6 @@ export class SubCategoryProducts {
         'subcategory[in]': params.subCategoryId,
       }),
   });
-
-  constructor() {
-    effect(() => {
-      // Debug فقط - ينفع تشيله بعد التأكد إن كل حاجة شغالة
-      console.log('CATEGORY ID', this.categoryId());
-      console.log('SUBCATEGORY ID', this.subCategoryId());
-    });
-  }
 
   readonly products = computed(() => this.productsResource.value()?.data ?? []);
 

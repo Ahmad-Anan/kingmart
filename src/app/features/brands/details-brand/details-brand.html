@@ -10,20 +10,20 @@
       class="inline-flex items-center gap-3 text-xs font-cinzel uppercase tracking-[0.4em] text-gold-400 bg-royal-900/40 px-6 py-2.5 rounded-full gold-glow-border shadow-xl backdrop-blur-md mb-6"
     >
       <span class="w-2 h-2 rounded-full bg-gold-400 animate-ping"></span>
-      Exclusive Maison Vault
+      {{ 'detailsBrand.eyebrow' | t }}
     </div>
 
     <h1
       class="text-4xl font-extrabold tracking-tight text-royal-950 dark:text-white sm:text-5xl font-cinzel leading-tight"
     >
-      Signatures by <span class="text-gold-gradient drop-shadow-sm">{{ selectedBrandName() }}</span>
+      {{ 'detailsBrand.titlePrefix' | t }}
+      <span class="text-gold-gradient drop-shadow-sm">{{ selectedBrandName() }}</span>
     </h1>
 
     <p
       class="mt-4 text-base text-neutral-600 dark:text-neutral-300 font-light leading-relaxed font-sans max-w-xl mx-auto"
     >
-      Explore the peerless craftsmanship and curated masterpieces belonging exclusively to this
-      esteemed house.
+      {{ 'detailsBrand.description' | t }}
     </p>
   </div>
 
@@ -67,9 +67,9 @@
 
               @if (product.priceAfterDiscount) {
                 <span
-                  class="absolute top-4 left-4 bg-gold-gradient text-royal-950 text-[10px] font-black uppercase tracking-widest px-3.5 py-1.5 rounded-xl shadow-xl font-cinzel"
+                  class="absolute top-4 start-4 bg-gold-gradient text-royal-950 text-[10px] font-black uppercase tracking-widest px-3.5 py-1.5 rounded-xl shadow-xl font-cinzel"
                 >
-                  Privilege Offering
+                  {{ 'detailsBrand.privilegeOffering' | t }}
                 </span>
               }
             </div>
@@ -102,7 +102,7 @@
                     >
                   } @else {
                     <span
-                      class="text-lg font-black text-royal-950 dark:`white font-mono tracking-tight"
+                      class="text-lg font-black text-royal-950 dark:text-white font-mono tracking-tight"
                       >${{ product.price }}</span
                     >
                   }
@@ -127,7 +127,7 @@
         class="text-center py-24 bg-white/40 dark:bg-royal-900/30 border border-dashed border-gold-500/30 rounded-3xl backdrop-blur-md max-w-2xl mx-auto"
       >
         <p class="text-neutral-500 dark:text-neutral-400 text-base font-cinzel tracking-wider">
-          No masterpieces currently unveiled for this maison.
+          {{ 'detailsBrand.empty' | t }}
         </p>
       </div>
     }

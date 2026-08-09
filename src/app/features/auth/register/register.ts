@@ -22,6 +22,8 @@ import { MessageModule } from 'primeng/message';
 
 import { ISignupRequest } from '../../../core/models/auth';
 import { AuthService } from '../../../core/services/auth/auth';
+import { LanguageService } from '../../../core/services/language/language';
+import { TranslatePipe } from '../../../shared/pipes/translate-pipe';
 import { AUTH_MEMBER_BENEFITS, AUTH_STAT_HIGHLIGHTS } from '../auth-interface/auth-showcase.data';
 
 const EGYPT_PHONE_PATTERN = /^01[0125][0-9]{8}$/;
@@ -39,6 +41,7 @@ const EGYPT_PHONE_PATTERN = /^01[0125][0-9]{8}$/;
     InputPasswordModule,
     InputTextModule,
     MessageModule,
+    TranslatePipe,
   ],
   templateUrl: './register.html',
   styleUrl: './register.css',
@@ -46,6 +49,7 @@ const EGYPT_PHONE_PATTERN = /^01[0125][0-9]{8}$/;
 export class Register {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly languageService = inject(LanguageService);
 
   protected readonly serverError = signal<string | null>(null);
   protected readonly termsControl = new FormControl(false, { nonNullable: true });
@@ -67,23 +71,36 @@ export class Register {
   protected readonly registerForm = form(
     this.model,
     (p) => {
-      required(p.name, { message: 'Full name is required' });
-      minLength(p.name, 3, { message: 'Name must be at least 3 characters' });
+      required(p.name, { message: () => this.languageService.translate('validation.fullNameRequired') });
+      minLength(p.name, 3, {
+        message: () => this.languageService.translate('validation.nameMinLength'),
+      });
 
-      required(p.email, { message: 'Email is required' });
-      email(p.email, { message: 'Enter a valid email address' });
+      required(p.email, { message: () => this.languageService.translate('validation.emailRequired') });
+      email(p.email, { message: () => this.languageService.translate('validation.emailInvalid') });
 
-      required(p.phone, { message: 'Phone number is required' });
-      pattern(p.phone, EGYPT_PHONE_PATTERN, { message: 'Enter a valid Egyptian phone number' });
+      required(p.phone, { message: () => this.languageService.translate('validation.phoneRequired') });
+      pattern(p.phone, EGYPT_PHONE_PATTERN, {
+        message: () => this.languageService.translate('validation.phoneInvalid'),
+      });
 
-      required(p.password, { message: 'Password is required' });
-      minLength(p.password, 6, { message: 'Password must be at least 6 characters' });
+      required(p.password, {
+        message: () => this.languageService.translate('validation.passwordRequired'),
+      });
+      minLength(p.password, 6, {
+        message: () => this.languageService.translate('validation.passwordMinLength'),
+      });
 
-      required(p.rePassword, { message: 'Please confirm your password' });
+      required(p.rePassword, {
+        message: () => this.languageService.translate('validation.confirmPasswordRequired'),
+      });
       validate(p.rePassword, ({ value, valueOf }) =>
         value() === valueOf(p.password)
           ? undefined
-          : { kind: 'mismatch', message: 'Passwords do not match' },
+          : {
+              kind: 'mismatch',
+              message: this.languageService.translate('validation.passwordMismatch'),
+            },
       );
     },
     {
@@ -93,7 +110,7 @@ export class Register {
           this.termsError.set(null);
 
           if (!this.termsControl.value) {
-            this.termsError.set('Please accept the Terms of Service to continue.');
+            this.termsError.set(this.languageService.translate('auth.register.termsRequired'));
             return;
           }
 
@@ -112,6 +129,6 @@ export class Register {
     if (err instanceof HttpErrorResponse && typeof err.error?.message === 'string') {
       return err.error.message;
     }
-    return 'Something went wrong while creating your account. Please try again.';
+    return this.languageService.translate('auth.register.genericError');
   }
 }

@@ -11,18 +11,29 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 import { IAddAddressRequest } from '../../core/models/address';
 import { AddressService } from '../../core/services/address/address';
+import { LanguageService } from '../../core/services/language/language';
+import { TranslatePipe } from '../../shared/pipes/translate-pipe';
 
 const EGYPT_PHONE_PATTERN = /^01[0125][0-9]{8}$/;
 
 @Component({
   selector: 'app-addresses',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FormField, FormRoot, ButtonModule, InputTextModule, MessageModule, ProgressSpinnerModule],
+  imports: [
+    FormField,
+    FormRoot,
+    ButtonModule,
+    InputTextModule,
+    MessageModule,
+    ProgressSpinnerModule,
+    TranslatePipe,
+  ],
   templateUrl: './addresses.html',
   styleUrl: './addresses.css',
 })
 export class Addresses {
   private readonly addressService = inject(AddressService);
+  private readonly languageService = inject(LanguageService);
 
   readonly addresses = this.addressService.addresses;
   readonly isLoading = signal(true);
@@ -41,16 +52,24 @@ export class Addresses {
   readonly addressForm = form(
     this.model,
     (p) => {
-      required(p.name, { message: 'Label is required (e.g. Home, Work)' });
-      minLength(p.name, 2, { message: 'Label must be at least 2 characters' });
+      required(p.name, { message: () => this.languageService.translate('validation.labelRequired') });
+      minLength(p.name, 2, {
+        message: () => this.languageService.translate('validation.labelMinLength'),
+      });
 
-      required(p.details, { message: 'Address details are required' });
-      minLength(p.details, 5, { message: 'Please provide more detail' });
+      required(p.details, {
+        message: () => this.languageService.translate('validation.addressDetailsRequired'),
+      });
+      minLength(p.details, 5, {
+        message: () => this.languageService.translate('validation.addressDetailsMinLength'),
+      });
 
-      required(p.phone, { message: 'Phone number is required' });
-      pattern(p.phone, EGYPT_PHONE_PATTERN, { message: 'Enter a valid Egyptian phone number' });
+      required(p.phone, { message: () => this.languageService.translate('validation.phoneRequired') });
+      pattern(p.phone, EGYPT_PHONE_PATTERN, {
+        message: () => this.languageService.translate('validation.phoneInvalid'),
+      });
 
-      required(p.city, { message: 'City is required' });
+      required(p.city, { message: () => this.languageService.translate('validation.cityRequired') });
     },
     {
       submission: {
@@ -101,6 +120,6 @@ export class Addresses {
     if (err instanceof HttpErrorResponse && typeof err.error?.message === 'string') {
       return err.error.message;
     }
-    return 'Something went wrong while saving this address. Please try again.';
+    return this.languageService.translate('addresses.genericError');
   }
 }

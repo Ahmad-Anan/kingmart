@@ -5,10 +5,11 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { IProduct } from '../../core/models/product';
 import { Cart as CartService } from '../../core/services/cart/cart';
 import { WishlistService } from '../../core/services/wishlist/wishlist';
+import { TranslatePipe } from '../../shared/pipes/translate-pipe';
 
 @Component({
   selector: 'app-wishlist',
-  imports: [ProgressSpinnerModule, RouterLink],
+  imports: [ProgressSpinnerModule, RouterLink, TranslatePipe],
   templateUrl: './wishlist.html',
   styleUrl: './wishlist.css',
 })

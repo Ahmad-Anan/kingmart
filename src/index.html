@@ -21,6 +21,21 @@
       })();
     </script>
 
+    <!-- 🟢 Inline Blocking Anti-Flicker Script (locale/direction) -->
+    <script>
+      (function () {
+        try {
+          var savedLocale = localStorage.getItem('app-locale');
+          if (savedLocale !== 'en' && savedLocale !== 'ar') {
+            var browserLang = (navigator.language || '').toLowerCase();
+            savedLocale = browserLang.indexOf('ar') === 0 ? 'ar' : 'en';
+          }
+          document.documentElement.lang = savedLocale;
+          document.documentElement.dir = savedLocale === 'ar' ? 'rtl' : 'ltr';
+        } catch (e) {}
+      })();
+    </script>
+
     <link rel="icon" type="image/x-icon" href="/Logo.jpg" />
   </head>
   <body>
