@@ -1,6 +1,14 @@
 // addresses.ts
 import { HttpErrorResponse } from '@angular/common/http';
-import { afterNextRender, ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import {
+  afterNextRender,
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  inject,
+  signal,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { form, FormField, FormRoot, minLength, pattern, required } from '@angular/forms/signals';
 import { firstValueFrom } from 'rxjs';
 
@@ -34,6 +42,7 @@ const EGYPT_PHONE_PATTERN = /^01[0125][0-9]{8}$/;
 export class Addresses {
   private readonly addressService = inject(AddressService);
   private readonly languageService = inject(LanguageService);
+  private readonly destroyRef = inject(DestroyRef);
 
   readonly addresses = this.addressService.addresses;
   readonly isLoading = signal(true);
@@ -96,10 +105,13 @@ export class Addresses {
 
   private loadAddresses(): void {
     this.isLoading.set(true);
-    this.addressService.getLoggedUserAddresses().subscribe({
-      next: () => this.isLoading.set(false),
-      error: () => this.isLoading.set(false),
-    });
+    this.addressService
+      .getLoggedUserAddresses()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => this.isLoading.set(false),
+        error: () => this.isLoading.set(false),
+      });
   }
 
   toggleAddForm(): void {
@@ -110,10 +122,13 @@ export class Addresses {
   removeAddress(addressId: string): void {
     if (this.removingAddressId()) return;
     this.removingAddressId.set(addressId);
-    this.addressService.removeAddress(addressId).subscribe({
-      next: () => this.removingAddressId.set(null),
-      error: () => this.removingAddressId.set(null),
-    });
+    this.addressService
+      .removeAddress(addressId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => this.removingAddressId.set(null),
+        error: () => this.removingAddressId.set(null),
+      });
   }
 
   private resolveErrorMessage(err: unknown): string {

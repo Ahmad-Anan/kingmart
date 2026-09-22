@@ -5,9 +5,11 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  DestroyRef,
   inject,
   signal,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { forkJoin } from 'rxjs';
 
@@ -34,6 +36,7 @@ export class Checkout {
   private readonly addressService = inject(AddressService);
   private readonly orderService = inject(OrderService);
   private readonly languageService = inject(LanguageService);
+  private readonly destroyRef = inject(DestroyRef);
 
   readonly cartData = this.cartService.cartData;
   readonly addresses = this.addressService.addresses;
@@ -60,15 +63,17 @@ export class Checkout {
     forkJoin({
       cart: this.cartService.getLoggedUserCart(),
       addresses: this.addressService.getLoggedUserAddresses(),
-    }).subscribe({
-      next: ({ addresses }) => {
-        if (addresses.data.length > 0) {
-          this.selectedAddressId.set(addresses.data[0]._id);
-        }
-        this.isLoading.set(false);
-      },
-      error: () => this.isLoading.set(false),
-    });
+    })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: ({ addresses }) => {
+          if (addresses.data.length > 0) {
+            this.selectedAddressId.set(addresses.data[0]._id);
+          }
+          this.isLoading.set(false);
+        },
+        error: () => this.isLoading.set(false),
+      });
   }
 
   selectAddress(addressId: string): void {
@@ -96,31 +101,37 @@ export class Checkout {
     if (this.paymentMethod() === 'card') {
       const successUrl = `${window.location.origin}/checkout/success`;
 
-      this.orderService.createCheckoutSession(cartId, { shippingAddress }, successUrl).subscribe({
+      this.orderService
+        .createCheckoutSession(cartId, { shippingAddress }, successUrl)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: (res) => {
+            // مفيش إلغاء لـ isPlacingOrder هنا عمدًا — المستخدم بيتحول فورًا لصفحة Stripe،
+            // فمفيش داعي نرجع الزرار شغال قبل ما يسيب الصفحة أصلاً
+            window.location.href = res.session.url;
+          },
+          error: (err) => {
+            this.isPlacingOrder.set(false);
+            this.serverError.set(this.resolveErrorMessage(err));
+          },
+        });
+      return;
+    }
+
+    this.orderService
+      .createCashOrder(cartId, { shippingAddress })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
         next: (res) => {
-          // مفيش إلغاء لـ isPlacingOrder هنا عمدًا — المستخدم بيتحول فورًا لصفحة Stripe،
-          // فمفيش داعي نرجع الزرار شغال قبل ما يسيب الصفحة أصلاً
-          window.location.href = res.session.url;
+          this.isPlacingOrder.set(false);
+          this.placedOrder.set(res.data);
+          this.cartService.clearUserCart().pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
         },
         error: (err) => {
           this.isPlacingOrder.set(false);
           this.serverError.set(this.resolveErrorMessage(err));
         },
       });
-      return;
-    }
-
-    this.orderService.createCashOrder(cartId, { shippingAddress }).subscribe({
-      next: (res) => {
-        this.isPlacingOrder.set(false);
-        this.placedOrder.set(res.data);
-        this.cartService.clearUserCart().subscribe();
-      },
-      error: (err) => {
-        this.isPlacingOrder.set(false);
-        this.serverError.set(this.resolveErrorMessage(err));
-      },
-    });
   }
 
   private resolveErrorMessage(err: unknown): string {

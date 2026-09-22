@@ -1,5 +1,13 @@
 // checkout-success.ts
-import { afterNextRender, ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import {
+  afterNextRender,
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  inject,
+  signal,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
@@ -21,6 +29,7 @@ export class CheckoutSuccess {
   private readonly authService = inject(AuthService);
   private readonly orderService = inject(OrderService);
   private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
 
   // مفيش API endpoint بيتحقق من حالة دفع Stripe فعليًا، فمش بنقفل السلة أو ندّعي
   // النجاح على طول — بنشوف بس هل ظهر order جديد في آخر 10 دقايق (best effort)
@@ -40,20 +49,23 @@ export class CheckoutSuccess {
       return;
     }
 
-    this.orderService.getUserOrders(userId).subscribe({
-      next: (orders) => {
-        const cutoff = Date.now() - RECENT_ORDER_WINDOW_MS;
-        const latest = [...orders].sort(
-          (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-        )[0];
+    this.orderService
+      .getUserOrders(userId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (orders) => {
+          const cutoff = Date.now() - RECENT_ORDER_WINDOW_MS;
+          const latest = [...orders].sort(
+            (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+          )[0];
 
-        if (latest && new Date(latest.createdAt).getTime() >= cutoff) {
-          this.recentOrder.set(latest);
-        }
-        this.isChecking.set(false);
-      },
-      error: () => this.isChecking.set(false),
-    });
+          if (latest && new Date(latest.createdAt).getTime() >= cutoff) {
+            this.recentOrder.set(latest);
+          }
+          this.isChecking.set(false);
+        },
+        error: () => this.isChecking.set(false),
+      });
   }
 
   // بنستخدم navigateByUrl بـ string صريح بدل [routerLink] هنا كـ extra safety —

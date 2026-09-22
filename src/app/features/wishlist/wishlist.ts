@@ -1,5 +1,13 @@
 // wishlist.ts
-import { afterNextRender, ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import {
+  afterNextRender,
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  inject,
+  signal,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { IProduct } from '../../core/models/product';
@@ -17,6 +25,7 @@ import { TranslatePipe } from '../../shared/pipes/translate-pipe';
 export class Wishlist {
   private readonly wishlistService = inject(WishlistService);
   private readonly cartService = inject(CartService);
+  private readonly destroyRef = inject(DestroyRef);
 
   readonly wishlistData = this.wishlistService.wishlistData;
   readonly isLoading = signal(true);
@@ -31,28 +40,37 @@ export class Wishlist {
 
   private loadWishlist(): void {
     this.isLoading.set(true);
-    this.wishlistService.getLoggedUserWishlist().subscribe({
-      next: () => this.isLoading.set(false),
-      error: () => this.isLoading.set(false),
-    });
+    this.wishlistService
+      .getLoggedUserWishlist()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => this.isLoading.set(false),
+        error: () => this.isLoading.set(false),
+      });
   }
 
   removeProduct(productId: string): void {
     if (this.removingProductId()) return;
     this.removingProductId.set(productId);
-    this.wishlistService.removeProductFromWishlist(productId).subscribe({
-      next: () => this.removingProductId.set(null),
-      error: () => this.removingProductId.set(null),
-    });
+    this.wishlistService
+      .removeProductFromWishlist(productId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => this.removingProductId.set(null),
+        error: () => this.removingProductId.set(null),
+      });
   }
 
   addToCart(productId: string): void {
     if (this.addingToCartId()) return;
     this.addingToCartId.set(productId);
-    this.cartService.addProductToCart(productId).subscribe({
-      next: () => this.addingToCartId.set(null),
-      error: () => this.addingToCartId.set(null),
-    });
+    this.cartService
+      .addProductToCart(productId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => this.addingToCartId.set(null),
+        error: () => this.addingToCartId.set(null),
+      });
   }
 
   trackByProductId(_index: number, item: IProduct): string {

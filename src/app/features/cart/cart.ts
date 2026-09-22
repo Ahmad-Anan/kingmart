@@ -1,5 +1,13 @@
 // cart.ts
-import { afterNextRender, ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import {
+  afterNextRender,
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  inject,
+  signal,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
@@ -16,6 +24,7 @@ import { TranslatePipe } from '../../shared/pipes/translate-pipe';
 })
 export class Cart {
   private readonly cartService = inject(CartService);
+  private readonly destroyRef = inject(DestroyRef);
 
   readonly cartData = this.cartService.cartData;
   readonly isLoading = signal(true);
@@ -29,10 +38,13 @@ export class Cart {
 
   private loadCart(): void {
     this.isLoading.set(true);
-    this.cartService.getLoggedUserCart().subscribe({
-      next: () => this.isLoading.set(false),
-      error: () => this.isLoading.set(false),
-    });
+    this.cartService
+      .getLoggedUserCart()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => this.isLoading.set(false),
+        error: () => this.isLoading.set(false),
+      });
   }
 
   increment(item: ICartProduct): void {
@@ -47,22 +59,28 @@ export class Cart {
   private setQuantity(productId: string, count: number): void {
     if (this.updatingProductId()) return; // avoid overlapping requests
     this.updatingProductId.set(productId);
-    this.cartService.updateCartProductQuantity(productId, count).subscribe({
-      next: () => this.updatingProductId.set(null),
-      error: () => this.updatingProductId.set(null),
-    });
+    this.cartService
+      .updateCartProductQuantity(productId, count)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => this.updatingProductId.set(null),
+        error: () => this.updatingProductId.set(null),
+      });
   }
 
   removeProduct(productId: string): void {
     this.updatingProductId.set(productId);
-    this.cartService.removeProductFromCart(productId).subscribe({
-      next: () => this.updatingProductId.set(null),
-      error: () => this.updatingProductId.set(null),
-    });
+    this.cartService
+      .removeProductFromCart(productId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => this.updatingProductId.set(null),
+        error: () => this.updatingProductId.set(null),
+      });
   }
 
   clearCart(): void {
-    this.cartService.clearUserCart().subscribe();
+    this.cartService.clearUserCart().pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
   }
 
   trackByProductId(_index: number, item: ICartProduct): string {

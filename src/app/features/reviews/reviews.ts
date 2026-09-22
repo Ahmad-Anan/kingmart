@@ -5,11 +5,12 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  DestroyRef,
   inject,
   input,
   signal,
 } from '@angular/core';
-import { rxResource } from '@angular/core/rxjs-interop';
+import { rxResource, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
@@ -32,6 +33,7 @@ export class Reviews {
   private readonly authService = inject(AuthService);
   private readonly languageService = inject(LanguageService);
   protected readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
 
   readonly productId = input.required<string>();
   readonly ratingsAverage = input<number>(0);
@@ -110,7 +112,7 @@ export class Reviews {
         ? this.reviewsService.updateReview(existing._id, payload)
         : this.reviewsService.createReview(this.productId(), payload);
 
-    request$.subscribe({
+    request$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: () => {
         this.submitting.set(false);
         this.isEditing.set(false);
@@ -130,13 +132,16 @@ export class Reviews {
     if (!existing || this.deletingOwn()) return;
 
     this.deletingOwn.set(true);
-    this.reviewsService.deleteReview(existing._id).subscribe({
-      next: () => {
-        this.deletingOwn.set(false);
-        this.reviewsResource.reload();
-      },
-      error: () => this.deletingOwn.set(false),
-    });
+    this.reviewsService
+      .deleteReview(existing._id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          this.deletingOwn.set(false);
+          this.reviewsResource.reload();
+        },
+        error: () => this.deletingOwn.set(false),
+      });
   }
 
   trackByReviewId(_index: number, review: Review): string {

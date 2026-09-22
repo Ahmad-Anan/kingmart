@@ -2,12 +2,13 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  DestroyRef,
   effect,
   inject,
   input,
   signal,
 } from '@angular/core';
-import { rxResource } from '@angular/core/rxjs-interop';
+import { rxResource, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { IProductsResponse } from '../../core/models/product';
@@ -27,6 +28,7 @@ export class Shop {
   private readonly productsService = inject(ProductsService);
   private readonly cartService = inject(CartService);
   private readonly wishlistService = inject(WishlistService);
+  private readonly destroyRef = inject(DestroyRef);
 
   // بتتربط تلقائياً بالـ query params من الرابط، من غير ActivatedRoute خالص
   readonly brand = input<string>();
@@ -101,10 +103,13 @@ export class Shop {
     if (this.addingProductId()) return;
 
     this.addingProductId.set(productId);
-    this.cartService.addProductToCart(productId).subscribe({
-      next: () => this.addingProductId.set(null),
-      error: () => this.addingProductId.set(null),
-    });
+    this.cartService
+      .addProductToCart(productId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => this.addingProductId.set(null),
+        error: () => this.addingProductId.set(null),
+      });
   }
 
   protected readonly togglingWishlistId = signal<string | null>(null);
@@ -123,7 +128,7 @@ export class Shop {
       ? this.wishlistService.removeProductFromWishlist(productId)
       : this.wishlistService.addProductToWishlist(productId);
 
-    request.subscribe({
+    request.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: () => this.togglingWishlistId.set(null),
       error: () => this.togglingWishlistId.set(null),
     });

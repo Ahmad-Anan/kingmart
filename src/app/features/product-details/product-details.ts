@@ -1,6 +1,13 @@
 import { DecimalPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { rxResource, toSignal } from '@angular/core/rxjs-interop';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  DestroyRef,
+  inject,
+  signal,
+} from '@angular/core';
+import { rxResource, takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { map, of, switchMap } from 'rxjs';
@@ -26,6 +33,7 @@ export class ProductDetails {
   private readonly wishlistService = inject(WishlistService);
   private readonly languageService = inject(LanguageService);
   private readonly route = inject(ActivatedRoute);
+  private readonly destroyRef = inject(DestroyRef);
 
   readonly productId = toSignal(this.route.paramMap.pipe(map((params) => params.get('id') || '')));
 
@@ -135,10 +143,13 @@ export class ProductDetails {
 
   private setCartQuantity(productId: string, count: number): void {
     this.isUpdatingQuantity.set(true);
-    this.cartService.updateCartProductQuantity(productId, count).subscribe({
-      next: () => this.isUpdatingQuantity.set(false),
-      error: () => this.isUpdatingQuantity.set(false),
-    });
+    this.cartService
+      .updateCartProductQuantity(productId, count)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => this.isUpdatingQuantity.set(false),
+        error: () => this.isUpdatingQuantity.set(false),
+      });
   }
 
   readonly isAddingToCart = signal(false);
@@ -160,6 +171,7 @@ export class ProductDetails {
             ? this.cartService.updateCartProductQuantity(productId, selectedQuantity)
             : of(res),
         ),
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe({
         next: () => this.isAddingToCart.set(false),
@@ -182,7 +194,7 @@ export class ProductDetails {
       ? this.wishlistService.removeProductFromWishlist(productId)
       : this.wishlistService.addProductToWishlist(productId);
 
-    request.subscribe({
+    request.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: () => this.isTogglingWishlist.set(false),
       error: () => this.isTogglingWishlist.set(false),
     });

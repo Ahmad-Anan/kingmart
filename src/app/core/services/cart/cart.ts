@@ -1,7 +1,7 @@
 // cart.ts
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Service, computed, inject, signal } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { map, Observable, switchMap, tap } from 'rxjs';
 
 import { environment } from '../../../../environments/environment';
 import { IAddToCartResponse, ICartResponse } from '../../models/cart';
@@ -25,8 +25,10 @@ export class Cart {
     return this.http
       .post<IAddToCartResponse>(this.baseUrl, { productId }, { headers: this.getHeaders() })
       .pipe(
-        // الـ add endpoint بيرجع numOfCartItems بس، فبنجيب الـ cart كامل بعدها عشان الـ state يتزامن
-        tap(() => this.getLoggedUserCart().subscribe()),
+        // الـ add endpoint بيرجع numOfCartItems بس، فبنجيب الـ cart كامل بعدها عشان الـ state يتزامن —
+        // switchMap بدل subscribe داخلي عشان الطلب التابع يتلغي تلقائيًا لو المستخدم اللي بيستدعي
+        // الميثود دي عمل unsubscribe (مثلاً غيّر الصفحة) قبل ما يخلص
+        switchMap((res) => this.getLoggedUserCart().pipe(map(() => res))),
       );
   }
 

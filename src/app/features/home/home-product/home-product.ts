@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { rxResource } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
+import { rxResource, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { ProductsService } from '../../../core/services/products/product';
 import { Cart as CartService } from '../../../core/services/cart/cart';
@@ -17,6 +17,7 @@ export class HomeProduct {
   private readonly productsService = inject(ProductsService);
   private readonly cartService = inject(CartService);
   private readonly wishlistService = inject(WishlistService);
+  private readonly destroyRef = inject(DestroyRef);
 
   private readonly queryParams = signal<Record<string, string | number | undefined>>({
     limit: 6,
@@ -44,7 +45,7 @@ export class HomeProduct {
       ? this.wishlistService.removeProductFromWishlist(productId)
       : this.wishlistService.addProductToWishlist(productId);
 
-    request.subscribe({
+    request.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: () => this.togglingWishlistId.set(null),
       error: () => this.togglingWishlistId.set(null),
     });
@@ -58,9 +59,12 @@ export class HomeProduct {
     if (this.addingProductId()) return;
 
     this.addingProductId.set(productId);
-    this.cartService.addProductToCart(productId).subscribe({
-      next: () => this.addingProductId.set(null),
-      error: () => this.addingProductId.set(null),
-    });
+    this.cartService
+      .addProductToCart(productId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => this.addingProductId.set(null),
+        error: () => this.addingProductId.set(null),
+      });
   }
 }

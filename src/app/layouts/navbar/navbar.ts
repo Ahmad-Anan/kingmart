@@ -3,10 +3,12 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  DestroyRef,
   inject,
   signal,
   viewChild,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { DrawerModule } from 'primeng/drawer';
 import { Popover, PopoverModule } from 'primeng/popover';
@@ -31,6 +33,7 @@ export class NavbarComponent {
   private readonly languageService = inject(LanguageService);
   private readonly wishlistService = inject(WishlistService);
   private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
 
   readonly isDarkMode = this.themeService.isDarkMode;
 
@@ -54,8 +57,14 @@ export class NavbarComponent {
     // عشان الـ badges تبان صح من أول لحظة مش لحد ما يضيف حاجة أو يفتح الصفحات دي
     afterNextRender(() => {
       if (this.authService.isLoggedIn()) {
-        this.cartService.getLoggedUserCart().subscribe();
-        this.wishlistService.getLoggedUserWishlist().subscribe();
+        this.cartService
+          .getLoggedUserCart()
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe();
+        this.wishlistService
+          .getLoggedUserWishlist()
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe();
       }
     });
   }
