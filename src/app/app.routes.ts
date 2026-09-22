@@ -2,8 +2,6 @@ import { Routes } from '@angular/router';
 
 import { authGuard } from './core/guards/auth-guard';
 import { guestGuard } from './core/guards/guest-guard';
-import { categoryNameResolver } from './core/resolvers/category-name.resolver';
-import { subCategoryNameResolver } from './core/resolvers/sub-category-name.resolver';
 
 export const routes: Routes = [
   {
@@ -39,9 +37,8 @@ export const routes: Routes = [
       },
       {
         path: ':categoryId',
-        resolve: { categoryName: categoryNameResolver },
         data: {
-          breadcrumb: (data: Record<string, unknown>) => data['categoryName'] as string,
+          breadcrumb: { dynamic: 'category' },
         },
         children: [
           {
@@ -51,9 +48,8 @@ export const routes: Routes = [
           },
           {
             path: ':subCategoryId/:slug',
-            resolve: { subCategoryName: subCategoryNameResolver },
             data: {
-              breadcrumb: (data: Record<string, unknown>) => data['subCategoryName'] as string,
+              breadcrumb: { dynamic: 'subCategory' },
             },
             loadComponent: () =>
               import('./features/categories/sub-category/sub-category-products/sub-category-products').then(

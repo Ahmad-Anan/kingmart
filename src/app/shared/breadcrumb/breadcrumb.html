@@ -5,16 +5,30 @@
         [routerLink]="item.routerLink"
         class="group relative inline-flex items-center text-[12px] font-medium tracking-wide text-slate-500 transition-all duration-300 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
       >
-        <span>{{ item.label }}</span>
+        @if (item.pending) {
+          <span
+            aria-hidden="true"
+            class="inline-block h-3 w-14 animate-pulse rounded-full bg-slate-200 dark:bg-slate-700"
+          ></span>
+        } @else {
+          <span>{{ item.label }}</span>
+        }
         <span
           aria-hidden="true"
           class="absolute -bottom-1 start-0 h-px w-0 bg-slate-300 transition-all duration-400 group-hover:w-full dark:bg-slate-600"
         ></span>
       </a>
     } @else {
-      <span aria-current="page" class="text-[12px] font-semibold text-slate-950 dark:text-white">
-        {{ item.label }}
-      </span>
+      @if (item.pending) {
+        <span
+          aria-hidden="true"
+          class="inline-block h-3 w-14 animate-pulse rounded-full bg-slate-200 dark:bg-slate-700"
+        ></span>
+      } @else {
+        <span aria-current="page" class="text-[12px] font-semibold text-slate-950 dark:text-white">
+          {{ item.label }}
+        </span>
+      }
     }
   </ng-template>
 
