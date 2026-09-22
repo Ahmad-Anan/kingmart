@@ -1,3 +1,4 @@
+import { NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
@@ -10,7 +11,7 @@ const RELEVANT_BRAND_NAMES: readonly string[] = [];
 @Component({
   selector: 'app-home-brands',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, TranslatePipe],
+  imports: [RouterLink, NgOptimizedImage, TranslatePipe],
   templateUrl: './home-brand.html',
   styleUrl: './home-brand.css',
 })

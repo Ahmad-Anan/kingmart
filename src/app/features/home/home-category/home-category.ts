@@ -1,3 +1,4 @@
+import { NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
@@ -7,7 +8,7 @@ import { TranslatePipe } from '../../../shared/pipes/translate-pipe';
 @Component({
   selector: 'app-home-categories',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, TranslatePipe],
+  imports: [RouterLink, NgOptimizedImage, TranslatePipe],
   templateUrl: './home-category.html',
   styleUrl: './home-category.css',
 })

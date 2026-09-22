@@ -1,4 +1,5 @@
 // wishlist.ts
+import { NgOptimizedImage } from '@angular/common';
 import {
   afterNextRender,
   ChangeDetectionStrategy,
@@ -18,7 +19,7 @@ import { TranslatePipe } from '../../shared/pipes/translate-pipe';
 @Component({
   selector: 'app-wishlist',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ProgressSpinnerModule, RouterLink, TranslatePipe],
+  imports: [NgOptimizedImage, ProgressSpinnerModule, RouterLink, TranslatePipe],
   templateUrl: './wishlist.html',
   styleUrl: './wishlist.css',
 })

@@ -1,3 +1,4 @@
+import { NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,7 +13,7 @@ import { TranslatePipe } from '../../../shared/pipes/translate-pipe';
   selector: 'app-details-brand',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslatePipe],
+  imports: [NgOptimizedImage, TranslatePipe],
   templateUrl: './details-brand.html',
   styleUrl: './details-brand.css',
 })

@@ -1,3 +1,4 @@
+import { NgOptimizedImage } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -16,7 +17,7 @@ import { TranslatePipe } from '../../shared/pipes/translate-pipe';
   selector: 'app-categories',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslatePipe],
+  imports: [NgOptimizedImage, TranslatePipe],
   templateUrl: './categories.html',
   styleUrl: './categories.css',
 })

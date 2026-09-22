@@ -1,5 +1,5 @@
 // orders.ts
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgOptimizedImage } from '@angular/common';
 import {
   afterNextRender,
   ChangeDetectionStrategy,
@@ -20,7 +20,7 @@ import { TranslatePipe } from '../../shared/pipes/translate-pipe';
 @Component({
   selector: 'app-orders',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DatePipe, RouterLink, ProgressSpinnerModule, TranslatePipe],
+  imports: [DatePipe, NgOptimizedImage, RouterLink, ProgressSpinnerModule, TranslatePipe],
   templateUrl: './orders.html',
   styleUrl: './orders.css',
 })

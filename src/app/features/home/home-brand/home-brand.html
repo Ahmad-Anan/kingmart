@@ -39,10 +39,11 @@
             class="group mx-2 flex h-20 w-32 shrink-0 flex-col items-center justify-center gap-2 rounded-2xl border border-gold-500/15 dark:border-gold-400/15 bg-white/70 dark:bg-linear-to-br dark:from-royal-800/40 dark:to-royal-950/80 backdrop-blur-md transition-all duration-500 hover:border-gold-500/50 dark:hover:border-gold-400/50 hover:shadow-lg hover:shadow-gold-500/10 dark:hover:shadow-gold-500/20 hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400"
           >
             <img
-              [src]="brand.image"
+              [ngSrc]="brand.image"
               [alt]="brand.name"
+              width="128"
+              height="32"
               class="h-8 w-auto object-contain grayscale opacity-70 transition-all duration-500 group-hover:grayscale-0 group-hover:opacity-100"
-              loading="lazy"
             />
             <span
               class="font-cinzel text-[9px] uppercase tracking-wider text-neutral-500 dark:text-neutral-400 group-hover:text-gold-600 dark:group-hover:text-gold-400 transition-colors duration-300 line-clamp-1"
@@ -59,10 +60,11 @@
             inert
           >
             <img
-              [src]="brand.image"
+              [ngSrc]="brand.image"
               [alt]="''"
+              width="128"
+              height="32"
               class="h-8 w-auto object-contain grayscale opacity-70"
-              loading="lazy"
             />
             <span
               class="font-cinzel text-[9px] uppercase tracking-wider text-neutral-500 dark:text-neutral-400 line-clamp-1"

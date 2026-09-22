@@ -1,4 +1,4 @@
-import { DecimalPipe } from '@angular/common';
+import { DecimalPipe, NgOptimizedImage } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -23,7 +23,7 @@ import { TranslatePipe } from '../../shared/pipes/translate-pipe';
   selector: 'app-product-details',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DecimalPipe, RouterLink, Breadcrumb, Reviews, TranslatePipe],
+  imports: [DecimalPipe, NgOptimizedImage, RouterLink, Breadcrumb, Reviews, TranslatePipe],
   templateUrl: './product-details.html',
   styleUrl: './product-details.css',
 })

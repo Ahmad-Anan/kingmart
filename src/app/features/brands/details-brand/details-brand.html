@@ -55,10 +55,11 @@
               class="relative w-full h-72 bg-neutral-100 dark:bg-royal-950/80 overflow-hidden aspect-fashion"
             >
               <img
-                [src]="product.imageCover"
+                [ngSrc]="product.imageCover"
                 [alt]="product.title"
-                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-                loading="lazy"
+                fill
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                class="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
               />
 
               <div

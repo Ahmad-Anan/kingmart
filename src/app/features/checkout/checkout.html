@@ -144,8 +144,10 @@
           @for (item of cartData()!.data.products; track item._id) {
             <div class="flex items-center gap-4 p-4">
               <img
-                [src]="item.product.imageCover"
+                [ngSrc]="item.product.imageCover"
                 [alt]="item.product.title"
+                width="56"
+                height="56"
                 class="h-14 w-14 shrink-0 rounded-lg object-cover ring-1 ring-gold-400/20 dark:ring-gold-500/15"
               />
               <div class="min-w-0 flex-1">

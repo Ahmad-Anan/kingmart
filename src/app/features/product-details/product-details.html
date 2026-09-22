@@ -63,9 +63,10 @@
                     [class.opacity-60]="(selectedImage() || product.imageCover) !== img"
                   >
                     <img
-                      [src]="img"
+                      [ngSrc]="img"
                       [alt]="product.title"
-                      class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500"
+                      fill
+                      class="object-cover object-center group-hover:scale-110 transition-transform duration-500"
                     />
                   </button>
                 }
@@ -76,9 +77,12 @@
               class="relative flex-1 max-w-md mx-auto lg:mx-0 aspect-3/4 w-full overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-900 shadow-2xl gold-glow-border group"
             >
               <img
-                [src]="selectedImage() || product.imageCover"
+                [ngSrc]="selectedImage() || product.imageCover"
                 [alt]="product.title"
-                class="w-full h-full object-cover object-center transition-transform duration-1000 ease-out group-hover:scale-105"
+                fill
+                sizes="(max-width: 1024px) 90vw, 40vw"
+                priority
+                class="object-cover object-center transition-transform duration-1000 ease-out group-hover:scale-105"
               />
 
               @if (product.priceAfterDiscount) {

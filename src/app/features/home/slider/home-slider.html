@@ -13,13 +13,13 @@
       <swiper-slide class="h-full">
         <div class="relative h-full w-full overflow-hidden bg-royal-950">
           <img
-            [src]="slide.image"
+            [ngSrc]="slide.image"
             [alt]="slide.imageAlt"
             [style.object-position]="slide.focalPosition"
-            class="absolute inset-0 h-full w-full object-cover"
-            [attr.loading]="isFirst ? 'eager' : 'lazy'"
-            [attr.fetchpriority]="isFirst ? 'high' : 'auto'"
-            decoding="async"
+            class="object-cover"
+            fill
+            sizes="100vw"
+            [priority]="isFirst"
           />
 
           @if (slide.titleKey) {

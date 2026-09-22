@@ -71,10 +71,11 @@
               [attr.aria-label]="product.title"
             >
               <img
-                [src]="product.imageCover"
+                [ngSrc]="product.imageCover"
                 [alt]="product.title"
-                class="h-full w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
-                loading="lazy"
+                fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                class="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
               />
             </a>
 

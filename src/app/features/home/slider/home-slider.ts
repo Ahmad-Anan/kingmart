@@ -1,3 +1,4 @@
+import { NgOptimizedImage } from '@angular/common';
 import {
   afterNextRender,
   ChangeDetectionStrategy,
@@ -24,7 +25,7 @@ interface SwiperElementWithInstance extends HTMLElement {
 @Component({
   selector: 'app-home-slider',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslatePipe],
+  imports: [NgOptimizedImage, TranslatePipe],
   templateUrl: './home-slider.html',
   styleUrl: './home-slider.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

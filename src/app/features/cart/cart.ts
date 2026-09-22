@@ -1,4 +1,5 @@
 // cart.ts
+import { NgOptimizedImage } from '@angular/common';
 import {
   afterNextRender,
   ChangeDetectionStrategy,
@@ -18,7 +19,7 @@ import { TranslatePipe } from '../../shared/pipes/translate-pipe';
 @Component({
   selector: 'app-cart',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ButtonModule, ProgressSpinnerModule, RouterLink, TranslatePipe],
+  imports: [ButtonModule, NgOptimizedImage, ProgressSpinnerModule, RouterLink, TranslatePipe],
   templateUrl: './cart.html',
   styleUrl: './cart.css',
 })

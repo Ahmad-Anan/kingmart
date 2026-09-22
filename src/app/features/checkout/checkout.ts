@@ -1,4 +1,5 @@
 // checkout.ts
+import { NgOptimizedImage } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import {
   afterNextRender,
@@ -27,7 +28,14 @@ import { TranslatePipe } from '../../shared/pipes/translate-pipe';
 @Component({
   selector: 'app-checkout',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, ButtonModule, MessageModule, ProgressSpinnerModule, TranslatePipe],
+  imports: [
+    RouterLink,
+    ButtonModule,
+    MessageModule,
+    NgOptimizedImage,
+    ProgressSpinnerModule,
+    TranslatePipe,
+  ],
   templateUrl: './checkout.html',
   styleUrl: './checkout.css',
 })

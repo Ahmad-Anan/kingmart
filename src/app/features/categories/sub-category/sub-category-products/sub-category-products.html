@@ -107,10 +107,10 @@
               <!-- Image -->
               <div class="relative overflow-hidden">
                 <img
-                  [src]="product.imageCover"
+                  [ngSrc]="product.imageCover"
                   [alt]="product.title"
-                  loading="lazy"
-                  decoding="async"
+                  width="400"
+                  height="400"
                   (error)="onImageError($event)"
                   class="aspect-square w-full object-cover transition duration-500 group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                 />

@@ -56,8 +56,10 @@
           [class.opacity-60]="updatingProductId() === item.product._id"
         >
           <img
-            [src]="item.product.imageCover"
+            [ngSrc]="item.product.imageCover"
             [alt]="item.product.title"
+            width="96"
+            height="96"
             class="h-24 w-24 shrink-0 rounded-xl object-cover ring-1 ring-gold-400/20 transition-all dark:ring-gold-500/15"
           />
 

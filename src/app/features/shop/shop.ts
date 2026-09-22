@@ -1,3 +1,4 @@
+import { NgOptimizedImage } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -20,7 +21,7 @@ import { TranslatePipe } from '../../shared/pipes/translate-pipe';
 @Component({
   selector: 'app-shop',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, PaginatorModule, TranslatePipe],
+  imports: [RouterLink, NgOptimizedImage, PaginatorModule, TranslatePipe],
   templateUrl: './shop.html',
   styleUrl: './shop.css',
 })
