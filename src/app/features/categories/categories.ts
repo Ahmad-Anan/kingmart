@@ -1,4 +1,10 @@
-import { Component, computed, inject, linkedSignal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  linkedSignal,
+} from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -9,6 +15,7 @@ import { TranslatePipe } from '../../shared/pipes/translate-pipe';
 @Component({
   selector: 'app-categories',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [TranslatePipe],
   templateUrl: './categories.html',
   styleUrl: './categories.css',

@@ -1,5 +1,5 @@
 import { DecimalPipe } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MenuItem } from 'primeng/api';
@@ -15,6 +15,7 @@ import { TranslatePipe } from '../../shared/pipes/translate-pipe';
 @Component({
   selector: 'app-product-details',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [DecimalPipe, RouterLink, Breadcrumb, Reviews, TranslatePipe],
   templateUrl: './product-details.html',
   styleUrl: './product-details.css',

@@ -1,5 +1,5 @@
 // cart.ts
-import { afterNextRender, Component, inject, signal } from '@angular/core';
+import { afterNextRender, ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
@@ -9,6 +9,7 @@ import { TranslatePipe } from '../../shared/pipes/translate-pipe';
 
 @Component({
   selector: 'app-cart',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ButtonModule, ProgressSpinnerModule, RouterLink, TranslatePipe],
   templateUrl: './cart.html',
   styleUrl: './cart.css',

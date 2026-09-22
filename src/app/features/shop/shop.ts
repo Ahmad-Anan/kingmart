@@ -1,4 +1,12 @@
-import { Component, computed, effect, inject, input, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  signal,
+} from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
@@ -10,6 +18,7 @@ import { TranslatePipe } from '../../shared/pipes/translate-pipe';
 
 @Component({
   selector: 'app-shop',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, PaginatorModule, TranslatePipe],
   templateUrl: './shop.html',
   styleUrl: './shop.css',

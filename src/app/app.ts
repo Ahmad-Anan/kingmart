@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ToastModule } from 'primeng/toast';
 import { LoadingService } from './core/services/loading/loading';
@@ -10,6 +10,7 @@ import { BreadcrumbService } from './shared/breadcrumb/breadcrumb.service';
 
 @Component({
   selector: 'app-root',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterOutlet, NavbarComponent, FooterComponent, Breadcrumb, ToastModule],
   templateUrl: './app.html',
   styleUrl: './app.css',

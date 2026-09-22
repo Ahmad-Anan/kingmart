@@ -1,4 +1,4 @@
-import { Component, computed, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { TranslatePipe } from '../../shared/pipes/translate-pipe';
@@ -6,6 +6,7 @@ import { TranslatePipe } from '../../shared/pipes/translate-pipe';
 @Component({
   selector: 'app-footer',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, TranslatePipe],
   templateUrl: './footer.html',
   styleUrl: './footer.css',

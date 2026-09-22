@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
@@ -14,6 +14,7 @@ interface IQuickLink {
 
 @Component({
   selector: 'app-not-found',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, ButtonModule, TranslatePipe],
   templateUrl: './not-found.html',
   styleUrl: './not-found.css',

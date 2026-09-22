@@ -1,5 +1,6 @@
 import {
   afterNextRender,
+  ChangeDetectionStrategy,
   Component,
   CUSTOM_ELEMENTS_SCHEMA,
   DestroyRef,
@@ -22,6 +23,7 @@ interface SwiperElementWithInstance extends HTMLElement {
 
 @Component({
   selector: 'app-home-slider',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [TranslatePipe],
   templateUrl: './home-slider.html',
   styleUrl: './home-slider.css',

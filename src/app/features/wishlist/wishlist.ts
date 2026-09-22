@@ -1,5 +1,5 @@
 // wishlist.ts
-import { afterNextRender, Component, inject, signal } from '@angular/core';
+import { afterNextRender, ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { IProduct } from '../../core/models/product';
@@ -9,6 +9,7 @@ import { TranslatePipe } from '../../shared/pipes/translate-pipe';
 
 @Component({
   selector: 'app-wishlist',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ProgressSpinnerModule, RouterLink, TranslatePipe],
   templateUrl: './wishlist.html',
   styleUrl: './wishlist.css',

@@ -1,5 +1,5 @@
 // checkout-success.ts
-import { afterNextRender, Component, inject, signal } from '@angular/core';
+import { afterNextRender, ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
@@ -12,6 +12,7 @@ const RECENT_ORDER_WINDOW_MS = 10 * 60 * 1000;
 
 @Component({
   selector: 'app-checkout-success',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ProgressSpinnerModule, TranslatePipe],
   templateUrl: './checkout-success.html',
   styleUrl: './checkout-success.css',

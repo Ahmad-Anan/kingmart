@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, of } from 'rxjs';
@@ -11,6 +11,7 @@ import { TranslatePipe } from '../../../shared/pipes/translate-pipe';
 @Component({
   selector: 'app-details-brand',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [TranslatePipe],
   templateUrl: './details-brand.html',
   styleUrl: './details-brand.css',

@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { IBrand } from '../../../core/models/brand';
@@ -9,6 +9,7 @@ const RELEVANT_BRAND_NAMES: readonly string[] = [];
 
 @Component({
   selector: 'app-home-brands',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, TranslatePipe],
   templateUrl: './home-brand.html',
   styleUrl: './home-brand.css',
