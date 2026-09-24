@@ -70,11 +70,9 @@ export class Shop {
     stream: ({ params }) => this.productsService.getProducts(params),
   });
 
-  // الـ API مبترجعش عدد إجمالي مباشر، بس بترجع عدد الصفحات — بنحسب upper-bound منه
-  // (ممكن يزيد شوية عن الحقيقي في آخر صفحة مش كاملة، تفصيلة بصرية بسيطة مش مؤثرة)
-  protected readonly totalRecords = computed(
-    () => (this.productsResource.value()?.metadata.numberOfPages ?? 0) * this.rowsPerPage,
-  );
+  // الـ results في الـ response هي العدد الإجمالي الحقيقي للنتايج بعد الفلترة (مش عدد عناصر
+  // الصفحة الحالية) — numberOfPages × rowsPerPage كان بيطلع رقم غلط زي "1–12 of 12" لـ 3 منتجات
+  protected readonly totalRecords = computed(() => this.productsResource.value()?.results ?? 0);
 
   protected readonly showingFrom = computed(() =>
     this.totalRecords() === 0 ? 0 : (this.page() - 1) * this.rowsPerPage + 1,
