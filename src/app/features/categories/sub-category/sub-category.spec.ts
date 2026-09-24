@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { flushPendingRequests } from '../../../../testing/flush-pending-requests';
 
 import { SubCategory } from './sub-category';
 
@@ -13,6 +14,7 @@ describe('SubCategory', () => {
 
     fixture = TestBed.createComponent(SubCategory);
     component = fixture.componentInstance;
+    await flushPendingRequests(fixture);
     await fixture.whenStable();
   });
 

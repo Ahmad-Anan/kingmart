@@ -12,6 +12,7 @@ describe('Breadcrumb', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(Breadcrumb);
+    fixture.componentRef.setInput('items', [{ label: 'Home', routerLink: '/' }]);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

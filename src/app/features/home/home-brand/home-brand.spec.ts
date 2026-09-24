@@ -1,18 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { flushPendingRequests } from '../../../../testing/flush-pending-requests';
 
-import { HomeBrand } from './home-brand';
+import { HomeBrands } from './home-brand';
 
-describe('HomeBrand', () => {
-  let component: HomeBrand;
-  let fixture: ComponentFixture<HomeBrand>;
+describe('HomeBrands', () => {
+  let component: HomeBrands;
+  let fixture: ComponentFixture<HomeBrands>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HomeBrand],
+      imports: [HomeBrands],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(HomeBrand);
+    fixture = TestBed.createComponent(HomeBrands);
     component = fixture.componentInstance;
+    await flushPendingRequests(fixture);
     await fixture.whenStable();
   });
 

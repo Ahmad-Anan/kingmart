@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { flushPendingRequests } from '../../../testing/flush-pending-requests';
 
 import { Home } from './home';
 
@@ -13,6 +14,7 @@ describe('Home', () => {
 
     fixture = TestBed.createComponent(Home);
     component = fixture.componentInstance;
+    await flushPendingRequests(fixture);
     await fixture.whenStable();
   });
 

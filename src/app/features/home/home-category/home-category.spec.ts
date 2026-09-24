@@ -1,18 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { flushPendingRequests } from '../../../../testing/flush-pending-requests';
 
-import { HomeCategory } from './home-category';
+import { HomeCategories } from './home-category';
 
-describe('HomeCategory', () => {
-  let component: HomeCategory;
-  let fixture: ComponentFixture<HomeCategory>;
+describe('HomeCategories', () => {
+  let component: HomeCategories;
+  let fixture: ComponentFixture<HomeCategories>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HomeCategory],
+      imports: [HomeCategories],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(HomeCategory);
+    fixture = TestBed.createComponent(HomeCategories);
     component = fixture.componentInstance;
+    await flushPendingRequests(fixture);
     await fixture.whenStable();
   });
 
