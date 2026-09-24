@@ -27,14 +27,12 @@ const DESKTOP = { width: 1440, height: 900 };
 const IPHONE_16_PRO_MAX = { width: 440, height: 956 };
 
 // Canon EOS M50 Mark II — clean product photography on white + has real reviews in the API.
-// clientNav: the live Vercel deploy 404s on a hard load of SSR-only routes (product-details,
-// brands/:id, categories/:id), so those shots boot on /home and navigate in-app instead.
 const PRODUCT_PATH =
   '/product-details/6408e43a6406cd15828e8f22/eos-m50-mark-ii-mirrorless-digital-camera-with-15-45mm-lens-black';
 
 const SHOTS = [
   { file: '01-home-desktop-dark-en.png', path: '/home', viewport: DESKTOP, dpr: 2, theme: 'dark', locale: 'en' },
-  { file: '02-product-desktop-dark-en.png', path: PRODUCT_PATH, viewport: DESKTOP, dpr: 2, theme: 'dark', locale: 'en', clientNav: true },
+  { file: '02-product-desktop-dark-en.png', path: PRODUCT_PATH, viewport: DESKTOP, dpr: 2, theme: 'dark', locale: 'en' },
   { file: '03-cart-desktop-dark-en.png', path: '/cart', viewport: DESKTOP, dpr: 2, theme: 'dark', locale: 'en', auth: true },
   { file: '04-home-mobile-dark-ar.png', path: '/home', viewport: IPHONE_16_PRO_MAX, dpr: 3, mobile: true, theme: 'dark', locale: 'ar' },
   { file: '05-home-desktop-light-en.png', path: '/home', viewport: DESKTOP, dpr: 2, theme: 'light', locale: 'en' },
@@ -204,18 +202,7 @@ async function capture(browser, shot, storageState) {
   const context = await newContext(browser, shot, storageState);
   const page = await context.newPage();
   try {
-    if (shot.clientNav) {
-      await page.goto(`${BASE_URL}/home`, { waitUntil: 'domcontentloaded', timeout: 60_000 });
-      await waitForNetworkIdle(page);
-      // Angular's Router listens to popstate, so this is a normal in-app navigation.
-      await page.evaluate((p) => {
-        history.pushState(null, '', p);
-        window.dispatchEvent(new PopStateEvent('popstate', { state: null }));
-      }, shot.path);
-      await page.waitForURL((url) => url.pathname === shot.path.split('?')[0], { timeout: 15_000 });
-    } else {
-      await page.goto(`${BASE_URL}${shot.path}`, { waitUntil: 'domcontentloaded', timeout: 60_000 });
-    }
+    await page.goto(`${BASE_URL}${shot.path}`, { waitUntil: 'domcontentloaded', timeout: 60_000 });
     await waitForNetworkIdle(page);
 
     if (shot.auth && new URL(page.url()).pathname.startsWith('/login')) {
