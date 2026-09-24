@@ -13,7 +13,7 @@
       <p class="font-serif text-2xl text-royal-950 dark:text-gold-200">{{ 'checkoutSuccess.orderConfirmed' | t }}</p>
       <p class="max-w-sm text-sm opacity-60">
         {{
-          'checkoutSuccess.foundOrder' | t: { ref: order._id, total: order.totalOrderPrice }
+          'checkoutSuccess.foundOrder' | t: { ref: order._id, total: (order.totalOrderPrice | price) }
         }}
       </p>
       <button

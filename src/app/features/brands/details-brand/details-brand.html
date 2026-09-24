@@ -95,16 +95,16 @@
                 <div class="flex flex-col">
                   @if (product.priceAfterDiscount) {
                     <span class="text-xs text-neutral-400 line-through font-mono"
-                      >${{ product.price }}</span
+                      >{{ product.price | price }}</span
                     >
                     <span
                       class="text-lg font-black text-royal-950 dark:text-white font-mono tracking-tight"
-                      >${{ product.priceAfterDiscount }}</span
+                      >{{ product.priceAfterDiscount | price }}</span
                     >
                   } @else {
                     <span
                       class="text-lg font-black text-royal-950 dark:text-white font-mono tracking-tight"
-                      >${{ product.price }}</span
+                      >{{ product.price | price }}</span
                     >
                   }
                 </div>

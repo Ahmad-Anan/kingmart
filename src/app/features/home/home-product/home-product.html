@@ -172,12 +172,12 @@
               <div class="text-end shrink-0 font-mono">
                 @if (product.priceAfterDiscount) {
                   <div class="text-base font-medium text-neutral-900 dark:text-white">
-                    ${{ product.priceAfterDiscount }}
+                    {{ product.priceAfterDiscount | price }}
                   </div>
-                  <div class="text-[11px] text-neutral-400 line-through">${{ product.price }}</div>
+                  <div class="text-[11px] text-neutral-400 line-through">{{ product.price | price }}</div>
                 } @else {
                   <div class="text-base font-medium text-neutral-900 dark:text-white">
-                    ${{ product.price }}
+                    {{ product.price | price }}
                   </div>
                 }
               </div>

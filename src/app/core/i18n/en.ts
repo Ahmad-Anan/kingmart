@@ -15,7 +15,6 @@ export const en = {
     signUp: 'Sign Up',
     signOut: 'Sign Out',
     somethingWentWrong: 'Something went wrong. Please try again.',
-    egp: 'EGP',
     addToWishlist: 'Add to wishlist',
     removeFromWishlist: 'Remove from wishlist',
   },
@@ -354,7 +353,7 @@ export const en = {
   checkoutSuccess: {
     confirming: 'Confirming Your Order',
     orderConfirmed: 'Order Confirmed',
-    foundOrder: 'We found your order — reference {ref}, total {total} EGP.',
+    foundOrder: 'We found your order — reference {ref}, total {total}.',
     viewMyOrders: 'View My Orders',
     notSureTitle: "We're Not Sure Yet",
     notSureDescription:

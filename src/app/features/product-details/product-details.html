@@ -149,14 +149,14 @@
             <div class="flex items-baseline gap-5">
               @if (product.priceAfterDiscount) {
                 <span class="font-serif text-3xl font-medium text-gold-gradient">
-                  ${{ product.priceAfterDiscount }}
+                  {{ product.priceAfterDiscount | price }}
                 </span>
                 <span class="text-base text-neutral-400 line-through font-mono">
-                  ${{ product.price }}
+                  {{ product.price | price }}
                 </span>
               } @else {
                 <span class="font-serif text-3xl font-medium text-gold-gradient">
-                  ${{ product.price }}
+                  {{ product.price | price }}
                 </span>
               }
             </div>

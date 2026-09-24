@@ -5,12 +5,13 @@ import { RouterLink } from '@angular/router';
 import { ProductsService } from '../../../core/services/products/product';
 import { Cart as CartService } from '../../../core/services/cart/cart';
 import { WishlistService } from '../../../core/services/wishlist/wishlist';
+import { PricePipe } from '../../../shared/pipes/price-pipe';
 import { TranslatePipe } from '../../../shared/pipes/translate-pipe';
 
 @Component({
   selector: 'app-home-product',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, NgOptimizedImage, TranslatePipe],
+  imports: [RouterLink, NgOptimizedImage, PricePipe, TranslatePipe],
   templateUrl: './home-product.html',
   styleUrl: './home-product.css',
 })

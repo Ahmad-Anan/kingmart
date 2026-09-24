@@ -155,15 +155,15 @@
                 <div class="mt-auto flex flex-wrap items-center gap-2">
                   @if (product.priceAfterDiscount) {
                     <span class="text-lg font-bold text-gold-600 sm:text-xl dark:text-gold-400">
-                      {{ product.priceAfterDiscount }} {{ 'common.egp' | t }}
+                      {{ product.priceAfterDiscount | price }}
                     </span>
 
                     <span class="text-sm text-royal-900/40 line-through dark:text-white/40">
-                      {{ product.price }} {{ 'common.egp' | t }}
+                      {{ product.price | price }}
                     </span>
                   } @else {
                     <span class="text-lg font-bold text-gold-600 sm:text-xl dark:text-gold-400">
-                      {{ product.price }} {{ 'common.egp' | t }}
+                      {{ product.price | price }}
                     </span>
                   }
                 </div>

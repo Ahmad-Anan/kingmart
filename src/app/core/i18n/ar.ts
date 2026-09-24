@@ -17,7 +17,6 @@ export const ar: Translations = {
     signUp: 'إنشاء حساب',
     signOut: 'تسجيل الخروج',
     somethingWentWrong: 'حدث خطأ ما. يرجى المحاولة مرة أخرى.',
-    egp: 'جنيه',
     addToWishlist: 'أضف إلى المفضلة',
     removeFromWishlist: 'إزالة من المفضلة',
   },
@@ -352,7 +351,7 @@ export const ar: Translations = {
   checkoutSuccess: {
     confirming: 'جارٍ تأكيد طلبك',
     orderConfirmed: 'تم تأكيد الطلب',
-    foundOrder: 'وجدنا طلبك — المرجع {ref}، الإجمالي {total} جنيه.',
+    foundOrder: 'وجدنا طلبك — المرجع {ref}، الإجمالي {total}.',
     viewMyOrders: 'عرض طلباتي',
     notSureTitle: 'لسنا متأكدين بعد',
     notSureDescription:

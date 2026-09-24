@@ -30,7 +30,7 @@
         {{ 'checkout.orderPlacedDescription' | t: { ref: order._id } }}
       </p>
       <p class="font-serif text-3xl text-gold-gradient">
-        {{ order.totalOrderPrice }} {{ 'common.egp' | t }}
+        {{ order.totalOrderPrice | price }}
       </p>
       <div class="mt-4 flex flex-col items-center gap-3 sm:flex-row">
         <a
@@ -157,7 +157,7 @@
                 <p class="mt-0.5 text-xs opacity-55">{{ 'checkout.qty' | t: { count: item.count } }}</p>
               </div>
               <p class="shrink-0 font-serif text-sm text-royal-950 dark:text-gold-200">
-                {{ item.price * item.count }} {{ 'common.egp' | t }}
+                {{ item.price * item.count | price }}
               </p>
             </div>
           }
@@ -165,7 +165,7 @@
           <div class="flex items-center justify-between p-5">
             <p class="font-cinzel text-xs tracking-[0.2em] uppercase opacity-50">{{ 'checkout.total' | t }}</p>
             <p class="text-gold-gradient font-serif text-2xl">
-              {{ cartData()!.data.totalCartPrice }} {{ 'common.egp' | t }}
+              {{ cartData()!.data.totalCartPrice | price }}
             </p>
           </div>
         </div>

@@ -17,13 +17,22 @@ import { LanguageService } from '../../core/services/language/language';
 import { WishlistService } from '../../core/services/wishlist/wishlist';
 import { Reviews } from '../reviews/reviews';
 import { Breadcrumb } from '../../shared/breadcrumb/breadcrumb';
+import { PricePipe } from '../../shared/pipes/price-pipe';
 import { TranslatePipe } from '../../shared/pipes/translate-pipe';
 
 @Component({
   selector: 'app-product-details',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DecimalPipe, NgOptimizedImage, RouterLink, Breadcrumb, Reviews, TranslatePipe],
+  imports: [
+    DecimalPipe,
+    NgOptimizedImage,
+    RouterLink,
+    Breadcrumb,
+    Reviews,
+    PricePipe,
+    TranslatePipe,
+  ],
   templateUrl: './product-details.html',
   styleUrl: './product-details.css',
 })

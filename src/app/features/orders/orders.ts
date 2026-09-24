@@ -15,12 +15,20 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { IOrder } from '../../core/models/order';
 import { AuthService } from '../../core/services/auth/auth';
 import { OrderService } from '../../core/services/order/order';
+import { PricePipe } from '../../shared/pipes/price-pipe';
 import { TranslatePipe } from '../../shared/pipes/translate-pipe';
 
 @Component({
   selector: 'app-orders',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DatePipe, NgOptimizedImage, RouterLink, ProgressSpinnerModule, TranslatePipe],
+  imports: [
+    DatePipe,
+    NgOptimizedImage,
+    RouterLink,
+    ProgressSpinnerModule,
+    PricePipe,
+    TranslatePipe,
+  ],
   templateUrl: './orders.html',
   styleUrl: './orders.css',
 })

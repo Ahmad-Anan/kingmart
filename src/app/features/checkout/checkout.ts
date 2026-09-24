@@ -23,6 +23,7 @@ import { AddressService } from '../../core/services/address/address';
 import { Cart as CartService } from '../../core/services/cart/cart';
 import { LanguageService } from '../../core/services/language/language';
 import { OrderService } from '../../core/services/order/order';
+import { PricePipe } from '../../shared/pipes/price-pipe';
 import { TranslatePipe } from '../../shared/pipes/translate-pipe';
 
 @Component({
@@ -34,6 +35,7 @@ import { TranslatePipe } from '../../shared/pipes/translate-pipe';
     MessageModule,
     NgOptimizedImage,
     ProgressSpinnerModule,
+    PricePipe,
     TranslatePipe,
   ],
   templateUrl: './checkout.html',

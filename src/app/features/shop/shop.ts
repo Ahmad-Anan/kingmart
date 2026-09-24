@@ -16,12 +16,13 @@ import { IProductsResponse } from '../../core/models/product';
 import { ProductsService } from '../../core/services/products/product';
 import { Cart as CartService } from '../../core/services/cart/cart';
 import { WishlistService } from '../../core/services/wishlist/wishlist';
+import { PricePipe } from '../../shared/pipes/price-pipe';
 import { TranslatePipe } from '../../shared/pipes/translate-pipe';
 
 @Component({
   selector: 'app-shop',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, NgOptimizedImage, PaginatorModule, TranslatePipe],
+  imports: [RouterLink, NgOptimizedImage, PaginatorModule, PricePipe, TranslatePipe],
   templateUrl: './shop.html',
   styleUrl: './shop.css',
 })

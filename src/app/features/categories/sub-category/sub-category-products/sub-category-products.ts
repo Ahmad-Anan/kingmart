@@ -6,13 +6,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IProduct } from '../../../../core/models/product';
 import { CategoryService } from '../../../../core/services/category/category';
 import { ProductsService } from '../../../../core/services/products/product';
+import { PricePipe } from '../../../../shared/pipes/price-pipe';
 import { TranslatePipe } from '../../../../shared/pipes/translate-pipe';
 
 @Component({
   selector: 'app-sub-category-products',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgOptimizedImage, TranslatePipe],
+  imports: [NgOptimizedImage, PricePipe, TranslatePipe],
   templateUrl: './sub-category-products.html',
   styleUrl: './sub-category-products.css',
 })

@@ -14,12 +14,20 @@ import { ButtonModule } from 'primeng/button';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ICartProduct } from '../../core/models/cart';
 import { Cart as CartService } from '../../core/services/cart/cart';
+import { PricePipe } from '../../shared/pipes/price-pipe';
 import { TranslatePipe } from '../../shared/pipes/translate-pipe';
 
 @Component({
   selector: 'app-cart',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ButtonModule, NgOptimizedImage, ProgressSpinnerModule, RouterLink, TranslatePipe],
+  imports: [
+    ButtonModule,
+    NgOptimizedImage,
+    ProgressSpinnerModule,
+    RouterLink,
+    PricePipe,
+    TranslatePipe,
+  ],
   templateUrl: './cart.html',
   styleUrl: './cart.css',
 })

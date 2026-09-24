@@ -14,12 +14,13 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { IProduct } from '../../core/models/product';
 import { Cart as CartService } from '../../core/services/cart/cart';
 import { WishlistService } from '../../core/services/wishlist/wishlist';
+import { PricePipe } from '../../shared/pipes/price-pipe';
 import { TranslatePipe } from '../../shared/pipes/translate-pipe';
 
 @Component({
   selector: 'app-wishlist',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgOptimizedImage, ProgressSpinnerModule, RouterLink, TranslatePipe],
+  imports: [NgOptimizedImage, ProgressSpinnerModule, RouterLink, PricePipe, TranslatePipe],
   templateUrl: './wishlist.html',
   styleUrl: './wishlist.css',
 })

@@ -7,13 +7,14 @@ import { IProduct } from '../../../core/models/product';
 import { BrandsService } from '../../../core/services/Brands/brands';
 import { LanguageService } from '../../../core/services/language/language';
 import { ProductsService } from '../../../core/services/products/product';
+import { PricePipe } from '../../../shared/pipes/price-pipe';
 import { TranslatePipe } from '../../../shared/pipes/translate-pipe';
 
 @Component({
   selector: 'app-details-brand',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgOptimizedImage, TranslatePipe],
+  imports: [NgOptimizedImage, PricePipe, TranslatePipe],
   templateUrl: './details-brand.html',
   styleUrl: './details-brand.css',
 })
