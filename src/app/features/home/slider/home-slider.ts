@@ -38,9 +38,21 @@ export class HomeSlider {
 
   protected readonly slides: readonly IHeroSlide[] = HERO_SLIDES;
 
+  private destroyed = false;
+  private autoplayTimer?: ReturnType<typeof setTimeout>;
+
   constructor() {
+    // بنسجل الـ cleanup هنا بشكل متزامن: لو سجلناه جوه الـ .then() والمستخدم ساب الصفحة
+    // قبل ما الـ chunk يخلص تحميل، Angular بيرمي NG0911 والـ timer بيفضل شغال
+    this.destroyRef.onDestroy(() => {
+      this.destroyed = true;
+      clearTimeout(this.autoplayTimer);
+    });
+
     afterNextRender(() => {
       import('swiper/element/bundle').then(({ register }) => {
+        if (this.destroyed) return;
+
         register();
 
         const swiperEl = this.swiperRef.nativeElement;
@@ -64,11 +76,9 @@ export class HomeSlider {
 
         swiperEl.initialize();
 
-        const autoplayTimer = setTimeout(() => {
+        this.autoplayTimer = setTimeout(() => {
           swiperEl.swiper?.autoplay?.start();
         }, 2000);
-
-        this.destroyRef.onDestroy(() => clearTimeout(autoplayTimer));
       });
     });
   }
