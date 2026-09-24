@@ -48,6 +48,15 @@ app.use((req, res, next) => {
 });
 
 /**
+ * Anything neither served statically nor known to the Angular engine (e.g. unknown URLs, which
+ * the app's own `**` NotFound route handles) falls back to the CSR shell — same as vercel.json.
+ */
+app.use((req, res, next) => {
+  if (req.method !== 'GET' && req.method !== 'HEAD') return next();
+  res.sendFile(join(browserDistFolder, 'index.csr.html'));
+});
+
+/**
  * Start the server if this module is the main entry point, or it is ran via PM2.
  * The server listens on the port defined by the `PORT` environment variable, or defaults to 4000.
  */
