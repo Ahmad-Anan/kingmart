@@ -29,7 +29,8 @@
       {{ 'home.brandsSection.loadError' | t }}
     </p>
   } @else if (filteredBrands().length) {
-    <div class="brands-marquee relative z-10">
+    <!-- الشعارات محايدة لغوياً: نثبّت الاتجاه LTR حتى لا ينقلب مسار الحركة في العربية -->
+    <div class="brands-marquee relative z-10" dir="ltr">
       <div class="brands-marquee-track">
         @for (brand of filteredBrands(); track brand._id) {
           <a
