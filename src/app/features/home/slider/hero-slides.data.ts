@@ -7,7 +7,10 @@ export const HERO_SLIDES: readonly IHeroSlide[] = [
     id: 'slide-0',
     image: `${IMG_BASE}/0.png`,
     imageAlt: 'A couple in elegant evening wear inside a luxury venue',
-    focalPosition: '50% 35%', // الزوجين في المنتصف، الرأس أعلى شوية من نص الصورة
+    // الصورة الأصلية مقصوصة من فوق عند الوش — لازم نثبت على الحافة العليا (0%) عشان الوشوش
+    // تفضل ظاهرة في الديسكتوب (الهيرو هناك بيعرض ~50–70% بس من ارتفاع الصورة). في الموبايل الصورة
+    // بتتعرض بارتفاعها كامل فالقيمة الرأسية مالهاش تأثير
+    focalPosition: '50% 0%',
   },
   {
     id: 'slide-1',
