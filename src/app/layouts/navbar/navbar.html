@@ -6,7 +6,7 @@
     <div class="flex items-center gap-4">
       <a
         href="tel:+966500000000"
-        class="flex items-center gap-1.5 transition-colors hover:text-gold-600 dark:hover:text-gold-400"
+        class="hidden items-center gap-1.5 whitespace-nowrap transition-colors hover:text-gold-600 dark:hover:text-gold-400 sm:flex"
       >
         <i class="pi pi-phone text-gold-600 dark:text-gold-500" aria-hidden="true"></i>
         <span>
@@ -29,15 +29,15 @@
         {{ 'navbar.topBar.whiteGlove' | t }}
       </span>
       <span
-        class="rounded-full border border-gold-600/40 bg-gold-500/10 px-3 py-0.5 text-[10px] font-extrabold uppercase tracking-widest text-royal-950 shadow-sm dark:border-gold-500/50 dark:bg-gold-500/15 dark:text-gold-400"
+        class="whitespace-nowrap rounded-full border border-gold-600/40 bg-gold-500/10 px-3 py-0.5 text-[10px] font-extrabold uppercase tracking-widest text-royal-950 shadow-sm dark:border-gold-500/50 dark:bg-gold-500/15 dark:text-gold-400"
       >
         {{ 'navbar.topBar.royalEdition' | t }}
       </span>
       <div
-        class="flex items-center gap-3 border-s border-gold-500/30 ps-3 text-[11px] font-medium tracking-wide"
+        class="flex items-center gap-3 whitespace-nowrap border-s border-gold-500/30 ps-3 text-[11px] font-medium tracking-wide"
       >
         @if (isLoggedIn()) {
-          <span class="text-royal-900 dark:text-gold-300">{{
+          <span class="max-w-40 truncate text-royal-900 dark:text-gold-300">{{
             'navbar.topBar.welcome' | t: { name: currentUser()?.name ?? '' }
           }}</span>
           <span class="h-3 w-px bg-gold-500/30"></span>
