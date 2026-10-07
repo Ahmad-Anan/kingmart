@@ -14,11 +14,12 @@
         <div class="relative h-full w-full overflow-hidden bg-royal-950">
           <img
             [ngSrc]="slide.image"
+            [ngSrcset]="srcset"
+            [sizes]="sizes"
             [alt]="slide.imageAlt"
             [style.object-position]="slide.focalPosition"
             class="object-cover"
             fill
-            sizes="100vw"
             [priority]="isFirst"
           />
 

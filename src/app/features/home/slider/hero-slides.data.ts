@@ -1,11 +1,12 @@
 import { IHeroSlide } from '../../../core/models/hero-slide';
 
+// من غير امتداد ولا مقاس — sliderImageLoader بيكمّل المسار (شوف slider-image.ts)
 const IMG_BASE = 'assets/images/img-slider';
 
 export const HERO_SLIDES: readonly IHeroSlide[] = [
   {
     id: 'slide-0',
-    image: `${IMG_BASE}/0.png`,
+    image: `${IMG_BASE}/0`,
     imageAlt: 'A couple in elegant evening wear inside a luxury venue',
     // الصورة الأصلية مقصوصة من فوق عند الوش — لازم نثبت على الحافة العليا (0%) عشان الوشوش
     // تفضل ظاهرة في الديسكتوب (الهيرو هناك بيعرض ~50–70% بس من ارتفاع الصورة). في الموبايل الصورة
@@ -14,13 +15,13 @@ export const HERO_SLIDES: readonly IHeroSlide[] = [
   },
   {
     id: 'slide-1',
-    image: `${IMG_BASE}/1.png`,
+    image: `${IMG_BASE}/1`,
     imageAlt: 'Formal tuxedo and evening gown displayed in a marble hall',
     focalPosition: '65% 45%', // موزعين شمال ويمين، مركز الثقل أقرب لليمين شوية
   },
   {
     id: 'slide-2',
-    image: `${IMG_BASE}/2.png`,
+    image: `${IMG_BASE}/2`,
     imageAlt: 'Tailored black suit on a wooden valet stand',
     focalPosition: '75% 40%', // البدلة أقصى اليمين، الشمال فاضي بالكامل
     eyebrowKey: 'home.slider.slide2.eyebrow',
@@ -29,7 +30,7 @@ export const HERO_SLIDES: readonly IHeroSlide[] = [
   },
   {
     id: 'slide-3',
-    image: `${IMG_BASE}/3.png`,
+    image: `${IMG_BASE}/3`,
     imageAlt: 'Emerald green evening gown in a grand hall',
     focalPosition: '85% 55%', // الفستان أقصى اليمين تقريباً
     eyebrowKey: 'home.slider.slide3.eyebrow',
@@ -38,7 +39,7 @@ export const HERO_SLIDES: readonly IHeroSlide[] = [
   },
   {
     id: 'slide-4',
-    image: `${IMG_BASE}/4.png`,
+    image: `${IMG_BASE}/4`,
     imageAlt: 'Brown leather oxford shoes on a wooden floor',
     focalPosition: '70% 65%', // الحذاء يمين-وسط، أسفل الصورة شوية
     eyebrowKey: 'home.slider.slide4.eyebrow',
@@ -47,7 +48,7 @@ export const HERO_SLIDES: readonly IHeroSlide[] = [
   },
   {
     id: 'slide-5',
-    image: `${IMG_BASE}/5.png`,
+    image: `${IMG_BASE}/5`,
     imageAlt: 'Black patent heels on a marble pedestal',
     focalPosition: '85% 65%', // أقصى اليمين تقريباً
     eyebrowKey: 'home.slider.slide5.eyebrow',
@@ -56,7 +57,7 @@ export const HERO_SLIDES: readonly IHeroSlide[] = [
   },
   {
     id: 'slide-6',
-    image: `${IMG_BASE}/6.png`,
+    image: `${IMG_BASE}/6`,
     imageAlt: 'Diamond necklace displayed in a glass showcase',
     focalPosition: '80% 45%', // العلبة الزجاجية أقصى اليمين
     eyebrowKey: 'home.slider.slide6.eyebrow',
@@ -65,7 +66,7 @@ export const HERO_SLIDES: readonly IHeroSlide[] = [
   },
   {
     id: 'slide-7',
-    image: `${IMG_BASE}/7.png`,
+    image: `${IMG_BASE}/7`,
     imageAlt: 'Luxury wristwatch and cufflinks in a display case',
     focalPosition: '75% 55%', // الساعة يمين-وسط
     eyebrowKey: 'home.slider.slide7.eyebrow',
@@ -74,7 +75,7 @@ export const HERO_SLIDES: readonly IHeroSlide[] = [
   },
   {
     id: 'slide-8',
-    image: `${IMG_BASE}/8.png`,
+    image: `${IMG_BASE}/8`,
     imageAlt: 'Private home cinema with leather recliners',
     focalPosition: '65% 60%', // المشهد ممتد لكن ثقله يمين-وسط
     eyebrowKey: 'home.slider.slide8.eyebrow',
@@ -83,7 +84,7 @@ export const HERO_SLIDES: readonly IHeroSlide[] = [
   },
   {
     id: 'slide-9',
-    image: `${IMG_BASE}/9.png`,
+    image: `${IMG_BASE}/9`,
     imageAlt: 'Modern desk setup with laptop and monitor',
     focalPosition: '70% 55%', // الشاشة والابتوب يمين
     eyebrowKey: 'home.slider.slide9.eyebrow',
@@ -92,7 +93,7 @@ export const HERO_SLIDES: readonly IHeroSlide[] = [
   },
   {
     id: 'slide-10',
-    image: `${IMG_BASE}/10.png`,
+    image: `${IMG_BASE}/10`,
     imageAlt: 'Smartphone and wireless earbuds on a wooden desk',
     focalPosition: '65% 60%', // الموبايل والسماعات يمين-وسط
     eyebrowKey: 'home.slider.slide10.eyebrow',

@@ -1,4 +1,4 @@
-import { NgOptimizedImage } from '@angular/common';
+import { IMAGE_LOADER, NgOptimizedImage } from '@angular/common';
 import {
   afterNextRender,
   ChangeDetectionStrategy,
@@ -12,6 +12,7 @@ import {
 import { IHeroSlide } from '../../../core/models/hero-slide';
 import { TranslatePipe } from '../../../shared/pipes/translate-pipe';
 import { HERO_SLIDES } from './hero-slides.data';
+import { SLIDER_SIZES, SLIDER_SRCSET, sliderImageLoader } from './slider-image';
 
 interface SwiperElementWithInstance extends HTMLElement {
   initialize: () => void;
@@ -26,6 +27,7 @@ interface SwiperElementWithInstance extends HTMLElement {
   selector: 'app-home-slider',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgOptimizedImage, TranslatePipe],
+  providers: [{ provide: IMAGE_LOADER, useValue: sliderImageLoader }],
   templateUrl: './home-slider.html',
   styleUrl: './home-slider.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -37,6 +39,8 @@ export class HomeSlider {
   private readonly destroyRef = inject(DestroyRef);
 
   protected readonly slides: readonly IHeroSlide[] = HERO_SLIDES;
+  protected readonly srcset = SLIDER_SRCSET;
+  protected readonly sizes = SLIDER_SIZES;
 
   private destroyed = false;
   private autoplayTimer?: ReturnType<typeof setTimeout>;
