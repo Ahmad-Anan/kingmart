@@ -9,19 +9,28 @@
   ></div>
 
   <swiper-container #heroSwiper init="false" class="hero-frame relative z-10 block w-full">
-    @for (slide of slides; track slide.id; let isFirst = $first) {
+    @for (slide of slides; track slide.id; let i = $index, isFirst = $first) {
       <swiper-slide class="h-full">
         <div class="relative h-full w-full overflow-hidden bg-royal-950">
-          <img
-            [ngSrc]="slide.image"
-            [ngSrcset]="srcset"
-            [sizes]="sizes"
-            [alt]="slide.imageAlt"
-            [style.object-position]="slide.focalPosition"
-            class="object-cover"
-            fill
-            [priority]="isFirst"
-          />
+          <!--
+            مع الـ fade effect كل الشرايح فوق بعض في نفس المكان، فـ loading="lazy" مالوش أي تأثير
+            والمتصفح كان بينزل الـ 11 صورة مرة واحدة — عشان كده الصورة نفسها مش بتترندر غير
+            لما الشريحة تقرب تتعرض (warmed)
+          -->
+          @if (warmed().has(i)) {
+            <!-- eager مش lazy: الـ lazy بيضيف sizes="auto" فالمتصفح يختار على عرض الشاشة بس -->
+            <img
+              [ngSrc]="slide.image"
+              [ngSrcset]="srcset"
+              [sizes]="sizes"
+              [alt]="slide.imageAlt"
+              [style.object-position]="slide.focalPosition"
+              class="object-cover"
+              fill
+              [priority]="isFirst"
+              [loading]="isFirst ? undefined : 'eager'"
+            />
+          }
 
           @if (slide.titleKey) {
             <div
