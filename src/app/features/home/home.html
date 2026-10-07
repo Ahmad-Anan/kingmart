@@ -1,4 +1,19 @@
-  <app-home-slider />
-  <app-home-brands />
+<app-home-slider />
+<app-home-brands />
+
+<!--
+  الأقسام اللي تحت الـ fold بتتحمل لما تقرب من الشاشة بس: صور الأقسام جاية من الـ API بمقاسها
+  الأصلي (لحد ~360KB للصورة وبتتعرض 96px) وكانت بتتنزل مع أول تحميل وتزاحم صورة الهيرو (الـ LCP).
+  ارتفاع الـ placeholder مقاس من الصفحة الحقيقية عشان مايحصلش layout shift لما القسم يظهر
+-->
+@defer (on viewport; prefetch on idle) {
   <app-home-categories />
+} @placeholder {
+  <div class="min-h-[417px] sm:min-h-[577px] lg:min-h-[421px]" aria-hidden="true"></div>
+}
+
+@defer (on viewport; prefetch on idle) {
   <app-home-product />
+} @placeholder {
+  <div class="min-h-screen" aria-hidden="true"></div>
+}
