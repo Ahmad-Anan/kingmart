@@ -21,9 +21,10 @@ interface SwiperElementWithInstance extends HTMLElement {
     realIndex: number;
     slideNext: () => void;
     slidePrev: () => void;
-    autoplay?: { start: () => void; stop: () => void };
   };
 }
+
+const AUTOPLAY_DELAY_MS = 5500;
 
 @Component({
   selector: 'app-home-slider',
@@ -50,6 +51,8 @@ export class HomeSlider {
 
   private destroyed = false;
   private autoplayTimer?: ReturnType<typeof setTimeout>;
+  private autoplayStarted = false;
+  private hovering = false;
 
   constructor() {
     // بنسجل الـ cleanup هنا بشكل متزامن: لو سجلناه جوه الـ .then() والمستخدم ساب الصفحة
@@ -73,33 +76,52 @@ export class HomeSlider {
           speed: 850,
           effect: 'fade',
           fadeEffect: { crossFade: true },
-          autoplay: {
-            enabled: false,
-            delay: 5500,
-            disableOnInteraction: false,
-            pauseOnMouseEnter: true,
-          },
+          // من غير autoplay بتاع Swiper: الموديول ده بيلف requestAnimationFrame كل فريم طول
+          // الوقت (عشان يحسب الوقت الفاضل)، وده بيجبر المتصفح يعيد حساب الـ style كل فريم
+          // ومع الـ marquee بتاع البراندات كان بياكل الـ main thread — شوف scheduleNext()
           keyboard: { enabled: true },
           a11y: { enabled: true },
           grabCursor: true,
           on: {
-            // Swiper بيطلق slideChange على الشريحة 0 وقت الـ init — بنتجاهله عشان جيران الأولى
-            // ميتحملوش وقت الـ LCP (الـ timer تحت بيجهزهم بعد ما الصفحة تهدى)
             slideChange: (swiper: { realIndex: number }) => {
+              // Swiper بيطلق slideChange على الشريحة 0 وقت الـ init — بنتجاهله عشان جيران الأولى
+              // ميتحملوش وقت الـ LCP (الـ timer تحت بيجهزهم بعد ما الصفحة تهدى)
               if (swiper.realIndex !== 0) this.warmAround(swiper.realIndex);
+              // أي حركة (يدوي أو تلقائي) بتبدأ العد من الأول — زي disableOnInteraction: false
+              this.scheduleNext();
             },
           },
         });
 
         swiperEl.initialize();
 
+        // pauseOnMouseEnter
+        swiperEl.addEventListener('mouseenter', () => {
+          this.hovering = true;
+          clearTimeout(this.autoplayTimer);
+        });
+        swiperEl.addEventListener('mouseleave', () => {
+          this.hovering = false;
+          this.scheduleNext();
+        });
+
         this.autoplayTimer = setTimeout(() => {
           // بعد ما الصفحة تكون اتحملت: نجهز الجيران (التالية للـ autoplay، والسابقة لزرار الرجوع)
           this.warmAround(swiperEl.swiper?.realIndex ?? 0);
-          swiperEl.swiper?.autoplay?.start();
+          this.autoplayStarted = true;
+          this.scheduleNext();
         }, 2000);
       });
     });
+  }
+
+  private scheduleNext(): void {
+    if (!this.autoplayStarted || this.destroyed || this.hovering) return;
+    clearTimeout(this.autoplayTimer);
+    this.autoplayTimer = setTimeout(
+      () => this.swiperRef.nativeElement.swiper?.slideNext(),
+      AUTOPLAY_DELAY_MS,
+    );
   }
 
   private warmAround(index: number): void {
