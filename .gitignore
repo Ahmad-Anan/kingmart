@@ -43,3 +43,7 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+
+# PrimeUI license key (generated from PRIMEUI_LICENSE, never commit)
+/src/environments/primeui-license.ts
+.env.local

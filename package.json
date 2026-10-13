@@ -3,9 +3,13 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+    "prestart": "node scripts/write-primeui-license.mjs",
     "start": "ng serve",
+    "prebuild": "node scripts/write-primeui-license.mjs",
     "build": "ng build",
+    "prewatch": "node scripts/write-primeui-license.mjs",
     "watch": "ng build --watch --configuration development",
+    "pretest": "node scripts/write-primeui-license.mjs",
     "test": "ng test",
     "serve:ssr:E-Commerce22": "node dist/E-Commerce22/server/server.mjs"
   },
