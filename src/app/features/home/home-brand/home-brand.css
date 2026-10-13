@@ -10,7 +10,16 @@
   animation: brands-scroll 28s linear infinite;
 }
 
-.brands-marquee:hover .brands-marquee-track {
+/* الوقوف مع الـ hover للأجهزة اللي فيها ماوس بجد بس — على الموبايل اللمسة بتدي الشريط :hover
+   ومبيروحش أبدًا، فالشريط كان بيقف خالص بعد أول لمسة */
+@media (hover: hover) and (pointer: fine) {
+  .brands-marquee:hover .brands-marquee-track {
+    animation-play-state: paused;
+  }
+}
+
+/* اللي بيتنقل بين الشعارات بالكيبورد محتاج الشريط يقف وهو واقف على شعار، عشان يلحق يدوس عليه */
+.brands-marquee:has(:focus-visible) .brands-marquee-track {
   animation-play-state: paused;
 }
 

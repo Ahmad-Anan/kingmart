@@ -53,6 +53,8 @@ export class HomeSlider {
   private autoplayTimer?: ReturnType<typeof setTimeout>;
   private autoplayStarted = false;
   private hovering = false;
+  // بنقراه مع كل جدولة مش مرة واحدة، فلو المستخدم شغّل Reduce Motion والصفحة مفتوحة بيتطبق على طول
+  private reducedMotion?: MediaQueryList;
 
   constructor() {
     // بنسجل الـ cleanup هنا بشكل متزامن: لو سجلناه جوه الـ .then() والمستخدم ساب الصفحة
@@ -63,6 +65,7 @@ export class HomeSlider {
     });
 
     afterNextRender(() => {
+      this.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
       import('swiper/element/bundle').then(({ register }) => {
         if (this.destroyed) return;
 
@@ -95,12 +98,16 @@ export class HomeSlider {
 
         swiperEl.initialize();
 
-        // pauseOnMouseEnter
-        swiperEl.addEventListener('mouseenter', () => {
+        // pauseOnMouseEnter — للماوس بس: على اللمس المتصفح بيبعت mouseenter مع كل tap ومبيبعتش
+        // mouseleave أبدًا، فالـ autoplay كان بيقف خالص بعد أول لمسة على الصورة. الـ pointer events
+        // بتقولنا نوع الجهاز في pointerType، فبنتجاهل اللمس والقلم
+        swiperEl.addEventListener('pointerenter', (event) => {
+          if (event.pointerType !== 'mouse') return;
           this.hovering = true;
           clearTimeout(this.autoplayTimer);
         });
-        swiperEl.addEventListener('mouseleave', () => {
+        swiperEl.addEventListener('pointerleave', (event) => {
+          if (event.pointerType !== 'mouse') return;
           this.hovering = false;
           this.scheduleNext();
         });
@@ -116,7 +123,9 @@ export class HomeSlider {
   }
 
   private scheduleNext(): void {
-    if (!this.autoplayStarted || this.destroyed || this.hovering) return;
+    if (!this.autoplayStarted || this.destroyed || this.hovering || this.reducedMotion?.matches) {
+      return;
+    }
     clearTimeout(this.autoplayTimer);
     this.autoplayTimer = setTimeout(
       () => this.swiperRef.nativeElement.swiper?.slideNext(),
