@@ -1,13 +1,17 @@
 .brands-marquee {
   width: 100%;
   overflow: hidden;
+  /* Safari على iOS القديم لسه محتاج النسخة بالـ prefix */
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
   mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
 }
 
 .brands-marquee-track {
+  --brands-duration: 28s;
   display: flex;
   width: max-content;
-  animation: brands-scroll 28s linear infinite;
+  animation: brands-scroll var(--brands-duration) linear infinite;
+  will-change: transform;
 }
 
 /* الوقوف مع الـ hover للأجهزة اللي فيها ماوس بجد بس — على الموبايل اللمسة بتدي الشريط :hover
@@ -23,6 +27,11 @@
   animation-play-state: paused;
 }
 
+/* زرار الإيقاف (WCAG 2.2.2): لما المستخدم يوقفه بإيده يفضل واقف لحد ما يشغله تاني */
+.brands-marquee-track.is-paused {
+  animation-play-state: paused;
+}
+
 @keyframes brands-scroll {
   from {
     transform: translateX(0);
@@ -32,8 +41,11 @@
   }
 }
 
+/* كنا بنلغي الحركة خالص هنا، بس موبايلات كتير بتفعّل Reduce Motion مع توفير البطارية،
+   فالشريط كان بيقف ومكانش ينفع يتسحب كمان بسبب الـ overflow: hidden.
+   دلوقتي بيفضل يتحرك بس أبطأ بكتير، واللي عايز يوقفه خالص عنده الزرار */
 @media (prefers-reduced-motion: reduce) {
   .brands-marquee-track {
-    animation: none;
+    --brands-duration: 90s;
   }
 }

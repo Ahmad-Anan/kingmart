@@ -31,7 +31,7 @@
   } @else if (filteredBrands().length) {
     <!-- الشعارات محايدة لغوياً: نثبّت الاتجاه LTR حتى لا ينقلب مسار الحركة في العربية -->
     <div class="brands-marquee relative z-10" dir="ltr">
-      <div class="brands-marquee-track">
+      <div class="brands-marquee-track" [class.is-paused]="paused()">
         @for (brand of filteredBrands(); track brand._id) {
           <a
             [routerLink]="['/shop']"
@@ -75,6 +75,24 @@
           </div>
         }
       </div>
+    </div>
+
+    <!-- الزرار برا الـ dir="ltr" وتحت الشريط: بيروح ناحية نهاية السطر حسب لغة الصفحة ومبيغطيش أي شعار -->
+    <div class="relative z-10 mt-6 flex justify-end px-6">
+      <button
+        type="button"
+        class="brands-toggle flex h-11 w-11 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-gold-500/30 dark:border-gold-400/30 bg-white/70 dark:bg-royal-900/60 text-gold-600 dark:text-gold-400 backdrop-blur-md transition-[border-color,box-shadow] duration-300 hover:border-gold-500/60 dark:hover:border-gold-400/60 hover:shadow-md hover:shadow-gold-500/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400"
+        [attr.aria-pressed]="paused()"
+        [attr.aria-label]="'home.brandsSection.pauseMarquee' | t"
+        (click)="togglePaused()"
+      >
+        <i
+          class="pi text-xs"
+          [class.pi-pause]="!paused()"
+          [class.pi-play]="paused()"
+          aria-hidden="true"
+        ></i>
+      </button>
     </div>
   } @else {
     <p class="text-center text-sm text-neutral-500 dark:text-neutral-400">

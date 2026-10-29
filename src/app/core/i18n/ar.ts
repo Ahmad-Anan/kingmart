@@ -131,6 +131,7 @@ export const ar: Translations = {
       browseFrom: 'تصفح منتجات {name}',
       loadError: 'تعذّر تحميل العلامات التجارية في الوقت الحالي.',
       empty: 'لا توجد علامات تجارية متاحة في الوقت الحالي.',
+      pauseMarquee: 'إيقاف حركة العلامات التجارية',
     },
     productsSection: {
       eyebrow: 'الأكثر رغبة',

@@ -1,5 +1,5 @@
 import { NgOptimizedImage } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { IBrand } from '../../../core/models/brand';
@@ -33,4 +33,11 @@ export class HomeBrands {
       RELEVANT_BRAND_NAMES.some((name) => brand.name.toLowerCase().includes(name.toLowerCase())),
     );
   });
+
+  // إيقاف/تشغيل الشريط من الزرار — مستقل عن وقوف الـ hover والـ focus
+  protected readonly paused = signal(false);
+
+  protected togglePaused(): void {
+    this.paused.update((paused) => !paused);
+  }
 }

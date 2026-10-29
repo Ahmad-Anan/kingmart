@@ -129,6 +129,7 @@ export const en = {
       browseFrom: 'Browse products from {name}',
       loadError: 'Unable to load brands right now.',
       empty: 'No brands available at the moment.',
+      pauseMarquee: 'Pause brands scrolling',
     },
     productsSection: {
       eyebrow: 'Most Coveted',
